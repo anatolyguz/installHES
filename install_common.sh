@@ -43,9 +43,8 @@ yum install mysql-server -y
 
 
 # Set parameter Enabling lower_case_table_names  to 1
+# Before run the mysql server, add lower_case_table_names=1
 echo "lower_case_table_names=1" >> /etc/my.cnf 
-Before run the mysql server, add lower_case_table_names=1
-
 
 
 #Enabling and running MySQL Service
