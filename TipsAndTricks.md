@@ -14,3 +14,8 @@ disable locale from cliet #LC_TIME="en_US.UTF-8"
 use mysql;
 UPDATE user SET Host='%' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;
 ```
+
+ #Install bash-completion
+ ```bash
+yum install bash-completion
+```
