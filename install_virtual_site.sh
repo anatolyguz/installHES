@@ -71,7 +71,8 @@ then
     $USER_PASSWORD=""
     # need strong passsword
     # repeats until you meet the requirements
-    until [[ ${#USER_PASSWORD} -ge 9 ]] && [[ "$USER_PASSWORD" =~ [A-Z] ]] && [[ "$USER_PASSWORD" =~ [a-z] ]] &&  [[ "$USER_PASSWORD" =~ [0-9] ]] &&  [[ "$USER_PASSWORD" =~ [@#$%\&*+=-] ]] 
+    #until [[ ${#USER_PASSWORD} -ge 9 ]] && [[ "$USER_PASSWORD" =~ [A-Z] ]] && [[ "$USER_PASSWORD" =~ [a-z] ]] &&  [[ "$USER_PASSWORD" =~ [0-9] ]] &&  [[ "$USER_PASSWORD" =~ [@#$%\&*+=-] ]] 
+    until [[ ${#USER_PASSWORD} -ge 9 ]] && [[ "$USER_PASSWORD" =~ [A-Z] ]] && [[ "$USER_PASSWORD" =~ [a-z] ]] &&  [[ "$USER_PASSWORD" =~ [0-9] ]] 
     do
         read -p "Enter strong password for user $DATABASE_USER (at least 8 (upper and lowercase letters, numbers, and special characters)): " USER_PASSWORD
     done
