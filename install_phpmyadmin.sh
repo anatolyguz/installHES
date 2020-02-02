@@ -18,20 +18,20 @@ yum -y  install epel-release
 yum -y install phpmyadmin
 
 cat > /etc/nginx/conf.d/phpmyadmin.conf << EOF
-Server {
+server {
   location /phpMyAdmin {
          root /usr/share/;
          index index.php index.html index.htm;
-         location ~ ^/phpMyAdmin/(.+\.php)$ {
-                 try_files $uri =404;
+         location ~ ^/phpMyAdmin/(.+\.php)\$ {
+                 try_files \$uri = 404;
                  root /usr/share/;
                  #fastcgi_pass unix:/run/php-fpm/www.sock;
-                 fastcgi_pass 127.0.0.1:9000
+                 fastcgi_pass 127.0.0.1:9000;
                  fastcgi_index index.php;
-                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                 include /etc/nginx/fastcgi_params;
+                 fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+                include /etc/nginx/fastcgi_params;
          }
-         location ~* ^/phpMyAdmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+         location ~* ^/phpMyAdmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))\$ {
                  root /usr/share/;
          }
   }
@@ -54,7 +54,7 @@ else
 fi
 
 systemctl restart mysqld
-
+systemctl reload nginx
 
 
 
