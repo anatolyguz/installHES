@@ -59,6 +59,12 @@ systemctl reload nginx
 
 
 
+#nano /etc/php-fpm.d/www.conf 
+#listen.owner = nginx
+#listen.group = nginx
+
+#ALTER USER 'user_name'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; 
+#ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
 
 
 
