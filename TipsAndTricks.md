@@ -15,7 +15,18 @@ use mysql;
 UPDATE user SET Host='%' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;
 ```
 
- #Install bash-completion
+#Install bash-completion
  ```bash
 yum install bash-completion
 ```
+
+#Install fail2ban
+ ```bash
+yum install -y epel-release
+yum install -y fail2ban
+systemctl enable fail2ban
+
+```
+
+
+
