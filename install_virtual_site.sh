@@ -68,7 +68,7 @@ echo DATABASE_USER = $DATABASE_USER
 
 if [ -z "$USER_PASSWORD" ] 
 then
-    $USER_PASSWORD=""
+    USER_PASSWORD=""
     # need strong passsword
     # repeats until you meet the requirements
     #until [[ ${#USER_PASSWORD} -ge 9 ]] && [[ "$USER_PASSWORD" =~ [A-Z] ]] && [[ "$USER_PASSWORD" =~ [a-z] ]] &&  [[ "$USER_PASSWORD" =~ [0-9] ]] &&  [[ "$USER_PASSWORD" =~ [@#$%\&*+=-] ]] 
