@@ -133,9 +133,17 @@ mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DATABASE_
 #fi
 
 #Creating MySQL Database for the Hideez Enterprise Server
+
+DATABASE_NAME_FOR_MYSQL=$DATABASE_NAME 
+#if name of database base contains a character "-"
+# then the name of the base must be enclosed in reverse apostrophe
+if [[ "$DATABASE_NAME" == *"-"* ]]; then
+  DATABASE_NAME_FOR_MYSQL="\`$DATABASE_NAME\`"
+fi
+
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
-CREATE DATABASE IF NOT EXISTS $DATABASE_NAME;
-GRANT ALL ON $DATABASE_NAME.* TO '$DATABASE_USER'@'127.0.0.1';
+CREATE DATABASE IF NOT EXISTS $DATABASE_NAME_FOR_MYSQL;
+GRANT ALL ON $DATABASE_NAME_FOR_MYSQL.* TO '$DATABASE_USER'@'127.0.0.1';
 FLUSH PRIVILEGES;
 EOF
 
