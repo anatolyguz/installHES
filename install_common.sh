@@ -30,7 +30,10 @@ git clone https://github.com/HideezGroup/HES src
 
 #disabling SELinux:
 sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
+sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config 
+
 setenforce 0
+
 
 # Adding Microsoft Package Repository and Installing .NET Core:
 echo Adding Microsoft Package Repository and Installing .NET Core:
