@@ -61,6 +61,7 @@ systemctl reload nginx
 
 #chown nginx:nginx /var/lib/php/session/
 #chown -R nginx:nginx /usr/share/phpMyAdmin/
+chmod 777  /var/lib/php/session/
 
 
 
