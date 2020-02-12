@@ -59,6 +59,9 @@ fi
 systemctl restart mysqld
 systemctl reload nginx
 
+#chown nginx:nginx /var/lib/php/session/
+#chown -R nginx:nginx /usr/share/phpMyAdmin/
+
 
 
 
@@ -68,6 +71,7 @@ systemctl reload nginx
 
 #ALTER USER 'user_name'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; 
 #ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
+
 
 
 
