@@ -50,6 +50,10 @@ echo "bind-address = 0.0.0.0" >> /etc/my.cnf
 
 read -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "use mysql; UPDATE user SET Host='%' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;"
+
+mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
+
+
 if [ $? -eq 0 ]; then
   echo Good
 else
@@ -71,7 +75,7 @@ chmod 777  /var/lib/php/session/
 #listen.group = nginx
 
 #ALTER USER 'user_name'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; 
-#ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
+
 
 
 
