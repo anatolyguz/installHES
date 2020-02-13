@@ -1,5 +1,5 @@
-yum install nano
-yum install mc
-yom install mc
-yum install telnet
-yum install bash-completion
+yum install nano -y
+yum install mc -y 
+yom install mc -y 
+yum install telnet -y 
+yum install bash-completion -y
