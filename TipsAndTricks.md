@@ -44,3 +44,7 @@ dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | r
 
 
 
+#Configure SELinux to allow mod_proxy to initiate outbound connections:
+/usr/sbin/setsebool -P httpd_can_network_connect 1
+
+
