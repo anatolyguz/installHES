@@ -97,3 +97,5 @@ echo "In your home directory, has been created file install_common_setting.txt w
 echo "For your safety, after making sure everything works, it is advised to save your settings somewhere and delete this file"
 
 cat $HOME/install_common_setting.txt
+
+echo "You need to restart to work on"
