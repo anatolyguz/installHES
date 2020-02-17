@@ -8,3 +8,9 @@ tar xf shibboleth-identity-provider-3.4.6.tar.gz
 
 shibboleth-identity-provider-3.4.6/bin/install.sh
 
+#Create /etc/tomcat/Catalina/localhost/idp.xml with the following content:
+echo '<Context docBase="/opt/shibboleth-idp/war/idp.war"
+               unpackWAR="false"
+               swallowOutput="true" />'  > /etc/tomcat/Catalina/localhost/idp.xml
+
+
