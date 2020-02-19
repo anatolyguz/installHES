@@ -1,10 +1,14 @@
 import tarfile
 import datetime
 import os
-import ConfigParser
 import logging
 import shlex, subprocess
+import sys
 
+if sys.version_info.major <  3:
+        import ConfigParser
+else:
+        import configparser
 
 
 __author__ = "	Anatolii Huz"
@@ -24,7 +28,11 @@ def getSetting():
 
 	path = 'backup.ini' 
 	global config
-	config = ConfigParser.ConfigParser()
+	if sys.version_info.major <  3:
+        	config = ConfigParser.ConfigParser()
+	else:
+        	config = configparser.ConfigParser()
+	
 	config.read(path)   
 	backup_local_path = config.get('backup-settings', 'backup_local_path')
 	
