@@ -17,3 +17,8 @@ echo '<Context docBase="/opt/shibboleth-idp/war/idp.war"
 #Make all files under /opt/shibboleth-idp owned by Tomcat:
 chown -R tomcat.tomcat /opt/shibboleth-idp
 
+
+# testing
+#  http://test2idp.hideez.com:8080/idp/status
+#  http://test2idp.hideez.com:8080/idp/shibboleth
+
