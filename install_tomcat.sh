@@ -1,5 +1,9 @@
 #https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-centos-7-via-yum
 
+#disable selinux
+sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+#reboot
+
 sudo yum install tomcat -y
 
 #sudo yum install tomcat-webapps tomcat-admin-webapps  -y
