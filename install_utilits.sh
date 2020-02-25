@@ -1,3 +1,4 @@
+yum update -y
 yum install nano -y
 yum install mc -y 
 yum install telnet -y 
