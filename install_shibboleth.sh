@@ -22,3 +22,15 @@ chown -R tomcat.tomcat /opt/shibboleth-idp
 #  http://test2idp.hideez.com:8080/idp/status
 #  http://test2idp.hideez.com:8080/idp/shibboleth
 
+
+ALTERNATIVE
+
+yum install java-1.8.0-openjdk
+wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.16/bin/apache-tomcat-9.0.16.tar.gz
+tar xfz apache-tomcat-9.0.16.tar.gz 
+git clone https://anatolyguz@bitbucket.org/HideezDev/hideez-saml-idp.git
+
+ #cd apache-tomcat-9.0.16
+
+
+
