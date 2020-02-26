@@ -9,7 +9,7 @@ source ~/.bashrc
 wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/src/apache-tomcat-9.0.31-src.tar.gz
 tar -zxpvf apache-tomcat-9.0.31-src.tar.gz  -C /opt/
 mv /opt/apache-tomcat-9.0.31-src/ /opt/tomcat
-mkdir  /opt/tomcat/log
+mkdir  /opt/tomcat/logs
 echo "export CATALINA_HOME='/opt/tomcat'" >> ~/.bashrc
 source ~/.bashrc
 chmod +x /opt/tomcat/bin/*.sh
