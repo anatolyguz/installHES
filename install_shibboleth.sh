@@ -6,16 +6,23 @@ source ~/.bashrc
 
 # tomcat 9
 #(https://www.linuxtechi.com/install-apache-tomcat9-centos7-rhel7-ubuntu16-04/)
-wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/src/apache-tomcat-9.0.31-src.tar.gz
-tar -zxpvf apache-tomcat-9.0.31-src.tar.gz  -C /opt/
-mv /opt/apache-tomcat-9.0.31-src/ /opt/tomcat
-mkdir  /opt/tomcat/logs
+wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+tar -zxpvf apache-tomcat-9.0.31.tar.gz -C /opt/
+
+mv /opt/apache-tomcat-9.0.31/ /opt/tomcat
 echo "export CATALINA_HOME='/opt/tomcat'" >> ~/.bashrc
 source ~/.bashrc
-chmod +x /opt/tomcat/bin/*.sh
-cd /opt/tomcat/bin
+/opt/tomcat/bin/startup.sh 
+# (long time wait.....)
+
+#change port
 
 
+
+
+
+
+#shibboleth
 
 wget http://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.6.tar.gz
 tar xf shibboleth-identity-provider-3.4.6.tar.gz 
