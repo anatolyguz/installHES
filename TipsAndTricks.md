@@ -48,3 +48,20 @@ dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | r
 /usr/sbin/setsebool -P httpd_can_network_connect 1
 
 
+
+change port in appsetting.json
+add lines 
+
+ ```json
+,
+"Kestrel": {
+    "EndPoints": {
+        "Http": {
+            "Url": "http://localhost:5000"
+        }
+    }
+}
+```
+
+
+
