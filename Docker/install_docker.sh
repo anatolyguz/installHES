@@ -1,3 +1,4 @@
+#/bin/bash
 
 function install_docker_CenOS {
 
