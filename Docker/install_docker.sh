@@ -1,5 +1,6 @@
 #/bin/bash
 
+##########################
 function install_docker_CenOS {
 
   #1.  Update the system and install necessary packages
@@ -30,22 +31,22 @@ apt update
 apt-cache policy docker-ce
 apt install docker-ce -y
 
-}
-
+} 
 ##########################
 
 OS=""
 if grep -q  CentOS  /etc/os-release
         then OS="CentOS"
-else
-        if grep -q  Ubuntu  /etc/os-release
-                then OS="Ubuntu"
-        fi
+elif grep -q  Ubuntu  /etc/os-release
+        then OS="Ubuntu"
 fi
 echo $OS
 
 if [[ $OS == "CentOS" ]]
   then install_docker_CenOS
+elif [[ $OS == "Ubuntu" ]]
+  then install_docker_Ubuntu
+
 fi
 
 #3. Install Docker Compose
