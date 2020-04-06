@@ -21,7 +21,9 @@ function install_docker_Ubuntu {
 
 #1. Update the system and install necessary packages
 apt update
-apt upgrade -y
+#apt upgrade -y
+apt -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+
 apt install apt-transport-https ca-certificates curl software-properties-common -y
 
 #2. Enable and install Docker CE Repository
