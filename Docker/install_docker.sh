@@ -13,8 +13,26 @@ function install_docker_CenOS {
   systemctl start docker
   systemctl enable docker
 
+} 
+
+########################
+function install_docker_Ubuntu {
+
+#1. Update the system and install necessary packages
+apt update
+apt upgrade -y
+apt install apt-transport-https ca-certificates curl software-properties-common -y
+
+#2. Enable and install Docker CE Repository
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+apt update
+apt-cache policy docker-ce
+apt install docker-ce -y
+
 }
 
+##########################
 
 OS=""
 if grep -q  CentOS  /etc/os-release
