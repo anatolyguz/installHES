@@ -1,6 +1,3 @@
-#/bin/bash
-
-
 
 function install_docker_CenOS {
 
@@ -15,12 +12,6 @@ function install_docker_CenOS {
   systemctl start docker
   systemctl enable docker
 
-  #3. Install Docker Compose
-  curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`$
-  chmod +x /usr/local/bin/docker-compose
-  #4. Clone the HES repository
-  git clone https://github.com/HideezGroup/HES.git /opt/src/HES
-
 }
 
 
@@ -34,7 +25,14 @@ else
 fi
 echo $OS
 
-if $OS -q CentOS  
-  install_docker_CenOS
+if [[ $OS == "CentOS" ]]
+  then install_docker_CenOS
 fi
+
+#3. Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+#4. Clone the HES repository
+git clone https://github.com/HideezGroup/HES.git /opt/src/HES
+
 
