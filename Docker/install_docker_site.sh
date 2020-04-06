@@ -1,5 +1,12 @@
 #/bin/bash
 
+
+if grep -q  CentOS  /etc/os-release
+	then yum install makepasswd -y
+elif grep -q  Ubuntu  /etc/os-release
+	then apt install makepasswd -y
+fi
+
 ######################################
 #If you want the script to ask no questions, uncomment and fill in these variables
 # (USER_PASSWORD must comply with mysql policy!)
@@ -60,7 +67,8 @@ echo DOMAIN_NAME = $DOMAIN_NAME
 #     done
 # fi
 
-USER_PASSWORD=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)
+#USER_PASSWORD=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)
+USER_PASSWORD=$(makepasswd  --chars=12)
 
 echo USER_PASSWORD = $USER_PASSWORD
 
