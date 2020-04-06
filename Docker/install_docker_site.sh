@@ -85,7 +85,8 @@ echo USER_PASSWORD = $USER_PASSWORD
 #         read -p "Enter strong password for MySQL root  (at least 8 (upper and lowercase letters, numbers, and special characters)): " SQLROOT_PASSWORD
 #     done
 # fi
-SQLROOT_PASSWORD=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)
+#SQLROOT_PASSWORD=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)
+SQLROOT_PASSWORD=$(makepasswd  --chars=12)
 echo SQLROOT_PASSWORD = $SQLROOT_PASSWORD
 
 
