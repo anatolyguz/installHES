@@ -124,6 +124,10 @@ PATH_CERT="/opt/HES/nginx/certs"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $PATH_CERT/$DOMAIN_NAME.key -out $PATH_CERT/$DOMAIN_NAME.crt  -subj "/C=''/ST=''/L=''/O='' Security/OU=''/CN=''"
 
 cd /opt/HES/
+docker-compose up -d hes-db
+# pause for create database
+sleep 20
+docker-compose down 
 docker-compose up -d --build
 docker-compose down 
 docker-compose up -d
