@@ -154,7 +154,7 @@ if __name__ == '__main__':
 		file_appsettings = dir_HES + '/appsettings.json'
 		os.chdir(dir_HES) 
 		#backupFile(tar, file_appsettings) 
-		backupFile(tar, 'appsettings.json')
+		backupFile(tar, file_appsettings)
 		#backupSite(dir_HES, fileSQL, backupNameFile)
 		tar.close()
 		removeLocalOldFiles(site)
