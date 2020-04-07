@@ -1,11 +1,11 @@
 #/bin/bash
 
 
-if grep -q  CentOS  /etc/os-release
-	then yum install makepasswd -y
-elif grep -q  Ubuntu  /etc/os-release
-	then apt install makepasswd -y
-fi
+#if grep -q  CentOS  /etc/os-release
+#	then yum install makepasswd -y
+#elif grep -q  Ubuntu  /etc/os-release
+#	then apt install makepasswd -y
+#fi
 
 ######################################
 #If you want the script to ask no questions, uncomment and fill in these variables
@@ -68,7 +68,11 @@ echo DOMAIN_NAME = $DOMAIN_NAME
 # fi
 
 #USER_PASSWORD=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)
-USER_PASSWORD=$(makepasswd  --chars=12)
+#USER_PASSWORD=$(makepasswd  --chars=12)
+p1=$(cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 7 | head -n 1)
+p2=$(cat /dev/urandom | tr -dc 0-9 | fold -w 1 | head -n 1)
+p3=$(cat /dev/urandom | tr -dc *@%^][~  | fold -w 2 | head -n 1)
+USER_PASSWORD=$p1$p2$p3
 
 echo USER_PASSWORD = $USER_PASSWORD
 
@@ -86,7 +90,12 @@ echo USER_PASSWORD = $USER_PASSWORD
 #     done
 # fi
 #SQLROOT_PASSWORD=$(dd if=/dev/urandom bs=1 count=12 2>/dev/null | base64 -w 0 | rev | cut -b 2- | rev)
-SQLROOT_PASSWORD=$(makepasswd  --chars=12)
+#SQLROOT_PASSWORD=$(makepasswd  --chars=12)
+p1=$(cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 7 | head -n 1)
+p2=$(cat /dev/urandom | tr -dc 0-9 | fold -w 1 | head -n 1)
+p3=$(cat /dev/urandom | tr -dc *@%^][~  | fold -w 2 | head -n 1)
+SQLROOT_PASSWORD=$p1$p2$p3
+
 echo SQLROOT_PASSWORD = $SQLROOT_PASSWORD
 
 
