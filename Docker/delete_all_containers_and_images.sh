@@ -15,7 +15,11 @@ docker image prune -f
 
 
 
--Remove all unused network
+#Remove all unused network
 docker network prune -f
 
+
+Removing Docker Images
+
+docker rm $(docker ps -a -f status=exited -q)
 
