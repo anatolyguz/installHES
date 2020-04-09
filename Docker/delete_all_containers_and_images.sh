@@ -21,7 +21,7 @@ docker image prune -f
 docker network prune -f
 
 
-Removing Docker Images
+#Removing Docker Images
 
 docker rm $(docker ps -a -f status=exited -q)
 
