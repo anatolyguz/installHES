@@ -1,3 +1,5 @@
+#!/bin/bash
+
 
 # from https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/
 #Removing All Unused Objects
@@ -23,6 +25,6 @@ Removing Docker Images
 
 docker rm $(docker ps -a -f status=exited -q)
 
-docker image rm $(docker image ls -q)
+docker image rm -f  $(docker image ls -q)
 
 
