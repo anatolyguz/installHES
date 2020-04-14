@@ -186,6 +186,9 @@ sed -i 's/"Port": 123/"Port": '$SMTP_PORT'/' $HES_DIR/appsettings.json
 sed -i 's/"UserName": "user@example.com"/"UserName": "'$SMTP_USER_NAME'"/' $HES_DIR/appsettings.json
 sed -i 's/"Password": "password"/"Password": "'$SMTP_PASSWORD'"/' $HES_DIR/appsettings.json
 
+
+
+
 ################################
   
 #  Daemonizing Hideez Enterprise Server 
@@ -197,7 +200,8 @@ cat > /lib/systemd/system/HES-$DOMAIN_NAME.service << EOF
   User=root
   Group=root
   WorkingDirectory=$HES_DIR
-  ExecStart=$HES_DIR/HES.Web --server.urls "http://localhost:$HTTP_PORT;https://localhost:$HTTPS_PORT"
+  # ExecStart=$HES_DIR/HES.Web --server.urls "http://localhost:$HTTP_PORT;https://localhost:$HTTPS_PORT"
+  ExecStart=$HES_DIR/HES.Web --server.urls
   Restart=on-failure
   ExecReload=/bin/kill -HUP $MAINPID
   KillMode=process
