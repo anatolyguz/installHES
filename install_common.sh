@@ -38,7 +38,7 @@ setenforce 0
 # Adding Microsoft Package Repository and Installing .NET Core:
 echo Adding Microsoft Package Repository and Installing .NET Core:
 rpm -Uvh https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
-yum install dotnet-sdk-2.2 -y
+yum install dotnet-sdk-3.1 -y
 
 # Adding MySQL Package Repository and Installing MySQL Server:
 rpm -Uvh https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
