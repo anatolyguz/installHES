@@ -26,8 +26,7 @@ yum update -y
 
 #Installing and cloning the HES GitHub repository
 yum install git -y
-cd /opt
-git clone https://github.com/HideezGroup/HES src
+git clone https://github.com/HideezGroup/HES /opt/src
 
 #disabling SELinux:
 sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
