@@ -1,6 +1,12 @@
 #usage
 #bash install_virtual_site.sh
 
+
+
+#Cloning the HES GitHub repository
+
+git clone https://github.com/HideezGroup/HES /opt/src
+
 ###SETTING BLOCK
 
 #######################################
