@@ -2,10 +2,25 @@
 #bash install_virtual_site.sh
 
 
+DESTINATION="/opt/src"
+#create backup src
+if [ -d $DESTINATION ]; then
+    mv $DESTINATION $DESTINATION-$(date +%Y-%m-%d-%H-%M-%S)
+fi
+
 
 #Cloning the HES GitHub repository
+BRANCH="master"
+git clone https://github.com/HideezGroup/HES -b $BRANCH $DESTINATION
 
-git clone https://github.com/HideezGroup/HES /opt/src
+if [ $? -eq 0 ]; then
+  echo "repository successfully cloned"
+else
+  # ups....
+  echo error
+  exit 1
+fi
+
 
 ###SETTING BLOCK
 
@@ -163,10 +178,10 @@ if [ -d $HES_DIR ]; then
     mv $HES_DIR $HES_DIR-$(date +%Y-%m-%d-%H-%M-%S)
 fi
 
-cd /opt/src/HES.Web/
+cd $DESTINATION/HES.Web/
 mkdir $HES_DIR
 dotnet publish -c release -v d -o $HES_DIR --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
-cp /opt/src/HES.Web/Crypto_linux.dll $HES_DIR/Crypto.dll
+cp $DESTINATION/HES.Web/Crypto_linux.dll $HES_DIR/Crypto.dll
 
 # change setting in  appsettings.json
 # Default string is
