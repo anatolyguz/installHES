@@ -18,7 +18,7 @@ cat /etc/resolv.conf
 если это не так, можно “вручную” назначить namesrever. 
 При использовании dhcp не удасться "напрямую" изменить resolv.conf, поэтому придется выполнить несколько простых действий.
 
-##Ubuntu 18.04
+## Ubuntu 18.04
 
 Установим пакет resolvconf
 ```shell
@@ -35,7 +35,7 @@ nameserver  <server_ip>
 ```shell
 sudo systemctl start resolvconf.service
 ```
-##Centos 7
+## Centos 7
 
 Необхдимо добавить строки
 ```shell
@@ -66,9 +66,16 @@ nslookup <Domain_Name>
 
 
 Устанавливаем нужные пакеты
+## Ubuntu 18.04
 ```
 sudo apt install realmd samba-common-bin samba-libs sssd-tools krb5-user adcli
 ```
+## Centos 7
+```
+sudo yum install sssd realmd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools krb5-workstation openldap-clients policycoreutils-python -y
+```
+
+
 Во время установки kerberos необходимо подтвердить  домен, указать имя сервера     
 
 Проверяем, что наш домен виден в сети:
