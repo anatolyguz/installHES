@@ -51,11 +51,9 @@ sudo systemctl start resolvconf.service
 cat /etc/resolv.conf
 ```
 
-Проверяем, что сервер AD доступен по имени и по адресу: 
-
+Проверяем что имя домена резолвится
 ```
-ping   <ServerAD>
-ping   <ServerName>
+nslookup <Domain_Name>
 ```
 
 Устанавливаем нужные пакеты
