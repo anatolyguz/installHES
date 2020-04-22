@@ -15,9 +15,10 @@ cat /etc/resolv.conf
 в качестве nameserver
 мы должны увидеть ip нашего сервера AD  
 
-если это не так, можно “вручную” назначить namesrever. Например так:
- 
-Ubuntu 18.04
+если это не так, можно “вручную” назначить namesrever. 
+При использовании dhcp не удасться "напрямую" изменить resolv.conf, поэтому придется выполнить несколько простых действий.
+
+##Ubuntu 18.04
 
 Установим пакет resolvconf
 ```shell
@@ -34,14 +35,38 @@ nameserver  <server_ip>
 ```shell
 sudo systemctl start resolvconf.service
 ```
+##Centos 7
+
+Необхдимо добавить строки
+```shell
+PEERDNS=no
+DNS1=<server_ip>
+```
+в файл /etc/sysconfig/network-scripts/ifcfg-* Здесь  замените ifcfg-* 
+именем Вашего сетевого интерфейса
+И перегрузить NetworkManager:
+```
+sudo systemctl restart  NetworkManager
+``
+
+
 чтобы убедиться, что все корректно, проверим еще раз наш resolv.conf
 ```
 cat /etc/resolv.conf
 ```
 Проверяем что имя домена резолвится
+Примечание:
+на Centos 7 может понадобиться установка пакета bind-utils
+```
+sudo yum install bind-utils -y
+```
+
+
 ```
 nslookup <Domain_Name>
 ```
+
+
 Устанавливаем нужные пакеты
 ```
 sudo apt install realmd samba-common-bin samba-libs sssd-tools krb5-user adcli
