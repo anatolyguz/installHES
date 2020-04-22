@@ -47,8 +47,7 @@ DNS1=<server_ip>
 И перегрузить NetworkManager:
 ```
 sudo systemctl restart  NetworkManager
-``
-
+```
 
 чтобы убедиться, что все корректно, проверим еще раз наш resolv.conf
 ```
@@ -56,11 +55,10 @@ cat /etc/resolv.conf
 ```
 Проверяем что имя домена резолвится
 Примечание:
-на Centos 7 может понадобиться установка пакета bind-utils
+на Centos 7 может понадобиться установка пакета bind-utils:
 ```
 sudo yum install bind-utils -y
 ```
-
 
 ```
 nslookup <Domain_Name>
