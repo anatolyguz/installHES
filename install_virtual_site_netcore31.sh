@@ -2,27 +2,12 @@
 #bash install_virtual_site.sh
 
 
-DESTINATION="/opt/src"
-#create backup src
-if [ -d $DESTINATION ]; then
-    mv $DESTINATION $DESTINATION-$(date +%Y-%m-%d-%H-%M-%S)
-fi
-
-
-#Cloning the HES GitHub repository
-BRANCH="master"
-git clone https://github.com/HideezGroup/HES -b $BRANCH $DESTINATION
-
-if [ $? -eq 0 ]; then
-  echo "repository successfully cloned"
-else
-  # ups....
-  echo error
-  exit 1
-fi
 
 
 ###SETTING BLOCK
+
+DESTINATION="/opt/src"
+BRANCH="master"
 
 #######################################
 #If you want the script to ask no questions, un comment and fill in these variables
@@ -39,6 +24,8 @@ fi
 #SMTP_USER_NAME=""
 #SMTP_PASSWORD=""
 #######################################
+
+
 
 
 #domain name
@@ -139,9 +126,29 @@ SETCOLOR_NORMAL="echo -en \\033[0;39m"
 
 ########################### end settings zone
 
+
+
+#create backup src
+if [ -d $DESTINATION ]; then
+    mv $DESTINATION $DESTINATION-$(date +%Y-%m-%d-%H-%M-%S)
+fi
+
+#Cloning the HES GitHub repository
+
+git clone https://github.com/HideezGroup/HES -b $BRANCH $DESTINATION
+
+if [ $? -eq 0 ]; then
+  echo "repository successfully cloned"
+else
+  # ups....
+  echo error
+  exit 1
+fi
+
+
+#######################################################
+
 #Creating MySQL User
-
-
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DATABASE_USER'@'127.0.0.1' IDENTIFIED BY '$USER_PASSWORD';"
 
 #if [ $USE_RANDOM_PASSWORDS -eq 1 ]
