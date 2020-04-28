@@ -247,7 +247,7 @@ cat > /lib/systemd/system/HES-$DOMAIN_NAME.service << EOF
   Group=root
   WorkingDirectory=$HES_DIR
   # ExecStart=$HES_DIR/HES.Web --server.urls "http://localhost:$HTTP_PORT;https://localhost:$HTTPS_PORT"
-  ExecStart=$HES_DIR/HES.Web --server.urls
+  ExecStart=$HES_DIR/HES.Web
   Restart=on-failure
   ExecReload=/bin/kill -HUP $MAINPID
   KillMode=process
