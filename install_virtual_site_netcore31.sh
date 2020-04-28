@@ -215,6 +215,24 @@ sed -i 's/"UserName": "user@example.com"/"UserName": "'$SMTP_USER_NAME'"/' $HES_
 sed -i 's/"Password": "password"/"Password": "'$SMTP_PASSWORD'"/' $HES_DIR/appsettings.json
 
 
+# adding port setting to appsettings.json 
+# (after the line with phrathe "AllowedHosts" )
+KESTRELVALUE=',\
+\
+\"Kestrel\": {\
+  \"Endpoints\": {\
+    \"Http\": {\
+      \"Url\":  \"http://localhost:'$HTTP_PORT'\"\
+      },\
+    \"Https\": {\
+      \"Url\":  \"https://localhost:'$HTTPS_PORT'\"\
+      }\
+    }\
+ }\
+'
+
+sed -i '/AllowedHosts/a\'"${KESTRELVALUE}" $HES_DIR/appsettings.json
+
 
 
 ################################
