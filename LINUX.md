@@ -12,6 +12,7 @@ The second part describes the installation already for a specific site, there ma
   * 2GB RAM
   * Option 1: Clean installation of CentOS Linux x86_64 (tested on version 7.6, Centos 8 is not yet supported), select "minimal install" option during installation
   * Option 2: Clean installation of Ubuntu Server LTS 18.04
+  * Option 3: Clean installation of Ubuntu Server LTS 20.04
   
 # 1. Preparation (Run once)
   
