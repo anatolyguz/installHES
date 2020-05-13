@@ -1,3 +1,8 @@
+login to docker hub
+```
+docker login
+```
+
 for build local 
 ```
 docker build . -t <user_name>/<image_name>:latest  -t <user_name>/<image_name>:[tag] .
