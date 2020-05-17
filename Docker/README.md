@@ -162,22 +162,6 @@ The certificate will be generated and copied to the HES directory.
 # 9. Run the Server
 Finally, when config files updated and certificate ready you can run the server:
 
-
-```shell
-# cd /opt/HES
-```
-
-When you first start, it will be better if you first run the container with mysql and allow some time for the database to run
-
-```shell
-# cd /opt/HES
-# docker-compose up -d hes-db
-# # (after build competed ) 
-# docker-compose up -d hes-db
-```
-
-then other containers are loaded and built:
-
 ```shell
 # cd /opt/HES
 # docker-compose up -d --build
