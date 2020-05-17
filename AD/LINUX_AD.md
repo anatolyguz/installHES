@@ -1,10 +1,13 @@
 # Connecting Linux server to Active Directory
 
-Edit the file /etc/hosts, add (or edit) the line specifying the FQDN for this host (change it to your host name and <Domain_Name> to the domain name):
+Edit the file /etc/hosts, add (or edit) the line specifying the Fully Qualified Domain Name for this host (change it to your host name and <Domain_Name> to the domain name):
 ```shell
 127.0.1.1       <hostname>.<Domain_Name>  <hostname>
+#for hostname hideez and domain examle.com
+#127.0.1.1       hideez.example.com  hideez
 ```
-It may also be necessary to add the FQDN for the AD server depending on the network settings. 
+
+It may also be necessary to add the Fully Qualified Domain Name for the AD server depending on the network settings. 
 ```shell
 <server_ip>       <Server_Name>.<Domain_Name>  <Server_Name>
 ```
