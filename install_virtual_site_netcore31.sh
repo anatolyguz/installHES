@@ -141,7 +141,7 @@ if [ $? -eq 0 ]; then
   echo "repository successfully cloned"
 else
   # ups....
-  echo error
+  echo "error cloning repository" 
   exit 1
 fi
 
@@ -150,6 +150,15 @@ fi
 
 #Creating MySQL User
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DATABASE_USER'@'127.0.0.1' IDENTIFIED BY '$USER_PASSWORD';"
+
+if [ $? -eq 0 ]; then
+  echo "sql user successfully created (or updated)"
+else
+  # ups.... 
+  echo "error creating mysql user"
+  exit 1
+fi
+
 
 #if [ $USE_RANDOM_PASSWORDS -eq 1 ]
 #then
@@ -175,6 +184,15 @@ GRANT ALL ON $DATABASE_NAME_FOR_MYSQL.* TO '$DATABASE_USER'@'127.0.0.1';
 FLUSH PRIVILEGES;
 EOF
 
+if [ $? -eq 0 ]; then
+  echo "databse successfully created (or updated)"
+else
+  # ups.... 
+  echo "error creating mysql database"
+  exit 1
+fi
+
+
 ################################
  
 #Building the Hideez Enterprise Server from the sources
@@ -182,6 +200,8 @@ EOF
 HES_DIR=/opt/HES/$DOMAIN_NAME
 
 if [ -d $HES_DIR ]; then
+    # try stop service
+    systemctl restart HES-$DOMAIN_NAME.service
     mv $HES_DIR $HES_DIR-$(date +%Y-%m-%d-%H-%M-%S)
 fi
 
