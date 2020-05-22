@@ -25,9 +25,6 @@ BRANCH="master"
 #SMTP_PASSWORD=""
 #######################################
 
-
-
-
 #domain name
 if [ -z "$DOMAIN_NAME" ] 
 then
@@ -201,7 +198,7 @@ HES_DIR=/opt/HES/$DOMAIN_NAME
 
 if [ -d $HES_DIR ]; then
     # try stop service
-    systemctl restart HES-$DOMAIN_NAME.service
+    systemctl stop HES-$DOMAIN_NAME.service
     mv $HES_DIR $HES_DIR-$(date +%Y-%m-%d-%H-%M-%S)
 fi
 
@@ -335,7 +332,6 @@ server {
         }
 }
 EOF
-
 
 #Restarting the Nginx Reverse Proxy and check its status
 systemctl restart nginx
