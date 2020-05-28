@@ -205,7 +205,25 @@ fi
 cd $DESTINATION/HES.Web/
 mkdir $HES_DIR
 dotnet publish -c release -v d -o $HES_DIR --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+if [ $? -eq 0 ]; then
+  echo "the application was compiled successfully"
+else
+  # ups.... 
+  echo "application compilation error"
+  exit 1
+fi
+
 cp $DESTINATION/HES.Web/Crypto_linux.dll $HES_DIR/Crypto.dll
+
+if [ $? -eq 0 ]; then
+  echo "Libraries successfully copied"
+else
+  # ups.... 
+  echo "Error copying libraries"
+  exit 1
+fi
+
+
 
 # change setting in  appsettings.json
 # Default string is
@@ -256,6 +274,12 @@ sed -i '/AllowedHosts/a\'"${KESTRELVALUE}" $HES_DIR/appsettings.json
   
 #  Daemonizing Hideez Enterprise Server 
 
+#create backup of service file
+if [ -f /lib/systemd/system/HES-$DOMAIN_NAME.service ]; then
+    mv /lib/systemd/system/HES-$DOMAIN_NAME.service  /lib/systemd/system/HES-$DOMAIN_NAME.service-$(date +%Y-%m-%d-%H-%M-%S)
+fi
+
+
 cat > /lib/systemd/system/HES-$DOMAIN_NAME.service << EOF
 [Unit]
   Description=$DOMAIN_NAME Hideez Enterprise Service
@@ -287,6 +311,13 @@ fi
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME.key -out /etc/nginx/certs/$DOMAIN_NAME.crt  -subj "/C=''/ST=''/L=''/O='' Security/OU=''/CN=''"
 
 #Configuration for the Nginx Reverse Proxy
+
+#create backup of Configuration file
+if [ -f /etc/nginx/conf.d/$DOMAIN_NAME.conf ]; then
+    mv /etc/nginx/conf.d/$DOMAIN_NAME.conf  /etc/nginx/conf.d/$DOMAIN_NAME.conf-$(date +%Y-%m-%d-%H-%M-%S)
+fi
+
+
 cat > /etc/nginx/conf.d/$DOMAIN_NAME.conf << EOF
 server {
         listen       80;
@@ -349,7 +380,6 @@ BACKUP_SETTING=$HOME/$DOMAIN_NAME-setting$(date +%Y-%m-%d-%H-%M-%S).txt
 if [ -f $FILE_SETTING ]; then
     mv $FILE_SETTING $BACKUP_SETTING
 fi
-
 
 cat > $FILE_SETTING << EOF
 DOMAIN_NAME = $DOMAIN_NAME
