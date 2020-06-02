@@ -1,10 +1,11 @@
-1. Create a distribution point
+
+If the software was installed using Group Policy, uninstalling is very easy.
 
 -Click on the Start button and open Go to Start and open Group Policy Management (or press Win+R  , then type  gpmc.msc, then press Enter)
 -Expand Forest (your forest) > Domains (your domain)
 -Сlick on you domain and looking for a previously installed policy (eg "Install HES application v.3.3.10")
 -Right-click and select "Edit"
 
--Expand Computer Configuration > Policies > Software Settings
-Right-clickon the package with the desired name (for example, “Install THIS application.” Next, “All Tasks” - "Remove..."
+- Expand Computer Configuration > Policies > Software Settings
+- Right-clickon the package with the desired name >  "All Tasks" >  "Remove..."
 - In the window that appears, leave the default feature that allows you to "Immediately uninstall the software  from users and computers"
