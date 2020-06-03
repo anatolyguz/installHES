@@ -1,4 +1,4 @@
-# Connecting Linux server to Active Directory
+# 1. Preparation for connection Linux server to Active Directory
 
 Edit the file /etc/hosts, add (or edit) the line specifying the Fully Qualified Domain Name for this host (change it to your host name and <Domain_Name> to the domain name):
 ```shell
@@ -6,6 +6,19 @@ Edit the file /etc/hosts, add (or edit) the line specifying the Fully Qualified 
 #for hostname hideez and domain examle.com
 #127.0.1.1       hideez.example.com  hideez
 ```
+
+Before you start, you need to check that your active directory server is available by name and address, you can use the nslookup utility
+
+Check that the domain name resolves. Note: under Centos, it may be required to install the bind-utils package:
+```shell
+sudo yum install bind-utils -y
+```
+
+```shell
+nslookup <Domain_Name>
+```
+
+if we get a "Can't find <Domain Name> No answer" error, we may need to perform some configuration steps
 
 It may also be necessary to add the Fully Qualified Domain Name for the AD server depending on the network settings. 
 ```shell
@@ -39,7 +52,7 @@ The following lines should be added
 PEERDNS=no
 DNS1=<server_ip>
 ```
-to the file `/etc/sysconfig/network-scripts/ifcfg-* Here you need to replace ifcfg-* with the name of your network interface and restart NetworkManager
+to the file `/etc/sysconfig/network-scripts/ifcfg-<name_interface> Here you need to replace <interface> with the name of your network interface and restart NetworkManager
 ```shell 
 sudo systemctl restart  NetworkManager
 ```
@@ -47,14 +60,7 @@ Check your resolv.conf again to make sure everything is correct
 ```shell
 cat /etc/resolv.conf
 ```
-Check that the domain name resolves. Note: under Centos 7, it may be required to install the bind-utils package:
-```shell
-sudo yum install bind-utils -y
-```
-```shell
-nslookup <Domain_Name>
-```
-Install the necessary packages
+# 2. Install the necessary packages
 ### Ubuntu 18.04
 ```shell
 sudo apt install realmd samba-common-bin samba-libs sssd-tools krb5-user adcli
@@ -64,12 +70,16 @@ sudo apt install realmd samba-common-bin samba-libs sssd-tools krb5-user adcli
 ```shell
 sudo yum install sssd realmd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools krb5-workstation openldap-clients policycoreutils-python -y
 ```
+# 3. Check that our domain is visible on the network
+
 You must confirm the domain during the installation of kerberos, and specify the server name.
-Let's check that our domain is visible on the network:
+
 ```shell
 realm discover <Domain_Name>
 ```
-Join the machine to a domain:
+
+# 3. Join the machine to a domain
+
 ```shell
 sudo realm --verbose join <Domain_Name> -U <YourDomainAdmin> --install=/
 ```
@@ -79,7 +89,8 @@ You should specify (add at the end of the file) this parameter:
 ```shell
 TLS_REQCERT never
 ```
-## Installation check
+
+# 4. Installation check
 For example, to get all users (you have to enter a password):
 ```shell
 ldapsearch -x -H "ldaps://<Domain_Name>" -D "<YourDomainAdmin>@<Domain_Name>" -W  -b "dc=<dc>,dc=<dc>, ..." "objectCategory=person" name
