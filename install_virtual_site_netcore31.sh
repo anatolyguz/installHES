@@ -23,6 +23,7 @@ BRANCH="master"
 #SMTP_PORT=""
 #SMTP_USER_NAME=""
 #SMTP_PASSWORD=""
+#MYSQL_ROOT_PASSWORD=""
 #######################################
 
 #domain name
