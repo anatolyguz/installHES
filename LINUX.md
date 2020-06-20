@@ -77,8 +77,6 @@ in Ubuntu 20.04 is set by default
   $ sudo apt install dotnet-sdk-3.1 -y
 ```
 *Ubuntu 20.04
-
-
 ```shell
  $ wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
  $ sudo dpkg -i packages-microsoft-prod.deb
@@ -104,8 +102,7 @@ If the installation was successful, the output of the *dotnet* command will look
 ```shell
   $ sudo dnf install mysql-server -y
 ```
-
-*Ubuntu*
+*Ubuntu 18.04*
 ```shell
   $ wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb
   $ sudo dpkg -i mysql-apt-config_0.8.14-1_all.deb
@@ -113,17 +110,12 @@ If the installation was successful, the output of the *dotnet* command will look
   $ sudo apt install mysql-server -y
 ```
 
-Enable and start MySQL service:
+Enable and start MySQL service (CentOS only):
 
 *CentOS*
 ```shell
   $ sudo systemctl restart mysqld.service
   $ sudo systemctl enable mysqld.service
-```
-*Ubuntu*
-```shell
-  $ sudo systemctl restart mysql.service
-  $ sudo systemctl enable mysql.service
 ```
 
 After installing MySQL, if everything went well, you can check the version of the program
@@ -138,7 +130,7 @@ mysql  Ver 8.0.17 for Linux on x86_64 (Source Distribution)
 MySQL expects that your new password should consist of at least 8 characters, contain uppercase and lowercase letters, numbers and special characters (do not forget the password you set, it will come in handy later). After a successful password change, the following questions are recommended to answer "Y":
 
 [Note] In CentOS 7, the default root password can be found using `sudo grep "A temporary password" /var/log/mysqld.log`. 
-In CentOS 8, the root password is empty by default. In Ubuntu the password was entered during installation of MySQL.
+In CentOS 8, the root password is empty by default. In Ubuntu 18.04 the password was entered during installation of MySQL. In ubuntu 20.04 the password is empty after installation
 
 ```shell
   $ sudo mysql_secure_installation
@@ -207,7 +199,6 @@ To exit from mySql console, press Ctrl+D.
 *Ubuntu*
 ```shell
   $ sudo apt install nginx -y
-  $ sudo systemctl enable nginx
 ```
 
 add to **http** section in /etc/nginx/nginx.conf
