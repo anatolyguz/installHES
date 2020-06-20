@@ -7,13 +7,14 @@ The second part describes the installation already for a specific site, there ma
 
 ## System Requirements
 
-  * Can be installed on a bare metal or virtual server
-  * 8GB drive
-  * 2GB RAM
-  * Option 1: Clean installation of CentOS Linux x86_64 (tested on version 7.6, Centos 8 is not yet supported), select "minimal install" option during installation
-  * Option 2: Clean installation of Ubuntu Server LTS 18.04
-  * Option 3: Clean installation of Ubuntu Server LTS 20.04
-  
+* Can be installed on a bare metal or virtual server
+* 8GB drive
+* 2GB RAM
+* Option 1: Clean installation of CentOS Linux x86_64 7.6, select "minimal install" option during installation
+* Option 2: Clean installation of CentOS Linux x86_64 8.1, select "minimal install" option during installation
+* Option 3: Clean installation of Ubuntu Server LTS 18.04
+* Option 4: Clean installation of Ubuntu Server LTS 20.04
+
 # 1. Preparation (Run once)
   
 ## 1.1 System Update
@@ -35,7 +36,6 @@ The second part describes the installation already for a specific site, there ma
 ## 1.2 Disable SELinux (CentOS only)
 
 ```shell
-  $ sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
   $ sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
   $ sudo reboot
 ```
@@ -46,10 +46,11 @@ The second part describes the installation already for a specific site, there ma
 ```shell
   $ sudo yum install git -y
 ```
-*Ubuntu*
+*Ubuntu 18.04
 ```shell
   $ sudo apt install git -y
  ```
+in Ubuntu 20.04 is set by default
 
 ## 1.4 Download HES repository from GitHub
 
@@ -59,33 +60,51 @@ The second part describes the installation already for a specific site, there ma
 
 ## 1.5 Add Microsoft Package Repository and install .NET Core
 
-*CentOS*
+*CentOS 7*
 ```shell
   $ sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
   $ sudo yum install dotnet-sdk-3.1 -y
 ```
-*Ubuntu*
+*CentOS 8*
+```shell
+  $ sudo dnf install dotnet-sdk-3.1 -y
+```
+*Ubuntu 18.04
 ```shell
   $ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
   $ sudo dpkg -i packages-microsoft-prod.deb
   $ sudo apt update
   $ sudo apt install dotnet-sdk-3.1 -y
 ```
+*Ubuntu 20.04
+
+
+```shell
+ $ wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+ $ sudo dpkg -i packages-microsoft-prod.deb
+ $ sudo apt-get update
+ $ sudo apt install dotnet-sdk-3.1 -y
+```
 
 If the installation was successful, the output of the *dotnet* command will look something like this:
 
 ```shell
   $ dotnet --version
-3.1.200
+3.1.301
 ```
 
 ## 1.6 Install MySQL version 8:
 
-*CentOS*
+*CentOS 7*
 ```shell
   $ sudo rpm -Uvh https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
   $ sudo yum install mysql-server -y
 ```
+*CentOS 8*
+```shell
+  $ sudo dnf install mysql-server -y
+```
+
 *Ubuntu*
 ```shell
   $ wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb
@@ -118,12 +137,13 @@ mysql  Ver 8.0.17 for Linux on x86_64 (Source Distribution)
 
 MySQL expects that your new password should consist of at least 8 characters, contain uppercase and lowercase letters, numbers and special characters (do not forget the password you set, it will come in handy later). After a successful password change, the following questions are recommended to answer "Y":
 
-[Note] Find default root password using   sudo grep "A temporary password" /var/log/mysqld.log
-
+[Note] In CentOS 7, the default root password can be found using `sudo grep "A temporary password" /var/log/mysqld.log`. 
+In CentOS 8, the root password is empty by default. In Ubuntu the password was entered during installation of MySQL.
 
 ```shell
   $ sudo mysql_secure_installation
 ```
+Depending on the version of linux, the output of commands may differ slightly. The following is an example for CentOs 7
 
 ```shell
 Enter password for user root:
@@ -177,6 +197,13 @@ To exit from mySql console, press Ctrl+D.
   $ sudo yum install nginx -y
   $ sudo systemctl enable nginx
 ```
+
+*CentOS 8*
+```shell
+  $ sudo dnf install nginx -y
+  $ sudo systemctl enable nginx
+```
+
 *Ubuntu*
 ```shell
   $ sudo apt install nginx -y
@@ -223,7 +250,7 @@ After performing these steps, the server should already be accessible from the n
 
 Now the preparation is complete.
 
-# 2 Installing the HES server (can be repeated for each new virtual domain)
+# 2. Installing the HES server (can be repeated for each new virtual domain)
 
 ## 2.1 Creating a MySQL user and database for Hideez Enterprise Server
 
@@ -246,8 +273,9 @@ Now the preparation is complete.
   ###  RELOAD PRIVILEGES
   mysql> FLUSH PRIVILEGES;
 ```
-
 You should remember database name, username and password, they will come in handy later.
+
+(Press Ctrl + D to exit the MySQL console)
 
 ## 2.2 Installing Hideez Enterprise Server from source
 
@@ -337,8 +365,6 @@ After saving the settings file, you can check that HES server is up and running:
   $ cd /opt/HES/<Name_Of_Domain>
   $ sudo ./HES.Web 
 ```
-
-
 If you do not see any errors, this means that HES server is successfully configured and started.
 Press Ctrl+C for exit
 
@@ -346,9 +372,6 @@ Press Ctrl+C for exit
 
 Create the file `/lib/systemd/system/HES-<Name_Of_Domain>.service`  with the following content
 
-```shell
-  $ sudo vi /lib/systemd/system/HES-<Name_Of_Domain>.service 
-```
 ```conf
 [Unit]
   Description=<Name_Of_Domain> Hideez Enterprise Service
@@ -413,8 +436,6 @@ To access your server from the local network as well as from the Internet, you h
 ** Virtual site configuration on Nginx reverse proxy **
 
 You can configure virtual sites in the **http** section of /etc/nginx/nginx.conf or by creating separate configuration files. In this example, we will add new sections to /etc/nginx/nginx.conf
-
-
 ```conf
 
  # redirect all traffic to https
@@ -451,9 +472,9 @@ You can configure virtual sites in the **http** section of /etc/nginx/nginx.conf
 
 ```
 
-● Replace <Name_Of_Domain> with you domain name
-● Port numbers should match the settings specified in /opt/HES/<Name_Of_Domain>/appsettings.json (defauls is 5000 for http  and 5001 for https)
-● note we added a map directive with the "connection_upgrade" variable declaration during the initial nginx configuration
+*  Replace <Name_Of_Domain> with you domain name
+*  Port numbers should match the settings specified in /opt/HES/<Name_Of_Domain>/appsettings.json (defauls is 5000 for http  and 5001 for https)
+*  note we added a map directive with the "connection_upgrade" variable declaration during the initial nginx configuration
 
 
 After saving the file, it is recommended to check nginx settings:
@@ -551,4 +572,3 @@ Setup is complete. The server should be accessible in a browser at the address `
            └─4657 /opt/HES/hideez.example.com/HES.Web
 
 Mar 25 10:48:12 hesservertest systemd[1]: Started hideez.example.com Hideez Enterprise Service.
- 
