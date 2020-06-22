@@ -188,17 +188,9 @@ shootProfile
 #echo "KERNEL: $KERNEL"
 #echo "MACH: $MACH"
 #echo "========"
-
 SUB_REV=${REV:0:1} 
-if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]
-  then install_CenOS_7
-#elif [[ $DIST == "Ubuntu" ]]
-#  then install_Ubuntu
-fi
 
-if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "8" ]]
-  then install_CenOS_8
-fi
+
 
 
 
@@ -221,6 +213,26 @@ done
 #SETCOLOR_NORMAL="echo -en \\033[0;39m"
 
 ########################### end settings zone
+
+
+
+if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]
+  then install_CenOS_7
+#elif [[ $DIST == "Ubuntu" ]]
+#  then install_Ubuntu
+fi
+
+if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "8" ]]
+  then install_CenOS_8
+fi
+
+if [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "18.04" ]]
+  then install_Ubuntu_18_04
+fi
+
+if [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "20.04" ]]
+  then install_Ubuntu_20_04
+fi
 
 
 
