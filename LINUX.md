@@ -46,7 +46,7 @@ The second part describes the installation already for a specific site, there ma
 ```shell
   $ sudo yum install git -y
 ```
-*Ubuntu 18.04
+*Ubuntu 18.04*
 ```shell
   $ sudo apt install git -y
  ```
@@ -107,6 +107,11 @@ If the installation was successful, the output of the *dotnet* command will look
   $ wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb
   $ sudo dpkg -i mysql-apt-config_0.8.14-1_all.deb
   $ sudo apt update
+  $ sudo apt install mysql-server -y
+```
+
+*Ubuntu 20.04*
+```shell
   $ sudo apt install mysql-server -y
 ```
 
