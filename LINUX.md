@@ -69,14 +69,14 @@ in Ubuntu 20.04 is set by default
 ```shell
   $ sudo dnf install dotnet-sdk-3.1 -y
 ```
-*Ubuntu 18.04
+*Ubuntu 18.04*
 ```shell
   $ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
   $ sudo dpkg -i packages-microsoft-prod.deb
   $ sudo apt update
   $ sudo apt install dotnet-sdk-3.1 -y
 ```
-*Ubuntu 20.04
+*Ubuntu 20.04*
 ```shell
  $ wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
  $ sudo dpkg -i packages-microsoft-prod.deb
