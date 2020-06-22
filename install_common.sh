@@ -6,11 +6,8 @@ mysql_post_instal(){
     #Change root password
     # $1  - password after install
     # $2  - new password
-   
-    echo parameter1 = $1 
-    echo parameter2 = $2
-   
-
+    #echo parameter1 = $1 
+    #echo parameter2 = $2
     # mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
     mysql --connect-expired-password  -u root -p"$1" -e  "alter user 'root'@'localhost' identified by '$2';"
 
@@ -30,8 +27,6 @@ EOF
          echo "error setting mysql..." 
          exit 1
     fi
-
-
 }
 
 
@@ -285,11 +280,8 @@ if [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "20.04" ]]
 fi
 
 
-
-
 systemctl enable nginx
 systemctl restart nginx
-
 
 
 #save setting to file
