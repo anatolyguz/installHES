@@ -1,7 +1,6 @@
 # usage  
 # bash istall_commom.sh
 
-
 mysql_post_instal(MYSQL_PASSWORD_AFTER_INSTALL){
 
     #Change root password
@@ -111,6 +110,40 @@ mysql_post_instal MYSQL_PASSWORD_AFTER_INSTALL
 
 # Installing  Nginx
 dnf install nginx -y
+
+}
+####################################################################
+
+
+
+####################################################################
+# Ubuntu 20.04
+####################################################################
+install_Ubuntu_20_04(){
+
+echo updating system...
+apt update
+apt upgrade -y
+
+#Installing git
+apt install git -y
+
+# Installing dotnet:
+wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
+apt-get update
+apt install dotnet-sdk-3.1 -y
+
+# Installing MySQL Server:
+apt install mysql-server -y
+
+# Postinstalling and Securing MySQL Server
+#After install mysql roots empty
+MYSQL_PASSWORD_AFTER_INSTALL=""
+mysql_post_instal MYSQL_PASSWORD_AFTER_INSTALL
+
+# Installing  Nginx
+apt install nginx -y
 
 }
 ####################################################################
