@@ -2,6 +2,24 @@
 # bash istall_commom.sh
 
 
+mysql_post_instal(MYSQL_PASSWORD_AFTER_INSTALL){
+
+#Change root password
+mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+
+
+#analog  mysql_secure_installation
+mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
+delete from mysql.user where user='' and host = 'localhost';
+delete from mysql.user where user='' and host = 'localhost.localdomain';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+FLUSH PRIVILEGES;
+EOF
+
+
+}
+
+
 ####################################################################
 # Centos 7
 ####################################################################
@@ -46,18 +64,7 @@ systemctl enable mysqld.service
 MYSQL_PASSWORD_AFTER_INSTALL=$(grep 'temporary password' /var/log/mysqld.log | awk '{print $13}')
 echo MYSQL_PASSWORD_AFTER_INSTALL = $MYSQL_PASSWORD_AFTER_INSTALL
 
-#Change root password
-mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
-
-
-#analog  mysql_secure_installation
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
-delete from mysql.user where user='' and host = 'localhost';
-delete from mysql.user where user='' and host = 'localhost.localdomain';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-FLUSH PRIVILEGES;
-EOF
-
+mysql_post_instal MYSQL_PASSWORD_AFTER_INSTALL
 
 # Installing EPEL Repository and Nginx
 yum install epel-release -y
@@ -99,20 +106,9 @@ systemctl enable mysqld.service
 
 # Postinstalling and Securing MySQL Server
 
-#After install mysql roots temp. password stored in /var/log/mysqld.log
-MYSQL_PASSWORD_AFTER_INSTALL=$(grep 'temporary password' /var/log/mysqld.log | awk '{print $13}')
-echo MYSQL_PASSWORD_AFTER_INSTALL = $MYSQL_PASSWORD_AFTER_INSTALL
-
-#Change root password
-mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
-
-#analog  mysql_secure_installation
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
-delete from mysql.user where user='' and host = 'localhost';
-delete from mysql.user where user='' and host = 'localhost.localdomain';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-FLUSH PRIVILEGES;
-EOF
+#After install mysql roots empty
+MYSQL_PASSWORD_AFTER_INSTALL=""
+mysql_post_instal MYSQL_PASSWORD_AFTER_INSTALL
 
 
 # Installing  Nginx
