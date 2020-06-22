@@ -4,16 +4,33 @@
 mysql_post_instal(){
 
     #Change root password
-    mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
-    #mysql --connect-expired-password  -u root -p"$1" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    # $1  - password after install
+    # $2  - new password
+   
+    echo parameter1 = $1 
+    echo parameter2 = $2
+   
+
+    # mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    mysql --connect-expired-password  -u root -p"$1" -e  "alter user 'root'@'localhost' identified by '$2';"
 
     #analog  mysql_secure_installation
-    mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
+    # mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
+    mysql -u root -p"$2" <<EOF
     delete from mysql.user where user='' and host = 'localhost';
     delete from mysql.user where user='' and host = 'localhost.localdomain';
     DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
     FLUSH PRIVILEGES;
 EOF
+
+    if [ $? -eq 0 ]; then
+         echo "mysql successfully setup"
+    else
+         # ups....
+         echo "error setting mysql..." 
+         exit 1
+    fi
+
 
 }
 
@@ -140,8 +157,9 @@ apt install mysql-server -y
 
 # Postinstalling and Securing MySQL Server
 #After install mysql roots empty
-MYSQL_PASSWORD_AFTER_INSTALL=""
-mysql_post_instal 
+# MYSQL_PASSWORD_AFTER_INSTALL=""
+# password in ubuntu 20.04 not used default
+mysql_post_instal $MYSQL_ROOT_PASSWORD $MYSQL_ROOT_PASSWORD 
 
 # Installing  Nginx
 apt install nginx -y
@@ -227,8 +245,6 @@ SUB_REV=${REV:0:1}
 
 
 
-
-
 ###SETTING BLOCK
 
 MYSQL_ROOT_PASSWORD=""
@@ -265,7 +281,7 @@ if [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "18.04" ]]
 fi
 
 if [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "20.04" ]]
-  then install_Ubuntu_20_04
+  then install_Ubuntu_20_04 
 fi
 
 
