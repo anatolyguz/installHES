@@ -280,6 +280,13 @@ if [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "20.04" ]]
 fi
 
 
+# adding map setting to /etc/nginx/nginx.conf 
+# (after the line with phrathe "http {" )
+MAPVALUE="   map \$http_upgrade \$connection_upgrade {default Upgrade; '' close; }"
+
+sed -i '/http {/a\'"${MAPVALUE}" /etc/nginx/nginx.conf
+
+
 systemctl enable nginx
 systemctl restart nginx
 
