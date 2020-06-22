@@ -122,7 +122,9 @@ dnf install nginx -y
 ####################################################################
 
 
-
+lowercase(){
+	echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
+}
 
 ####################################################################
 # Get System Info
