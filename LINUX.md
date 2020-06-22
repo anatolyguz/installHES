@@ -484,7 +484,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 Otherwise, you should carefully review the settings and correct the errors.
 
-** Restarting Nginx and checking its status **
+**Restarting Nginx and checking its status**
 
 ```shell
   $ sudo systemctl restart nginx
@@ -504,7 +504,13 @@ Otherwise, you should carefully review the settings and correct the errors.
 ## 2.6 Firewall Configuration
 
 To access the server from the network, ports 22, 80, and 443 should be opened:
-
+*CentOS*
+```shell
+$ sudo firewall-cmd --zone=public --permanent --add-port=22/tcp
+$ sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
+$ sudo firewall-cmd --zone=public --permanent --add-port=443/tcp
+$ sudo firewall-cmd --reload
+```
 *Ubuntu*
 ```shell
 $ sudo ufw allow 22
