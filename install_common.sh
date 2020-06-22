@@ -4,18 +4,16 @@
 
 mysql_post_instal(MYSQL_PASSWORD_AFTER_INSTALL){
 
-#Change root password
-mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    #Change root password
+    mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
 
-
-#analog  mysql_secure_installation
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
-delete from mysql.user where user='' and host = 'localhost';
-delete from mysql.user where user='' and host = 'localhost.localdomain';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-FLUSH PRIVILEGES;
-EOF
-
+    #analog  mysql_secure_installation
+    mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
+    delete from mysql.user where user='' and host = 'localhost';
+    delete from mysql.user where user='' and host = 'localhost.localdomain';
+    DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+    FLUSH PRIVILEGES;
+    EOF
 
 }
 
