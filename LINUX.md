@@ -250,7 +250,7 @@ Now the preparation is complete.
 
 ## 2.1 Creating a MySQL user and database for Hideez Enterprise Server
 
-** Starting the MySQL Server Console **
+**Starting the MySQL Server Console**
 
 ```shell
   mysql -h localhost -u root -p
