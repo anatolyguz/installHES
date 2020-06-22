@@ -4,8 +4,8 @@
 mysql_post_instal(){
 
     #Change root password
-    #mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
-    mysql --connect-expired-password  -u root -p"$1" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    #mysql --connect-expired-password  -u root -p"$1" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
 
     #analog  mysql_secure_installation
     mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
@@ -13,7 +13,7 @@ mysql_post_instal(){
     delete from mysql.user where user='' and host = 'localhost.localdomain';
     DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
     FLUSH PRIVILEGES;
-    EOF
+EOF
 
 }
 
@@ -141,7 +141,7 @@ apt install mysql-server -y
 # Postinstalling and Securing MySQL Server
 #After install mysql roots empty
 MYSQL_PASSWORD_AFTER_INSTALL=""
-mysql_post_instal MYSQL_PASSWORD_AFTER_INSTALL
+mysql_post_instal 
 
 # Installing  Nginx
 apt install nginx -y
