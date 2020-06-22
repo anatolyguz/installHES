@@ -1,10 +1,11 @@
 # usage  
 # bash istall_commom.sh
 
-mysql_post_instal(MYSQL_PASSWORD_AFTER_INSTALL){
+mysql_post_instal(){
 
     #Change root password
-    mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    #mysql --connect-expired-password  -u root -p"$MYSQL_PASSWORD_AFTER_INSTALL" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
+    mysql --connect-expired-password  -u root -p"$1" -e  "alter user 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD';"
 
     #analog  mysql_secure_installation
     mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
