@@ -126,6 +126,85 @@ SETCOLOR_NORMAL="echo -en \\033[0;39m"
 
 
 
+
+
+####################################################################
+# Get System Info
+# https://github.com/coto/server-easy-install/blob/master/lib/core.sh
+####################################################################
+lowercase(){
+	echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
+}
+
+shootProfile(){
+	OS=`lowercase \`uname\``
+	KERNEL=`uname -r`
+	MACH=`uname -m`
+
+	if [ "${OS}" == "windowsnt" ]; then
+		OS=windows
+	elif [ "${OS}" == "darwin" ]; then
+		OS=mac
+	else
+		OS=`uname`
+		if [ "${OS}" = "SunOS" ] ; then
+			OS=Solaris
+			ARCH=`uname -p`
+			OSSTR="${OS} ${REV}(${ARCH} `uname -v`)"
+		elif [ "${OS}" = "AIX" ] ; then
+			OSSTR="${OS} `oslevel` (`oslevel -r`)"
+		elif [ "${OS}" = "Linux" ] ; then
+			if [ -f /etc/redhat-release ] ; then
+				DistroBasedOn='RedHat'
+				DIST=`cat /etc/redhat-release |sed s/\ release.*//`
+				PSUEDONAME=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
+				REV=`cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//`
+			elif [ -f /etc/SuSE-release ] ; then
+				DistroBasedOn='SuSe'
+				PSUEDONAME=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
+				REV=`cat /etc/SuSE-release | tr "\n" ' ' | sed s/.*=\ //`
+			elif [ -f /etc/mandrake-release ] ; then
+				DistroBasedOn='Mandrake'
+				PSUEDONAME=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
+				REV=`cat /etc/mandrake-release | sed s/.*release\ // | sed s/\ .*//`
+			elif [ -f /etc/debian_version ] ; then
+				DistroBasedOn='Debian'
+				if [ -f /etc/lsb-release ] ; then
+			        	DIST=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
+			                PSUEDONAME=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
+			                REV=`cat /etc/lsb-release | grep '^DISTRIB_RELEASE' | awk -F=  '{ print $2 }'`
+            			fi
+			fi
+			if [ -f /etc/UnitedLinux-release ] ; then
+				DIST="${DIST}[`cat /etc/UnitedLinux-release | tr "\n" ' ' | sed s/VERSION.*//`]"
+			fi
+			OS=`lowercase $OS`
+			DistroBasedOn=`lowercase $DistroBasedOn`
+		 	readonly OS
+		 	readonly DIST
+			readonly DistroBasedOn
+		 	readonly PSUEDONAME
+		 	readonly REV
+		 	readonly KERNEL
+		 	readonly MACH
+		fi
+
+	fi
+}
+shootProfile
+#echo "OS: $OS"
+#echo "DIST: $DIST"
+#echo "PSUEDONAME: $PSUEDONAME"
+#echo "REV: $REV"
+#echo "DistroBasedOn: $DistroBasedOn"
+#echo "KERNEL: $KERNEL"
+#echo "MACH: $MACH"
+#echo "========"
+SUB_REV=${REV:0:1} 
+
+
+
+
 #create backup src
 if [ -d $DESTINATION ]; then
     mv $DESTINATION $DESTINATION-$(date +%Y-%m-%d-%H-%M-%S)
@@ -313,13 +392,21 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DO
 
 #Configuration for the Nginx Reverse Proxy
 
+PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
+#if [[ $DIST == "CentOS Linux" ]] 
+#    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
+#fi
+#if [[ $DIST == "Ubuntu" ]] 
+#    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/sites-available"
+#fi
+
+
 #create backup of Configuration file
 if [ -f /etc/nginx/conf.d/$DOMAIN_NAME.conf ]; then
-    mv /etc/nginx/conf.d/$DOMAIN_NAME.conf  /etc/nginx/conf.d/$DOMAIN_NAME.conf-$(date +%Y-%m-%d-%H-%M-%S)
+    mv $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf  $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf-$(date +%Y-%m-%d-%H-%M-%S)
 fi
 
-
-cat > /etc/nginx/conf.d/$DOMAIN_NAME.conf << EOF
+cat > $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf << EOF
 server {
         listen       80;
         #or if it is one single server
@@ -364,6 +451,12 @@ server {
         }
 }
 EOF
+
+
+if [[ $DIST == "Ubuntu" ]] 
+    then  ln -s $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf /etc/nginx/sites-enabled/
+fi
+
 
 #Restarting the Nginx Reverse Proxy and check its status
 systemctl restart nginx
