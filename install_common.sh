@@ -129,6 +129,42 @@ dnf install nginx -y
 
 
 
+
+
+####################################################################
+# Ubuntu 18.04
+####################################################################
+install_Ubuntu_18_04(){
+
+echo updating system...
+apt update
+apt upgrade -y
+
+#Installing git
+apt install git -y
+
+# Installing dotnet:
+wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
+apt-get update
+apt install dotnet-sdk-3.1 -y
+
+# Installing MySQL Server:
+apt install mysql-server -y
+
+# Postinstalling and Securing MySQL Server
+#After install mysql roots empty
+# MYSQL_PASSWORD_AFTER_INSTALL=""
+# password in ubuntu 20.04 not used default
+# mysql_post_instal $MYSQL_ROOT_PASSWORD $MYSQL_ROOT_PASSWORD 
+# Installing  Nginx
+apt install nginx -y
+}
+####################################################################
+
+
+
+
 ####################################################################
 # Ubuntu 20.04
 ####################################################################
@@ -161,6 +197,9 @@ apt install nginx -y
 
 }
 ####################################################################
+
+
+
 
 
 lowercase(){
