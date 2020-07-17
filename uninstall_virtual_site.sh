@@ -1,12 +1,7 @@
 #usage
 #bash uninstall_virtual_site.sh
 
-
 ###SETTING BLOCK
-
-DESTINATION="/opt/src"
-BRANCH="master"
-
 #######################################
 #If you want the script to ask no questions, un comment and fill in these variables
 # (USER_PASSWORD must comply with mysql policy!)
@@ -25,30 +20,24 @@ fi
 
 echo DOMAIN_NAME = $DOMAIN_NAME
 
-
-if [ -z "MYSQL_ROOT_PASSWORD" ]
-then
-    read -p "Enter mysql root password: " MYSQL_ROOT_PASSWORD
-fi
-
 #database name
 if [ -z "$DATABASE_NAME" ]
 then
-    read -p "Enter mysql database name: " DATABASE_NAME
+    read -p "Enter mysql database name for drop: " DATABASE_NAME
 fi    
 echo DATABASE_NAME = $DATABASE_NAME
 
 #user account
 if [ -z "$DATABASE_USER" ]
 then
-    read -p "Enter the name of user, the owner of our database: " DATABASE_USER
+    read -p "Enter the name of user for drop: " DATABASE_USER
 fi
 echo DATABASE_USER = $DATABASE_USER
 
 
 if [ -z "$MYSQL_ROOT_PASSWORD" ] 
 then
-    read -p "Enter MySQL root password (You installed it earlier): " MYSQL_ROOT_PASSWORD
+    read -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
 fi
 echo MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD
 
