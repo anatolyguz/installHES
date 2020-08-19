@@ -460,8 +460,7 @@ fi
 
 #Restarting the Nginx Reverse Proxy and check its status
 systemctl restart nginx
-sudo systemctl status nginx
-
+#sudo systemctl status nginx
 ################################
 
 #save setting to file
