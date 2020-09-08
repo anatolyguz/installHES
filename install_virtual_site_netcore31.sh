@@ -313,7 +313,6 @@ sed -i 's/database=db/database='$DATABASE_NAME'/' $HES_DIR/appsettings.json
 sed -i 's/uid=user/uid='$DATABASE_USER'/' $HES_DIR/appsettings.json
 sed -i 's/pwd=password/pwd='$USER_PASSWORD'/' $HES_DIR/appsettings.json
 
-
 #smtp setting
 # Default strings is
 # "EmailSender": {
@@ -328,6 +327,13 @@ sed -i 's/"Host": "smtp.example.com"/"Host": "'$SMTP_HOST'"/' $HES_DIR/appsettin
 sed -i 's/"Port": 123/"Port": '$SMTP_PORT'/' $HES_DIR/appsettings.json
 sed -i 's/"UserName": "user@example.com"/"UserName": "'$SMTP_USER_NAME'"/' $HES_DIR/appsettings.json
 sed -i 's/"Password": "password"/"Password": "'$SMTP_PASSWORD'"/' $HES_DIR/appsettings.json
+
+
+# change setting in ServerSettings section
+# Default string is
+# "Url": "https://company.example.com"
+sed -i 's/company.example.com/'$DOMAIN_NAME'/' $HES_DIR/appsettings.json
+
 
 
 # adding port setting to appsettings.json 
