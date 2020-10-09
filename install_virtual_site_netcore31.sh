@@ -6,6 +6,7 @@
 
 ###SETTING BLOCK
 
+REPO="https://github.com/HideezGroup/HES"
 DESTINATION="/opt/src"
 BRANCH="master"
 
@@ -212,7 +213,7 @@ fi
 
 #Cloning the HES GitHub repository
 
-git clone https://github.com/HideezGroup/HES -b $BRANCH $DESTINATION
+$REPO -b $BRANCH $DESTINATION
 
 if [ $? -eq 0 ]; then
   echo "repository successfully cloned"
