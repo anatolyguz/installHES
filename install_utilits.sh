@@ -4,7 +4,7 @@ yum install mc -y
 yum install telnet -y 
 yum install bash-completion -y
 yum install wget -y
-. ~/.bashrc
+
 
 #Colour nano
 cat > ~/.nanorc << EOF
@@ -37,4 +37,10 @@ include /usr/share/nano/nanorc.nanorc
 include /usr/share/nano/perl.nanorc
 include /usr/share/nano/awk.nanorc
 EOF
+
+#Colour console promt
+echo "PS1='\[\e[1;31m\][\u@\h \W]\$\[\e[0m\] '" >> .bashrc 
+
+
+. ~/.bashrc
 
