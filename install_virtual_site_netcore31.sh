@@ -395,7 +395,7 @@ systemctl restart HES-$DOMAIN_NAME.service
 if [ ! -d /etc/nginx/certs ]; then
     mkdir /etc/nginx/certs
 fi
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME.key -out /etc/nginx/certs/$DOMAIN_NAME.crt  -subj "/C=''/ST=''/L=''/O='' /OU='' /CN=$DOMAIN_NAME"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME.key -out /etc/nginx/certs/$DOMAIN_NAME.crt  -subj "/C=''/ST=''/L=''/O=HES /OU='' /CN=$DOMAIN_NAME"
 
 #Configuration for the Nginx Reverse Proxy
 
