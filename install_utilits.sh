@@ -39,8 +39,7 @@ include /usr/share/nano/awk.nanorc
 EOF
 
 #Colour console promt
-echo "PS1='\[\e[1;31m\][\u@\h \W]\$\[\e[0m\] '" >> .bashrc 
-
+echo "PS1='\[\e[1;31m\][\u@\h \W]\\$\[\e[0m\] '" >> .bashrc 
 
 . ~/.bashrc
 
