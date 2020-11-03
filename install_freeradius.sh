@@ -3,4 +3,4 @@
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 systemctl stop firewalld
 systemctl disable firewalld
-yum install freeradius freeradius-utils
+yum install -y freeradius freeradius-utils
