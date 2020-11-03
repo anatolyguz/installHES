@@ -15,3 +15,14 @@ sed -i 's/group = radiusd/group = root/' /etc/raddb/radiusd.conf
 sed  -i 's/#\tpam/pam/' /etc/raddb/sites-enabled/default
 ln -s /etc/raddb/mods-available/pam /etc/raddb/mods-enabled/pam
 
+#Add client
+cat >> /etc/raddb/clients.conf << EOF
+client $IPCLIENT {
+        ipaddr = $IPCLIENT
+        secret = secret123
+        require_message_authenticator = no
+        nas_type = other
+}
+EOF
+
+#Configure 'users'
