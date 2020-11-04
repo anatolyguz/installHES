@@ -58,5 +58,12 @@ echo raduser:Password123 | chpasswd
 radtest raduser Password123 localhost 0 testing123
 
 
-
+yum -y install pam-devel make gcc-c++ automake libtool
+cd ~
+git clone https://github.com/google/google-authenticator-libpam.git
+cd google-authenticator-libpam
+./bootstrap.sh
+./configure
+make
+sudo make install
 
