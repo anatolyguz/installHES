@@ -3,7 +3,7 @@ IPCLIENT="192.168.1.1"
 # Centos 7
 
 #disable selinux
-sudo setenforce 0
+setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
 #disable firewall
