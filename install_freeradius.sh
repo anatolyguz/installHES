@@ -37,9 +37,9 @@ EOF
 #Configure 'users'
 # add string "DEFAULT Auth-Type := PAM" after  #DEFAULT    Group == "disabled", Auth-Type := Reject  
 #TEXTBEFORE='Group == "disabled", Auth-Type := Reject'
-NUM=$(grep -nr 'Group == "disabled", Auth-Type := Reject'  /etc/raddb/users | awk -F: '{print $1}')
+NUM=$(grep -nr 'Group == "disabled", Auth-Type := Reject'  /etc/raddb/mods-config/files/authorize | awk -F: '{print $1}')
 NUM=$((NUM+1))
-sed -i ''$NUM'a\DEFAULT Auth-Type := PAM' /etc/raddb/users
+sed -i ''$NUM'a\DEFAULT Auth-Type := PAM' /etc/raddb/mods-config/files/authorize
 
 
 
