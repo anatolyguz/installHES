@@ -21,7 +21,7 @@ sed -i 's/group = radiusd/group = root/' /etc/raddb/radiusd.conf
 
 #Enable pam
 # was # pam
-sed  -i 's/#\tpam/pam/' /etc/raddb/sites-enabled/default
+sed  -i 's/#\tpam/pam/' /etc/raddb/sites-available/default
 ln -s /etc/raddb/mods-available/pam /etc/raddb/mods-enabled/pam
 
 #Add client
@@ -49,7 +49,10 @@ systemctl start radiusd
 
 
 # adding test user
-useradd raduser --password Password123
+useradd raduser
+# set password
+echo raduser:Password123 | chpasswd
+
 
 #Use radtest from radiusd-util package using the local unix account, raduser.
 radtest raduser Password123 localhost 0 testing123
