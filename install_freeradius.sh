@@ -34,3 +34,17 @@ sed -i ''$NUM'a\DEFAULT Auth-Type := PAM' /etc/raddb/users
 
 
 
+# starting freeradius
+systemctl enable radiusd
+systemctl start radiusd
+
+
+# adding test user
+useradd raduser --password Password123
+
+#Use radtest from radiusd-util package using the local unix account, raduser.
+radtest raduser Password123 localhost 0 testing123
+
+
+
+
