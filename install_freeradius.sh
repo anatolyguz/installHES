@@ -7,10 +7,13 @@ setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
 #disable firewall
-if service --status-all | grep -Fq "firewalld.service"; then
+#if service --status-all | grep -Fq "firewalld.service"; then
+if systemctl list-unit-files | grep -Fq firewalld; then
         systemctl stop firewalld
         systemctl disable firewalld
 fi
+
+
 
 #install freeradius
 dnf install -y freeradius freeradius-utils
