@@ -73,3 +73,30 @@ dnf -y install google-authenticator qrencode
 #make
 #sudo make install
 
+
+
+# join to Active Directory
+DOMAINNAME="mydomain.com"
+DNS1="192.168.1.1"
+DNS2="192.168.1.2"
+DC="AD0"
+DCIP="192.168.1.1"
+
+
+NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
+echo "DNS1="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
+echo "DNS2="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
+
+systemctl restart  NetworkManager.service
+
+echo $DCIP $DC.$DOMAINNAME $DC >> /etc/hosts 
+echo $DCIP $DOMAINNAME >> /etc/hosts 
+
+#/etc/sysconfig/network-scripts/ifcfg-ens192 
+
+#dnf -y install sssd realmd adcli
+dnf -y install oddjob oddjob-mkhomedir sssd adcli
+realm join $DOMAINNAME
+
+#realm permit -g vpnusers
+realm permit -a
