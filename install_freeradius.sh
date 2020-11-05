@@ -59,8 +59,8 @@ radtest raduser Password123 localhost 0 testing123
 
 
 
-#sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-
+dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+dnf -y install google-authenticator qrencode
 #yum -y install pam-devel make gcc-c++ automake libtool
 #cd ~
 #git clone https://github.com/google/google-authenticator-libpam.git
