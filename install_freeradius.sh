@@ -1,6 +1,6 @@
 IPCLIENT="192.168.1.1"
 
-# Centos 7
+# Centos 8
 
 #disable selinux
 setenforce 0
@@ -13,7 +13,7 @@ if service --status-all | grep -Fq "firewalld.service"; then
 fi
 
 #install freeradius
-yum install -y freeradius freeradius-utils
+dnf install -y freeradius freeradius-utils
 
 #change for start from root
 sed -i 's/user = radiusd/user = root/' /etc/raddb/radiusd.conf 
@@ -58,12 +58,15 @@ echo raduser:Password123 | chpasswd
 radtest raduser Password123 localhost 0 testing123
 
 
-yum -y install pam-devel make gcc-c++ automake libtool
-cd ~
-git clone https://github.com/google/google-authenticator-libpam.git
-cd google-authenticator-libpam
-./bootstrap.sh
-./configure
-make
-sudo make install
+
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+#yum -y install pam-devel make gcc-c++ automake libtool
+#cd ~
+#git clone https://github.com/google/google-authenticator-libpam.git
+#cd google-authenticator-libpam
+#./bootstrap.sh
+#./configure
+#make
+#sudo make install
 
