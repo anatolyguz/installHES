@@ -61,9 +61,15 @@ echo raduser:Password123 | chpasswd
 radtest raduser Password123 localhost 0 testing123
 
 
-
+###   install google-authenticator
 dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 dnf -y install google-authenticator qrencode
+# end install google-authenticator
+########################################################
+
+
+#### or the same from source
+########################################################
 #yum -y install pam-devel make gcc-c++ automake libtool
 #cd ~
 #git clone https://github.com/google/google-authenticator-libpam.git
@@ -72,10 +78,14 @@ dnf -y install google-authenticator qrencode
 #./configure
 #make
 #sudo make install
+# end install google-authenticator
+########################################################
+
 
 
 
 # join to Active Directory
+########################################################
 DOMAINNAME="mydomain.com"
 DNS1="192.168.1.1"
 DNS2="192.168.1.2"
@@ -97,7 +107,6 @@ echo $DCIP $DC.$DOMAINNAME $DC >> /etc/hosts
 
 #/etc/sysconfig/network-scripts/ifcfg-ens192 
 
-
 # For testing  
 # realm discover $DOMAINNAME
 
@@ -112,7 +121,13 @@ authselect select sssd
 authselect select sssd with-mkhomedir
 
 
-
 #realm permit -g vpnusers
-realm permit -a
+#realm permit -a
 
+
+# for test 
+id administrator@$DOMAINNAME
+
+
+# end join to Active Directory
+########################################################
