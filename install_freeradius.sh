@@ -136,6 +136,7 @@ authselect select sssd
 authselect select sssd with-mkhomedir
 
 
+
 #realm permit -g vpnusers
 #realm permit -a
 
