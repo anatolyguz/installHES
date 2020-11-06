@@ -1,8 +1,9 @@
-IPCLIENT="192.168.1.1"
 
-# Centos 8
+# for Centos 8
 
-#disable selinux
+
+# disable selinux and firewall 
+#############################################################
 setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
@@ -12,10 +13,15 @@ if systemctl list-unit-files | grep -Fq firewalld; then
         systemctl stop firewalld
         systemctl disable firewalld
 fi
-
+# end disable selinux and firewall 
+#############################################################
 
 
 #install freeradius
+#############################################################
+# any customer (for testing)
+IPCLIENT="192.168.1.1"
+
 dnf install -y freeradius freeradius-utils
 
 #freeRADIUS must run as root to access the .google_authenticator in user home directories.
@@ -39,27 +45,32 @@ client $IPCLIENT {
 EOF
 
 #Configure 'users'
+#### 
+#  ATTENTION!
+#  All instructions say that you need to change the file /etc/raddb/users
+#  but actually now this file is just a link to /etc/raddb/mods-config/files/authorize
+####
+
 # add string "DEFAULT Auth-Type := PAM" after  #DEFAULT    Group == "disabled", Auth-Type := Reject  
 #TEXTBEFORE='Group == "disabled", Auth-Type := Reject'
 NUM=$(grep -nr 'Group == "disabled", Auth-Type := Reject'  /etc/raddb/mods-config/files/authorize | awk -F: '{print $1}')
 NUM=$((NUM+1))
 sed -i ''$NUM'a\DEFAULT Auth-Type := PAM' /etc/raddb/mods-config/files/authorize
 
-
-
 # starting freeradius
 systemctl enable radiusd
 systemctl start radiusd
-
 
 # adding test user
 useradd raduser
 # set password
 echo raduser:Password123 | chpasswd
 
-
 #Use radtest from radiusd-util package using the local unix account, raduser.
 radtest raduser Password123 localhost 0 testing123
+# end install freeradius
+#############################################################
+
 
 
 ###   install google-authenticator
@@ -81,7 +92,6 @@ dnf -y install google-authenticator qrencode
 #sudo make install
 # end install google-authenticator
 ########################################################
-
 
 
 
