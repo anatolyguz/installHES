@@ -84,6 +84,7 @@ DCIP="192.168.1.1"
 
 
 NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
+echo PEERDNS=no >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 echo "DNS1="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 echo "DNS2="$DNS2 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 
