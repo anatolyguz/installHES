@@ -18,6 +18,7 @@ fi
 #install freeradius
 dnf install -y freeradius freeradius-utils
 
+#freeRADIUS must run as root to access the .google_authenticator in user home directories.
 #change for start from root
 sed -i 's/user = radiusd/user = root/' /etc/raddb/radiusd.conf 
 sed -i 's/group = radiusd/group = root/' /etc/raddb/radiusd.conf 
