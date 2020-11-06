@@ -98,10 +98,14 @@ dnf -y install google-authenticator qrencode
 # join to Active Directory
 ########################################################
 DOMAINNAME="mydomain.com"
-DNS1="192.168.1.1"
-DNS2="192.168.1.2"
-DC="AD0"
+# Name of domain controler:
+DC="DC1"  
+# ip address of domain controler:
 DCIP="192.168.1.1"
+
+# The first dns should be a domain controler:
+DNS1=$DC
+DNS2="192.168.1.2"
 
 
 NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
