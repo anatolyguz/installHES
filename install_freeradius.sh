@@ -85,14 +85,20 @@ DCIP="192.168.1.1"
 
 NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
 echo "DNS1="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
-echo "DNS2="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
+echo "DNS2="$DNS2 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 
 systemctl restart  NetworkManager.service
 
+echo 127.0.0.1  $HOSTNAME.$DOMAINNAME $HOSTNAME >> /etc/hosts
 echo $DCIP $DC.$DOMAINNAME $DC >> /etc/hosts 
 echo $DCIP $DOMAINNAME >> /etc/hosts 
 
+
 #/etc/sysconfig/network-scripts/ifcfg-ens192 
+
+
+# For testing  
+# realm discover $DOMAINNAME
 
 #dnf -y install sssd realmd adcli
 dnf -y install oddjob oddjob-mkhomedir sssd adcli
