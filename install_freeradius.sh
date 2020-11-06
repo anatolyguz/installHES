@@ -92,7 +92,7 @@ systemctl restart  NetworkManager.service
 
 echo 127.0.0.1  $HOSTNAME.$DOMAINNAME $HOSTNAME >> /etc/hosts
 echo $DCIP $DC.$DOMAINNAME $DC >> /etc/hosts 
-echo $DCIP $DOMAINNAME >> /etc/hosts 
+#echo $DCIP $DOMAINNAME >> /etc/hosts 
 
 
 #/etc/sysconfig/network-scripts/ifcfg-ens192 
@@ -105,5 +105,14 @@ echo $DCIP $DOMAINNAME >> /etc/hosts
 dnf -y install oddjob oddjob-mkhomedir sssd adcli
 realm join $DOMAINNAME
 
+#for test 
+realm list
+
+authselect select sssd
+authselect select sssd with-mkhomedir
+
+
+
 #realm permit -g vpnusers
 realm permit -a
+
