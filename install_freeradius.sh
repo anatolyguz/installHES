@@ -104,12 +104,12 @@ DC="DC1"
 DCIP="192.168.1.1"
 
 # The first dns should be a domain controler:
-DNS1=$DC
+DNS1=$DCIP
 DNS2="192.168.1.2"
 
 
 NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
-echo PEERDNS=no >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
+echo PEERDNS="no" >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 echo "DNS1="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 echo "DNS2="$DNS2 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
 
@@ -123,7 +123,7 @@ echo $DCIP $DC.$DOMAINNAME $DC >> /etc/hosts
 #/etc/sysconfig/network-scripts/ifcfg-ens192 
 
 # For testing  
-# realm discover $DOMAINNAME
+realm discover $DOMAINNAME
 
 #dnf -y install sssd realmd adcli
 dnf -y install oddjob oddjob-mkhomedir sssd adcli
@@ -131,6 +131,11 @@ realm join $DOMAINNAME
 
 #for test 
 realm list
+# for test 
+id administrator@$DOMAINNAME
+
+
+
 
 authselect select sssd
 authselect select sssd with-mkhomedir
@@ -141,8 +146,6 @@ authselect select sssd with-mkhomedir
 #realm permit -a
 
 
-# for test 
-id administrator@$DOMAINNAME
 
 
 # end join to Active Directory
