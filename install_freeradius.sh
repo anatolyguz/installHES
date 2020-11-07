@@ -17,6 +17,14 @@ fi
 #############################################################
 
 
+# time synchronization
+if systemctl list-unit-files | grep -Fq chronyd; then
+        systemctl enable  chronyd
+        systemctl restart  chronyd
+fi
+#############################################################
+
+
 #install freeradius
 #############################################################
 # any customer (for testing)
