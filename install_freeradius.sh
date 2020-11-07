@@ -137,8 +137,8 @@ id administrator@$DOMAINNAME
 
 
 
-authselect select sssd
-authselect select sssd with-mkhomedir
+#authselect select sssd
+#authselect select sssd with-mkhomedir
 
 
 
