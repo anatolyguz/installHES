@@ -162,12 +162,23 @@ radtest administrator@$DOMAINNAME  $PASSWORD  localhost 0 testing123
 #authselect select sssd with-mkhomedir
 
 
-
 #realm permit -g vpnusers
 #realm permit -a
-
-
-
-
 # end join to Active Directory
 ########################################################
+
+
+########################################################
+# enable two-factor authorization in radius:
+cat > /etc/pam.d/radiusd << EOF
+auth       requisite    pam_google_authenticator.so forward_pass
+auth       required     pam_sss.so use_first_pass
+account    required     pam_nologin.so
+account    include      password-auth
+session    include      password-auth
+EOF
+systemctl restart radiusd
+########################################################
+
+
+
