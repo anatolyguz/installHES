@@ -141,8 +141,21 @@ realm join $DOMAINNAME
 realm list
 # for test 
 id administrator@$DOMAINNAME
+# for test 
 
 
+# I don't know why, 
+#but with the "access_provider = ad", my radius authorization doesn't work
+# so it should be here 
+# access_provider = simple
+# ( or completely commented )  :
+sed -i 's/access_provider = ad/#access_provider = ad/' /etc/sssd/sssd.conf
+systemctl restart sssd
+
+
+
+PASSWORD="password"
+radtest administrator@$DOMAINNAME  $PASSWORD  localhost 0 testing123
 
 
 #authselect select sssd
