@@ -157,11 +157,6 @@ systemctl restart sssd
 PASSWORD="password"
 radtest administrator@$DOMAINNAME  $PASSWORD  localhost 0 testing123
 
-
-#authselect select sssd
-#authselect select sssd with-mkhomedir
-
-
 #realm permit -g vpnusers
 #realm permit -a
 # end join to Active Directory
@@ -179,6 +174,19 @@ session    include      password-auth
 EOF
 systemctl restart radiusd
 ########################################################
+
+
+
+# if you need two-factor authentication for ssh too,you need to do the following:
+#Add the following line to the top 
+#   auth required pam_google_authenticator.so nullok
+#of the file. /etc/pam.d/sshd
+sed -i '1a\auth required pam_google_authenticator.so nullok' /etc/pam.d/sshd 
+
+# set ChallengeResponseAuthentication value to yes in /etc/ssh/sshd_config:
+sed -i 's/#ChallengeResponseAuthentication yes/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+sed -i 's/ChallengeResponseAuthentication no/#ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
+systemctl restart sshd
 
 
 
