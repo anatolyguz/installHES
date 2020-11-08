@@ -1,0 +1,93 @@
+
+# for Centos 8
+
+# disable selinux and firewall 
+#############################################################
+setenforce 0
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
+#disable firewall
+#if service --status-all | grep -Fq "firewalld.service"; then
+if systemctl list-unit-files | grep -Fq firewalld; then
+        systemctl stop firewalld
+        systemctl disable firewalld
+fi
+# end disable selinux and firewall 
+#############################################################
+
+
+# time synchronization
+if systemctl list-unit-files | grep -Fq chronyd; then
+        systemctl enable  chronyd
+        systemctl restart  chronyd
+fi
+#############################################################
+
+
+# 
+######################################################
+DOMAINNAME="mydomain.com"
+PASSWORD="password"
+# ip address of domain controler:
+DCIP="192.168.1.1"
+
+DOMAINNAME_UPPER_CASE=${DOMAINNAME^^}
+FIRSTDOMAIN=$(echo $DOMAINNAME_UPPER_CASE  | awk -F"." '{print $1;}')
+
+#Disable dhcp if (enabled)
+# NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
+# echo ..<yoy ip there >... " >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
+#systemctl restart  NetworkManager.service
+
+
+echo $DCIP  $HOSTNAME.$DOMAINNAME $HOSTNAME >> /etc/hosts
+
+# Remove an existing /etc/krb5.conf file:
+rm /etc/krb5.conf
+
+	
+#Configure Samba Active Directory Domain Controller.
+# The Samba package provided from CentOS official repository
+# does not provide the DC function yet, so Download and Install Samba from Source Code.
+# get from https://www.golinuxcloud.com/samba-active-directory/
+
+dnf -y install epel-release
+dnf -y install dnf-plugins-core
+dnf config-manager --set-enabled PowerTools
+
+dnf -y install docbook-style-xsl gcc gdb gnutls-devel gpgme-devel jansson-devel \
+      keyutils-libs-devel krb5-workstation libacl-devel libaio-devel \
+      libarchive-devel libattr-devel libblkid-devel libtasn1 libtasn1-tools \
+      libxml2-devel libxslt lmdb-devel openldap-devel pam-devel perl \
+      perl-ExtUtils-MakeMaker perl-Parse-Yapp popt-devel python3-cryptography \
+      python3-dns python3-gpg python36-devel readline-devel rpcgen systemd-devel \
+      tar zlib-devel
+
+
+wget https://download.samba.org/pub/samba/stable/samba-4.11.16.tar.gz
+tar -xzvf samba-4.11.16.tar.gz
+cd samba-4.11.16/
+./configure
+make -j 2
+make install 
+
+
+# in .bash_profile add 
+# export PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/ 
+
+
+samba-tool domain provision --server-role=dc --use-rfc2307 \
+--dns-backend=SAMBA_INTERNAL --realm=$DOMAINNAME_UPPER_CASE --domain=$FIRSTDOMAIN --adminpass=$PASSWORD 
+
+
+
+# For testing  
+smbclient //localhost/netlogon -Uadministrator%$PASSWORD -c 'ls'
+
+D1=$(echo $DCIP  | awk -F"." '{print $1;}')
+D2=$(echo $DCIP  | awk -F"." '{print $2;}')
+D3=$(echo $DCIP  | awk -F"." '{print $3;}')
+
+samba-tool dns zonecreate $DCIP $D3.$D2.$D1.in-addr.arpa -U administrator%$PASSWORD
+
+
