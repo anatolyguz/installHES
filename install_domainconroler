@@ -91,3 +91,9 @@ D3=$(echo $DCIP  | awk -F"." '{print $3;}')
 samba-tool dns zonecreate $DCIP $D3.$D2.$D1.in-addr.arpa -U administrator%$PASSWORD
 
 
+
+# lam
+dnf  install php php-fpm php-ldap php-json php-gmp php-zip php-gd
+
+#dnf install -y ImageMagick ImageMagick-devel
+
