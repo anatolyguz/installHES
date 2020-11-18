@@ -105,6 +105,8 @@ dnf -y install google-authenticator qrencode
 
 # join to Active Directory
 ########################################################
+dnf -y install realmd
+
 DOMAINNAME="mydomain.com"
 # Name of domain controler:
 DC="DC1"  
@@ -114,6 +116,7 @@ DCIP="192.168.1.1"
 # The first dns should be a domain controler:
 DNS1=$DCIP
 DNS2="192.168.1.2"
+
 
 
 NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
