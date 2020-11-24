@@ -150,7 +150,7 @@ apt-get update
 apt install dotnet-sdk-3.1 -y
 
 # Installing MySQL Server:
-wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.15-1_all.deb
+wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.16-1_all.deb
 dpkg -i mysql-apt-config_0.8.15-1_all.deb
 apt update
 apt install mysql-server -y
@@ -285,23 +285,24 @@ SUB_REV=${REV:0:1}
 ###SETTING BLOCK
 
 MYSQL_ROOT_PASSWORD=""
-# need strong passsword
-# repeats until you meet the requirements
-#until [[ ${#MYSQL_ROOT_PASSWORD} -ge 9 ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [A-Z] ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [a-z] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [0-9] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [@#$%\&*+=-] ]] 
-until [[ ${#MYSQL_ROOT_PASSWORD} -ge 9 ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [A-Z] ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [a-z] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [0-9] ]]  
-do
-   read -p "Enter strong mysql root password (at least 8, upper and lowercase letters, numbers, and special characters) : " MYSQL_ROOT_PASSWORD
-done  
 
-#echo MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD
+#if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]
+if [[ $DIST == "CentOS Linux" ]] 
+	# need strong passsword
+	# repeats until you meet the requirements
+	#until [[ ${#MYSQL_ROOT_PASSWORD} -ge 9 ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [A-Z] ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [a-z] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [0-9] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [@#$%\&*+=-] ]] 
+	until [[ ${#MYSQL_ROOT_PASSWORD} -ge 9 ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [A-Z] ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [a-z] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [0-9] ]]  
+	do
+	   read -p "Enter strong mysql root password (at least 8, upper and lowercase letters, numbers, and special characters) : " MYSQL_ROOT_PASSWORD
+	done  
 
+	#echo MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD
+fi
 #SETCOLOR_SUCCESS="echo -en \\033[1;32m"
 #SETCOLOR_FAILURE="echo -en \\033[1;31m"
 #SETCOLOR_NORMAL="echo -en \\033[0;39m"
 
 ########################### end settings zone
-
-
 
 if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]
   then install_CenOS_7
