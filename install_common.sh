@@ -287,7 +287,7 @@ SUB_REV=${REV:0:1}
 MYSQL_ROOT_PASSWORD=""
 
 #if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]
-if [[ $DIST == "CentOS Linux" ]] 
+if [[ $DIST == "CentOS Linux" ]] ; then
 	# need strong passsword
 	# repeats until you meet the requirements
 	#until [[ ${#MYSQL_ROOT_PASSWORD} -ge 9 ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [A-Z] ]] && [[ "$MYSQL_ROOT_PASSWORD" =~ [a-z] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [0-9] ]] &&  [[ "$MYSQL_ROOT_PASSWORD" =~ [@#$%\&*+=-] ]] 
