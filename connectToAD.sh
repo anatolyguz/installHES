@@ -23,55 +23,25 @@ DNS2="192.168.1.2"
 
 join_Ubuntu_18_04(){
 
-
   hostnamectl set-hostname $HOSTNAME.$DOMAINNAME 
-
 
   # confirm
   hostnamectl status
 
   echo 127.0.0.1  $HOSTNAME.$DOMAINNAME $HOSTNAME | sudo tee -a  /etc/hosts
   echo $DCIP $DC.$DOMAINNAME $DC | sudo tee -a /etc/hosts
- 
- 
- 
+
  
   systemctl stop systemd-resolved
   systemctl disable systemd-resolved
   unlink /etc/resolv.conf
   echo nameserver $DNS1 | sudo tee /etc/resolv.conf
  
-
-
-  apt install resolvconf
-  systemctl enable resolvconf.service
-  echo nameserver $DNS1 >> /etc/resolvconf/resolv.conf.d/head
-  
-  
-  
-  apt install -y realmd
-
-  NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
-  echo PEERDNS="no" >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
-  echo "DNS1="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
-  echo "DNS2="$DNS2 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
-
-  systemctl restart  NetworkManager.service
-
-  echo 127.0.0.1  $HOSTNAME.$DOMAINNAME $HOSTNAME >> /etc/hosts
-  echo $DCIP $DC.$DOMAINNAME $DC >> /etc/hosts 
-  #echo $DCIP $DOMAINNAME >> /etc/hosts 
-
-
-  #/etc/sysconfig/network-scripts/ifcfg-ens192 
+  apt -y install realmd libnss-sss libpam-sss sssd sssd-tools adcli samba-common-bin oddjob oddjob-mkhomedir packagekit
 
   # For testing  
   realm discover $DOMAINNAME
 
-  #dnf -y install sssd realmd adcli
-  apt install -y oddjob oddjob-mkhomedir sssd adcli
-  
-  apt install -y sssd-tools sssd libnss-sss libpam-sss adcli
   realm join $DOMAINNAME
 
   #for test 
@@ -82,6 +52,4 @@ join_Ubuntu_18_04(){
 
 }
 
-
-
- join_Ubuntu_18_04
+join_Ubuntu_18_04
