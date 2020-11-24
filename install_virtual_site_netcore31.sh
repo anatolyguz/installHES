@@ -416,28 +416,9 @@ fi
 
 cat > $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf << EOF
 server {
-        listen       80;
-        #or if it is one single server
-        #listen       80 default_server; 
-        listen       [::]:80;
-        #or if it is one single server
-        #listen       [::]:80 default_server;
-        server_name  $DOMAIN_NAME;
-        location / {
-            proxy_set_header Host \$host;
-            proxy_set_header X-Real-IP \$remote_addr;
-            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-            # Enable proxy websockets for the Hideez Client to work
-            proxy_http_version 1.1;
-            proxy_buffering off;
-            proxy_set_header Upgrade \$http_upgrade;
-            proxy_set_header Connection \$http_connection;
-            proxy_pass https://localhost:$HTTPS_PORT;
-        }
+        listen     80;
+        return     301 https://$host$request_uri;
 }
-
-
-
 
 server {
         listen       443 ssl http2;
