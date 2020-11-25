@@ -48,6 +48,14 @@ sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 setenforce 0
 
 
+#disabling firewall:
+if systemctl list-unit-files | grep -Fq firewalld; then
+        systemctl stop firewalld
+        systemctl disable firewalld
+fi
+
+
+
 # Adding Microsoft Package Repository and Installing .NET Core:
 echo Adding Microsoft Package Repository and Installing .NET Core:
 #rpm -Uvh https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
@@ -103,6 +111,13 @@ sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
 sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config 
 
 setenforce 0
+
+#disabling firewall:
+if systemctl list-unit-files | grep -Fq firewalld; then
+        systemctl stop firewalld
+        systemctl disable firewalld
+fi
+
 
 # Installing dotnet:
 dnf install dotnet-sdk-3.1
