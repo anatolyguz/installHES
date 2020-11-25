@@ -65,3 +65,6 @@ shootProfile(){
 
 	fi
 }
+
+shootProfile
+
