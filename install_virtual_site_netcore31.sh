@@ -400,13 +400,13 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DO
 
 #Configuration for the Nginx Reverse Proxy
 
-PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
-#if [[ $DIST == "CentOS Linux" ]] 
-#    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
-#fi
-#if [[ $DIST == "Ubuntu" ]] 
-#    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/sites-available"
-#fi
+#PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
+if [[ $DIST == "CentOS Linux" ]] 
+    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
+fi
+if [[ $DIST == "Ubuntu" ]] 
+    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/sites-available"
+fi
 
 
 #create backup of Configuration file
@@ -417,7 +417,8 @@ fi
 cat > $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf << EOF
 server {
         listen     80;
-        return     301 https://$host$request_uri;
+        server_name  $DOMAIN_NAME;
+	return     301 https://\$host\$request_uri;
 }
 
 server {
