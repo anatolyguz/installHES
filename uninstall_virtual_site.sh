@@ -70,7 +70,7 @@ d=$(dirname $0)
 
 # Remove certificates
 
-rm rm /etc/nginx/certs/$DOMAIN_NAME.*
+rm /etc/nginx/certs/$DOMAIN_NAME.*
 ###############################
 
 
