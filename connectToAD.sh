@@ -16,12 +16,12 @@ DNS2="192.168.1.2"
 
 
 
+
+join_Ubuntu_18_04(){
 ####################################################################
 # Ubuntu 18.04
 # https://computingforgeeks.com/join-ubuntu-debian-to-active-directory-ad-domain/
 ####################################################################
-
-join_Ubuntu_18_04(){
 
   hostnamectl set-hostname $HOSTNAME.$DOMAINNAME 
 
@@ -57,6 +57,9 @@ join_Ubuntu_18_04(){
 
 join_CentOS_8() {
 
+#################################################################################
+#https://computingforgeeks.com/join-centos-rhel-system-to-active-directory-domain/
+#################################################################################
   NAMEINTERFACE=$(ip route get 8.8.8.8 | awk '{ print $5; exit }')
   echo PEERDNS="no" >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
   echo "DNS1="$DNS1 >> /etc/sysconfig/network-scripts/ifcfg-$NAMEINTERFACE 
