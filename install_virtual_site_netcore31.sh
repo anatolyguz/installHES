@@ -9,7 +9,7 @@
 REPO="https://github.com/HideezGroup/HES"
 DESTINATION="/opt/src"
 BRANCH="master"
-
+VERSION="release"
 #######################################
 #If you want the script to ask no questions, un comment and fill in these variables
 # (USER_PASSWORD must comply with mysql policy!)
@@ -224,7 +224,7 @@ fi
 
 cd $DESTINATION/HES.Web/
 mkdir $HES_DIR
-dotnet publish -c release -v d -o $HES_DIR --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+dotnet publish -c $VERSION -v d -o $HES_DIR --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
 if [ $? -eq 0 ]; then
   echo "the application was compiled successfully"
 else
