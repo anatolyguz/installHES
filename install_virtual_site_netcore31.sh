@@ -164,6 +164,9 @@ fi
 
 
 #######################################################
+# dump database
+mysqldump  -uroot -p$MYSQL_ROOT_PASSWORD  $DATABASE_NAME > /tmp/$DATABASE_NAME-$(date +%Y-%m-%d-%H-%M-%S).sql
+#######################################################
 
 #Creating MySQL User
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DATABASE_USER'@'127.0.0.1' IDENTIFIED BY '$USER_PASSWORD';"
