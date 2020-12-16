@@ -108,7 +108,7 @@ If the installation was successful, the output of the *dotnet* command will look
 
 ```shell
   $ dotnet --version
-3.1.304
+3.1.404
 ```
 
 ## 1.6 Install MySQL version 8:
