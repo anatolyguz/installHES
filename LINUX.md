@@ -197,7 +197,7 @@ After entering password, you will see MySQL console with a prompt:
   Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 13
-Server version: 8.0.19 MySQL Community Server - GPL
+Server version: 8.0.21 MySQL Community Server - GPL
 
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
