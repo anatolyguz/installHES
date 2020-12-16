@@ -654,8 +654,7 @@ http {
 
 * Replace <Name_Of_Domain\> with you domain name
 * Port numbers ( proxy_pass http://localhost:5000; ) should match the settings specified in /opt/HES/appsettings.json (defauls is 5000 for http  and 5001 for https)
-
-
+  
 After saving the file, it is recommended to check nginx settings:
 ```shell
   $ sudo nginx -t
@@ -666,6 +665,13 @@ nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 Otherwise, you should carefully review the settings and correct the errors.
+
+**2.5.3 disable the nginx default page**
+*Ubuntu 18*
+  
+```shell
+  $ sudo rm /etc/nginx/sites-enabled/default
+```
 
 **Restarting Nginx and checking its status**
 
