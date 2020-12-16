@@ -253,7 +253,7 @@ To exit from mySql console, press Ctrl+D.
   $ sudo apt install nginx -y
 ```
 
-### 1.7.1 Restart nginx
+### 1.7.1 Restart nginx (CentOS only)
 ```shell
   $ sudo systemctl restart nginx
 ```
