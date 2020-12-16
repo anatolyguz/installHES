@@ -210,6 +210,27 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
+### 1.6.4 Creating a MySQL user and database for Hideez Enterprise Server
+
+the following lines create a database "db", the user "user" with the password "<your_secret\>". Сhange <your secret\> to a strong password, otherwise you may get a password validator error
+ 
+```sql
+  ### CREATE DATABASE
+  mysql> CREATE DATABASE db;
+
+  ### CREATE USER ACCOUNT
+  mysql> CREATE USER 'user'@'127.0.0.1' IDENTIFIED BY '<your_secret>';
+
+  ### GRANT PERMISSIONS ON DATABASE
+  mysql> GRANT ALL ON db.* TO 'user'@'127.0.0.1';
+ 
+  ###  RELOAD PRIVILEGES
+  mysql> FLUSH PRIVILEGES;
+```
+
+You should remember database name, username and password, they will come in handy later.
+
+
 To exit from mySql console, press Ctrl+D.
 
 ## 1.7 Install Nginx
@@ -281,33 +302,9 @@ Now the preparation is complete.
 
 # 2. Installing the HES server
 
-## 2.1 Creating a MySQL user and database for Hideez Enterprise Server
-
-**Starting the MySQL Server Console**
 
 
-```shell
-  mysql -h localhost -u root -p
-```
-the following lines create a database "db", the user "user" with the password "<your_secret\>". Сhange <your secret\> to a strong password, otherwise you may get a password validator error
- 
-```sql
-  ### CREATE DATABASE
-  mysql> CREATE DATABASE db;
 
-  ### CREATE USER ACCOUNT
-  mysql> CREATE USER 'user'@'127.0.0.1' IDENTIFIED BY '<your_secret>';
-
-  ### GRANT PERMISSIONS ON DATABASE
-  mysql> GRANT ALL ON db.* TO 'user'@'127.0.0.1';
- 
-  ###  RELOAD PRIVILEGES
-  mysql> FLUSH PRIVILEGES;
-```
-
-You should remember database name, username and password, they will come in handy later.
-
-(Press Ctrl + D to exit the MySQL console)
 
 ## 2.2 Installing Hideez Enterprise Server from source
 
