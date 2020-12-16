@@ -302,10 +302,6 @@ Now the preparation is complete.
 
 # 2. Installing the HES server
 
-
-
-
-
 ## 2.2 Installing Hideez Enterprise Server from source
 
 ```shell
@@ -697,7 +693,6 @@ Note: for a self-signed certificate, it should be a warning that your connection
 Setup is complete. The server should be accessible in a browser at the address `https://<Name_Of_Domain>`
 
 
-
 ## Updating HES
 
 ### 1. Updating sources from GitHub repository
@@ -708,47 +703,46 @@ Setup is complete. The server should be accessible in a browser at the address `
 ```
 
 ### 2. Back up MySQL Database (optional)
-
+the following command will create a copy of the database in file db.sql in your home directory:
 ```shell
-  $ sudo mkdir /opt/backups
-  $ cd /opt/backups
-  $ sudo mysqldump -u <your_user> -p<your_secret> <your_db> | gzip -c > <your_db>.sql.gz
+  $ sudo mysqldump -uroot -p<MySqlroot_password>  db > ~/db.sql
 ```
+change <MySqlroot_password> with You real password
 
 ### 3. Back up Hideez Enterprise Server
 
 ```shell
-  $ sudo systemctl stop HES-<Name_Of_Domain>
-  $ sudo mv /opt/HES/<Name_Of_Domain> /opt/HES/<Name_Of_Domain>.old
+  $ sudo systemctl stop HES
+  $ sudo mv /opt/HES /opt/HES.old
 ```
 
 ### 4. Build a new version of Hideez Enterprise Server from sources
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
-  $ sudo dotnet publish -c release -v d -o "/opt/HES/<Name_Of_Domain>" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
-  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/<Name_Of_Domain>/Crypto.dll
+  $ sudo dotnet publish -c release -v d -o "/opt/HES" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
 
 ### 5. Restore your configuration file
 
 ```shell
-  $ sudo cp /opt/HES/<Name_Of_Domain>.old/appsettings.json /opt/HES/<Name_Of_Domain>/appsettings.json
+  $ sudo cp /opt/HES.old/appsettings.json /opt/HES/appsettings.json
 ```
 
 ### 6. Restart Hideez Enterprise Server and check its status
 
 ```shell
-  $ sudo systemctl restart HES-<Name_Of_Domain>
-  $ sudo systemctl status HES-<Name_Of_Domain>
+  $ sudo systemctl restart HES
+  $ sudo systemctl status HES
 
   
-  ● HES-hideez.example.com.service - hideez.example.com Hideez Enterprise Service
+  ● HES-hideez.example.com.service - Hideez Enterprise Service
    Loaded: loaded (/usr/lib/systemd/system/HES-hideez.example.com.service; enabled; vendor preset: disabled)
    Active: active (running) since Wed 2020-03-25 10:48:12 UTC; 16s ago
  Main PID: 4657 (HES.Web)
-   CGroup: /system.slice/HES-thideez.example.com.service
-           └─4657 /opt/HES/hideez.example.com/HES.Web
+   CGroup: /system.slice/HES.service
+           └─4657 /opt/HES/HES.Web
 
-Mar 25 10:48:12 hesservertest systemd[1]: Started hideez.example.com Hideez Enterprise Service.
+Mar 25 10:48:12 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```
