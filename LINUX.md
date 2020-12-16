@@ -379,7 +379,9 @@ Edit the file `/opt/HES/appsettings.json`
   "AllowedHosts": "*"
 ```
 
-* **<your_secret>** - Password from database user on MySQL server
+Replace the following settings in this file with your own:
+
+* **your_secret** - Password from database user on MySQL server
 * **email_host** - Host your email server (example `smtp.example.com`)
 * **email_port** - Port your email server (example `123`)
 * **your_email_name** - Your email name (example `user@example.com`)
