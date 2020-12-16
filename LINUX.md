@@ -311,7 +311,6 @@ Now the preparation is complete.
 ```shell
   $ cd /opt/src/HES/HES.Web/
   $ sudo dotnet publish -c release -v d -o "/opt/HES" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
-  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
 **[Note]** Internet connection required to download NuGet packages
 
