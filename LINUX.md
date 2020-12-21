@@ -360,11 +360,7 @@ on one computer, then it is necessary to specify different ports for each site i
   }
 
 ```
-After saving the settings file, you can check that the HES is up and running:
-```shell
-  $ cd /opt/HES
-  $ sudo ./HES.Web 
-```
+
 If you do not see any errors within 1-2 minutes, it means that the HES has been successfully configured and started.
 Press Ctrl+C for exit.
 
