@@ -45,6 +45,9 @@ shootProfile(){
 			                PSUEDONAME=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
 			                REV=`cat /etc/lsb-release | grep '^DISTRIB_RELEASE' | awk -F=  '{ print $2 }'`
             			fi
+			elif [ -f /etc/arch-release ] ; then
+				DistroBasedOn='Arch linux'
+				DIST='Arch' 
 			fi
 			if [ -f /etc/UnitedLinux-release ] ; then
 				DIST="${DIST}[`cat /etc/UnitedLinux-release | tr "\n" ' ' | sed s/VERSION.*//`]"
