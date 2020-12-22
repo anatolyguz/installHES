@@ -138,7 +138,7 @@ d=$(dirname $0)
 #echo "DistroBasedOn: $DistroBasedOn"
 #echo "KERNEL: $KERNEL"
 #echo "MACH: $MACH"
-#echo "SUB_REV=$SUB_REV
+#echo "SUB_REV=$SUB_REV"
 #echo "========"
 
 ###############################
