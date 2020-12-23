@@ -1,5 +1,5 @@
 
-## 1. install .NET Core, MySQL and nginx:
+## 1. Install .NET Core, MySQL and nginx:
 
 ```bash
 sudo  chmode +x install_common.sh
