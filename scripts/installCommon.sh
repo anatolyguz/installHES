@@ -2,11 +2,11 @@
 
 #############################################
 #    USAGE:
-#         sudo bash install_common.sh
+#         sudo bash installCommon.sh
 #    or make this file executable:
-#         chmode +x install_common.sh
+#         chmode +x installCommon.sh
 #    and run it:
-#         sudo ./install_common.sh
+#         sudo ./installCommon.sh
 #############################################
 
 
