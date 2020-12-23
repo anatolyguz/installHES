@@ -1,21 +1,31 @@
+## 1. Download scrips to locall folder
 
-## 1. Install .NET Core, MySQL and nginx
+```bash
+mkdir ~/installHES
+cd ~/installHES
+curl https://raw.githubusercontent.com/anatolyguz/installHES/master/scripts/detectOS.sh > detectOS.sh
+curl https://raw.githubusercontent.com/anatolyguz/installHES/master/scripts/installCommon.sh > installCommon.sh
+curl  https://raw.githubusercontent.com/anatolyguz/installHES/master/scripts/installHES.sh > installHES.sh
+```
+
+
+## 2. Install .NET Core, MySQL and nginx
 
 ```bash
 sudo bash installCommon.sh
 ```
-## 2. Setting a permanent MySQL root password and security settings
+## 3. Setting a permanent MySQL root password and security settings
  
 ```bash
 sudo mysql_secure_installation
 ```
 **Note**:  during the installation process, depending on the Linux distribution, you may need to enter some additional data (Mysql root password, confirmation, etc.)
-## 3. Reboot system
+## 4. Reboot system
 ```bash
 sudo reboot now
 ```
 
-## 4. Install HES
+## 5. Install HES
 ```bash
 sudo bash installHES.sh
 ```
