@@ -89,7 +89,7 @@ fi
 
 
 # Installing dotnet:
-dnf install dotnet-sdk-3.1
+dnf install dotnet-sdk-3.1 -y
 
 # Installing MySQL Server:
 dnf install mysql-server -y
