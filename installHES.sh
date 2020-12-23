@@ -31,16 +31,16 @@ VERSION="release"
 #############################################################
 # DETECT OS
 # "detectOS.sh"  - this script MUST be in the same directory as the installHES.sh file
-#
-d=$(dirname $0)
-if [ ! -f {d}/detectOS.sh ] ; then
+DIRNAME=$(dirname $0)
+if [ ! -f $DIRNAME/detectOS.sh ] ; then
   echo "there is no detectOS.sh file in the script directory" 
   exit 1
 fi
-. ${d}/detectOS.sh
-#echo "DIST: $DIST"
-#echo "SUB_REV=$SUB_REV"
-#echo "========"
+. $DIRNAME/detectOS.sh
+echo Detect OS:
+echo DIST = $DIST
+echo REV = $REV
+echo SUB_REV = $SUB_REV
 
 ##############################################################
 
