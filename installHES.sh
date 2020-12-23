@@ -204,24 +204,7 @@ sed -i 's/company.example.com/'$DOMAIN_NAME'/' $JSON
 ################################
   
 #  Daemonizing Hideez Enterprise Server 
-cp $DESTINATION/HES.Web/HES.service     /lib/systemd/system/HES.service
-
-cat > /lib/systemd/system/HES.service << EOF
-[Unit]
-  Description=Hideez Enterprise Service
-[Service]
-  User=root
-  Group=root
-  WorkingDirectory=$HES_DIR
-  ExecStart=$HES_DIR/HES.Web
-  Restart=on-failure
-  ExecReload=/bin/kill -HUP $MAINPID
-  KillMode=process
-  # SyslogIdentifier=dotnet-sample-service
-  # PrivateTmp=true"
-[Install]
-  WantedBy=multi-user.target
-EOF
+cp $DESTINATION/HES.Deploy/HES.service   /lib/systemd/system/HES.service
 
 systemctl enable HES.service
 systemctl restart HES.service
@@ -233,71 +216,37 @@ systemctl restart HES.service
 if [ ! -d /etc/nginx/certs ]; then
     mkdir /etc/nginx/certs
 fi
-#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME.key -out /etc/nginx/certs/$DOMAIN_NAME.crt  -subj "/C=''/ST=''/L=''/O=HES /OU='' /CN=$DOMAIN_NAME"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME.key -out /etc/nginx/certs/$DOMAIN_NAME.crt  -subj "/CN=$DOMAIN_NAME"
 
 #Configuration for the Nginx Reverse Proxy
 
-#PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
-if [[ $DIST == "CentOS Linux" ]] 
-    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/conf.d"
+
+
+if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]; then
+	cp $DESTINATION/HES.Deploy/CentOS7/nginx.conf   /etc/nginx/nginx.conf
+elif [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "8" ]]; then
+	cp $DESTINATION/HES.Deploy/CentOS8/nginx.conf   /etc/nginx/nginx.conf
+elif [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "18.04" ]]; then
+	cp $DESTINATION/HES.Deploy/Ubuntu18/nginx.conf   /etc/nginx/nginx.conf
+elif [[ $DIST == "Ubuntu" ]]  && [[ $REV  == "20.04" ]]; then	
+	cp $DESTINATION/HES.Deploy/Ubuntu20/nginx.conf   /etc/nginx/nginx.conf
 fi
-if [[ $DIST == "Ubuntu" ]] 
-    then PATH_TO_CONFIG_DOMAIN="/etc/nginx/sites-available"
-fi
-
-
-#create backup of Configuration file
-if [ -f /etc/nginx/conf.d/$DOMAIN_NAME.conf ]; then
-    mv $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf  $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf-$(date +%Y-%m-%d-%H-%M-%S)
-fi
-
-cat > $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf << EOF
-server {
-        listen     80;
-        server_name  $DOMAIN_NAME;
-	return     301 https://\$host\$request_uri;
-}
-
-server {
-        listen       443 ssl http2;
-        #or if it is one single server
-        #listen       443 ssl http2 default_server; 
-        listen       [::]:443 ssl http2;
-        #or if it is one single server
-        #listen       [::]:443 ssl http2 default_server;
-        
-        server_name  $DOMAIN_NAME;
-        ssl_certificate "certs/$DOMAIN_NAME.crt";
-        ssl_certificate_key "certs/$DOMAIN_NAME.key";
-        location / {
-            proxy_set_header Host \$host;
-            proxy_set_header X-Real-IP \$remote_addr;
-            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-            # Enable proxy websockets for the hideez Client to work
-            proxy_http_version 1.1;
-            proxy_buffering off;
-            proxy_set_header Upgrade \$http_upgrade;
-            proxy_set_header Connection \$http_connection;
-            proxy_pass https://localhost:$HTTPS_PORT;
-        }
-}
-EOF
-
 
 if [[ $DIST == "Ubuntu" ]] 
-    then  ln -s $PATH_TO_CONFIG_DOMAIN/$DOMAIN_NAME.conf /etc/nginx/sites-enabled/
+    then rm /etc/nginx/sites-enabled/default
 fi
 
 
 #Restarting the Nginx Reverse Proxy and check its status
 systemctl restart nginx
-#sudo systemctl status nginx
+sudo systemctl status nginx
 ################################
+
 
 #save setting to file
 FILE_SETTING=$HOME/$DOMAIN_NAME-setting.txt
 ##   
+
 #echo DOMAIN_NAME = $DOMAIN_NAME
 #echo FILE_SETTING = $FILE_SETTING
 ##   
@@ -322,8 +271,8 @@ EOF
 cat $FILE_SETTING
 
 
-echo "systemctl status HES-$DOMAIN_NAME.service"
+echo "  for testing status HES server:"
+echo "sudo systemctl status HES.service"
 echo "In your home directory, has been created file $DOMAIN_NAME-setting.txt with your settings."
 echo "For your safety, after making sure everything works, it is advised to save your settings somewhere and delete this file"
-
 
