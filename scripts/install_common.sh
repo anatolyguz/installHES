@@ -85,7 +85,6 @@ if systemctl list-unit-files | grep -Fq firewalld; then
  firewall-cmd --zone=public --permanent --add-port=22/tcp
  firewall-cmd --zone=public --permanent --add-port=80/tcp
  firewall-cmd --zone=public --permanent --add-port=443/tcp
- firewall-cmd --reload
 fi
 
 
@@ -121,6 +120,12 @@ apt upgrade -y
 
 #Installing git
 apt install git -y
+
+
+# Firewall Configuration:
+ufw allow 22
+ufw allow 80
+ufw allow 443
 
 # Installing dotnet:
 wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
