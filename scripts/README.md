@@ -1,4 +1,4 @@
-## 1. Download scrips to locall folder
+## 1. Download scrips to local folder
 
 ```bash
 mkdir ~/installHES
@@ -27,6 +27,7 @@ sudo reboot now
 
 ## 5. Install HES
 ```bash
+cd ~/installHES
 sudo bash installHES.sh
 ```
 **Note**: be prepared to enter the MySQL root password, user password, information about your mail server
