@@ -1,6 +1,13 @@
-#usage
-#bash install_virtual_site.sh
+#!/bin/bash
 
+#############################################
+#    USAGE:
+#         sudo bash installHES.sh
+#    or make this file executable:
+#         chmode +x installHES.sh
+#    and run it:
+#         sudo ./installHES.sh
+#############################################
 
 ###SETTING BLOCK
 
@@ -9,9 +16,8 @@ DESTINATION="/opt/src"
 BRANCH="master"
 VERSION="release"
 #######################################
-#If you want the script to ask no questions, un comment and fill in these variables
+# If you want the script to ask no questions, un comment and fill in these variables
 # (USER_PASSWORD must comply with mysql policy!)
-
 #DOMAIN_NAME=""
 #USER_PASSWORD=""
 #SMTP_HOST=""
@@ -20,6 +26,32 @@ VERSION="release"
 #SMTP_PASSWORD=""
 #MYSQL_ROOT_PASSWORD=""
 #######################################
+
+
+#############################################################
+# DETECT OS
+# "detectOS.sh"  - this script MUST be in the same directory as the installHES.sh file
+#
+d=$(dirname $0)
+if [ ! -f {d}/detectOS.sh ] ; then
+  echo "there is no detectOS.sh file in the script directory" 
+  exit 1
+fi
+. ${d}/detectOS.sh
+#echo "DIST: $DIST"
+#echo "SUB_REV=$SUB_REV"
+#echo "========"
+
+##############################################################
+
+
+
+if [ -z "$MYSQL_ROOT_PASSWORD" ] 
+then
+    read -p "Enter MySQL root password (You installed it earlier): " MYSQL_ROOT_PASSWORD
+fi
+echo MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD
+
 
 #domain name
 if [ -z "$DOMAIN_NAME" ] 
@@ -32,7 +64,7 @@ echo DOMAIN_NAME = $DOMAIN_NAME
 
 if [ -z "$USER_PASSWORD" ] 
 then
-  read -p "Enter strong password for user $DATABASE_USER (at least 8 (upper and lowercase letters, numbers, and special characters)): " USER_PASSWORD
+  read -p "Enter password for user $DATABASE_USER : " USER_PASSWORD
 fi
 
 echo USER_PASSWORD = $USER_PASSWORD
@@ -41,8 +73,7 @@ if [ -z "$SMTP_HOST" ]
 then
     read -p "Enter SMTP host: " SMTP_HOST
 fi
-echo echo SMTP_HOST = $SMTP_HOST
-
+echo SMTP_HOST = $SMTP_HOST
 
 if [ -z "$SMTP_PORT" ] 
 then
@@ -62,32 +93,9 @@ then
 fi
 echo SMTP_PASSWORD = $SMTP_PASSWORD
 
-if [ -z "$MYSQL_ROOT_PASSWORD" ] 
-then
-    read -p "Enter MySQL root password (You installed it earlier): " MYSQL_ROOT_PASSWORD
-fi
-echo MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD
-
 
 ########################### end settings zone
 
-
-###############################
-# DETECT OS
-d=$(dirname $0)
-. ${d}/detectOS.sh
-
-#echo "OS: $OS"
-#echo "DIST: $DIST"
-#echo "PSUEDONAME: $PSUEDONAME"
-#echo "REV: $REV"
-#echo "DistroBasedOn: $DistroBasedOn"
-#echo "KERNEL: $KERNEL"
-#echo "MACH: $MACH"
-#echo "SUB_REV=$SUB_REV"
-#echo "========"
-
-###############################
 
 
 #create backup src
