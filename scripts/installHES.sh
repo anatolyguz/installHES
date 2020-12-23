@@ -182,6 +182,15 @@ fi
 
 # Create appsettings.production.json
 cp $HES_DIR/appsettings.json $HES_DIR/appsettings.production.json
+if [ $? -eq 0 ]; then
+  echo "appsettings.json to appsettings.production.json successfully copied"
+else
+  # ups.... 
+  echo "Error copying appsettings.production.json"
+  exit 1
+fi
+
+
 $JSON=$HES_DIR/appsettings.production.json
 
 
