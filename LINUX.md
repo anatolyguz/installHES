@@ -307,7 +307,12 @@ Then you need to copy Crypto_linux.dll as follows:
 
 ## 4.3 Configuring the HES
 
-Edit the file `/opt/HES/appsettings.json`
+Copy appsettings.json to appsettings.Production.json
+```shell
+  $ sudo cp /opt/HES/appsettings.json /opt/HES/appsettings.Production.json
+```
+
+Edit the file `/opt/HES/appsettings.Production.json`
 
 ```json
   {
@@ -574,7 +579,7 @@ change <MySQL_root_password> with your real password
 ## 6. Restore the configuration file
 
 ```shell
-  $ sudo cp /opt/HES.old/appsettings.json /opt/HES/appsettings.json
+  $ sudo cp /opt/HES.old/appsettings.Production.json /opt/HES/appsettings.Production.json
 ```
 
 ## 7. Restart the HES and check its status
