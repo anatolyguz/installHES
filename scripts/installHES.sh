@@ -190,9 +190,7 @@ else
   exit 1
 fi
 
-
-$JSON=$HES_DIR/appsettings.production.json
-
+JSON=$HES_DIR/appsettings.production.json
 
 # change setting in  appsettings.json
 # Default string is
