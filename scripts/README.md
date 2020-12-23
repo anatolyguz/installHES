@@ -9,7 +9,12 @@ sudo ./install_common.sh
 ```bash
 sudo mysql_secure_installation
 ```
-## 3. Install HES
+## 3. Reboot system
+```bash
+sudo reboot now
+```
+
+## 4. Install HES
 ```bash
 sudo  chmode +x installHES.sh
 sudo ./installHES.sh
