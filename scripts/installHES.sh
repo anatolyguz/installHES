@@ -64,7 +64,7 @@ echo DOMAIN_NAME = $DOMAIN_NAME
 
 if [ -z "$USER_PASSWORD" ] 
 then
-  read -p "Enter password for user $DATABASE_USER : " USER_PASSWORD
+  read -p "Enter password for new MySQL user : " USER_PASSWORD
 fi
 
 echo USER_PASSWORD = $USER_PASSWORD
