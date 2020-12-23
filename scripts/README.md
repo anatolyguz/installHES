@@ -19,5 +19,6 @@ sudo reboot now
 ```bash
 sudo bash installHES.sh
 ```
+**Note**: be prepared to enter the MySQL root password, user password, information about your mail server
 
 
