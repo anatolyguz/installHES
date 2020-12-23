@@ -2,8 +2,7 @@
 ## 1. Install .NET Core, MySQL and nginx:
 
 ```bash
-sudo  chmod +x install_common.sh
-sudo ./install_common.sh
+sudo bash install_common.sh
 ```
 ## 2. Setting a permanent MySQL root password and security settings
 ```bash
@@ -16,8 +15,7 @@ sudo reboot now
 
 ## 4. Install HES
 ```bash
-sudo  chmod +x installHES.sh
-sudo ./installHES.sh
+sudo bash installHES.sh
 ```
 
 
