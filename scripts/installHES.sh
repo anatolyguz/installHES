@@ -199,7 +199,7 @@ JSON=$HES_DIR/appsettings.Production.json
 sed -i 's/uid=user;pwd=password/uid=user;pwd='$USER_PASSWORD'/' $JSON
 
 sed -i 's/"Host": "smtp.example.com"/"Host": "'$SMTP_HOST'"/' $JSON
-sed -i 's/"Port": 123/"Port": '$SMTP_PORT'/' $HES_DIR/appsettings.json
+sed -i 's/"Port": 123/"Port": '$SMTP_PORT'/' $HES_DIR/$JSON
 sed -i 's/"UserName": "user@example.com"/"UserName": "'$SMTP_USER_NAME'"/' $JSON
 sed -i 's/"Password": "password"/"Password": "'$SMTP_PASSWORD'"/' $JSON
 
