@@ -2,7 +2,7 @@
 ## 1. Install .NET Core, MySQL and nginx:
 
 ```bash
-sudo bash install_common.sh
+sudo bash installCommon.sh
 ```
 ## 2. Setting a permanent MySQL root password and security settings
  
