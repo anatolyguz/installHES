@@ -225,11 +225,9 @@ systemctl restart HES.service
 if [ ! -d /etc/nginx/certs ]; then
     mkdir /etc/nginx/certs
 fi
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME.key -out /etc/nginx/certs/$DOMAIN_NAME.crt  -subj "/CN=$DOMAIN_NAME"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/hes.key -out /etc/nginx/certs/hes.crt  -subj "/CN=$DOMAIN_NAME"
 
 #Configuration for the Nginx Reverse Proxy
-
-
 
 if [[ $DIST == "CentOS Linux" ]]  && [[ $SUB_REV  == "7" ]]; then
 	cp $DESTINATION/HES.Deploy/CentOS7/nginx.conf   /etc/nginx/nginx.conf
