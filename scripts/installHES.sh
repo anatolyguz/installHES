@@ -12,7 +12,7 @@
 ###SETTING BLOCK
 
 REPO="https://github.com/HideezGroup/HES"
-DESTINATION="/opt/src"
+DESTINATION="/opt/src/HES"
 BRANCH="master"
 VERSION="release"
 #######################################
