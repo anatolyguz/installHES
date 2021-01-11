@@ -184,7 +184,7 @@ Remember that if you use a self-signed certificate, you must enter the server na
 
 ```shell
   > cd %windir%\system32\inetsrv
-  > appcmd stop site /site.name:<site_name>
+  > appcmd stop site /site.name:HES
   > cd C:\Hideez 
   > rename HES HES.old
 ```
@@ -214,9 +214,7 @@ change <MySQL_root_password> with your real password
 ```shell
   > cd C:\Hideez
   > copy HES.old\appsettings.Production.json HES\appsettings.Production.json
-  > Overwrite HES\appsettings.json? (Yes/No/All): y
-  > rmdir /s HES.old
-  > HES.old, Are you sure (Y/N)? y
+ 
 ```
 
 
@@ -224,5 +222,25 @@ change <MySQL_root_password> with your real password
 
 ```shell
   > cd %windir%\system32\inetsrv
-  > appcmd start site /site.name:<site_name>
+  > appcmd start site /site.name:HES
 ```
+
+**If something goes wrong, you can restore the HES server using the following commands:**
+
+```shell
+ > cd %windir%\system32\inetsrv
+ > appcmd stop site /site.name:HES
+ > cd C:\Hideez 
+ > rename HES.old HES
+ > mysqldump -u root -p<MySQL_root_password> db < C:\Hideez\bkp\db.sql
+```
+change <MySQL_root_password> with your real password
+
+**After checking that the update was successful and everything works fine, you can delete copies of the database and server:**
+
+```shell
+> cd C:\Hideez
+> rmdir /s HES.old
+> rmdir /s bkp
+```
+
