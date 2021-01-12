@@ -23,7 +23,7 @@ You can perform a simple test by opening a web browser and browsing http://local
 
 - [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-3.1.404-windows-x64-installer) 
 
-- [Windows Hosting Bundle, which includes the .NET Core Runtime and IIS support](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-3.1.10-windows-hosting-bundle-installer)
+- [Windows Hosting Bundle, which includes the .NET Core Runtime and IIS support](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-3.1.10-windows-x64-installer)
 
 You can download the latest versions of this applications. They can be found at https://dotnet.microsoft.com/download/dotnet-core/3.1
 
