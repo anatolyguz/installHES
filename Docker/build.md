@@ -11,9 +11,8 @@ docker build . -t <user_name>/<image_name>:latest  -t <user_name>/<image_name>:[
 run and test
 
 ```
-docker run -it <user_name>/<image_name>   /bin/bash
+docker run -it <user_name>/<image_name>   /bin/sh
 ```
-
 
 push to docker hub
 
