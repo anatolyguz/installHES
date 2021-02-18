@@ -1,3 +1,6 @@
+
+Here are the scripts for some step automation, described in the [instructions](https://github.com/HideezGroup/HES/blob/master/LINUX.md) for installing the HES server
+
 ## 1. Download scrips to local folder
 
 ```bash
