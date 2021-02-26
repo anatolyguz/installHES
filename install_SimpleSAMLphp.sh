@@ -36,7 +36,8 @@ php -r "unlink('composer-setup.php');"
 
 
 #Install the external dependencies with Composer
-php composer.phar install
+### --no-interaction
+php composer.phar install 
 npm install
 npm run build
 
