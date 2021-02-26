@@ -1,9 +1,45 @@
 #Ubuntu 20
 
+
+DOMAIN_NAME="sp.hideez.com"
+
 # install nginx
 apt install nginx
 
 # install  PHP
+sudo apt install php-fpm
+
+
+mkdir /var/www/$DOMAIN_NAME
+
+
+
+/etc/nginx/sites-available/$DOMAIN_NAME
+
+server {
+    listen 80;
+    server_name $DOMAIN_NAME www.$DOMAIN_NAME;
+    root /var/www/$DOMAIN_NAME;
+
+    index index.html index.htm index.php;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~ \.php\$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+}
+
+
+
 
 
 
