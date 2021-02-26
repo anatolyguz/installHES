@@ -2,6 +2,8 @@
 
 DOMAIN_NAME="sp.hideez.com"
 
+apt-get update
+
 # install nginx
 apt install -y nginx
 
