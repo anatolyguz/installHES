@@ -52,7 +52,7 @@ ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
 
 
 #Download and install SimpleSAMLphp from github
-sudo apt install nodejs
+sudo apt install nodejs npm
 
 cd /var
 git clone https://github.com/simplesamlphp/simplesamlphp.git  simplesamlphp
@@ -70,8 +70,9 @@ php -r "unlink('composer-setup.php');"
 
 
 #Install the external dependencies with Composer
-
-
+php composer.phar install
+npm install
+npm run build
 
 
 
