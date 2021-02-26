@@ -13,7 +13,7 @@ sudo apt install php-fpm
 # for view inslalled ext.
 # php -m | head
 # or phpinfo();
-apt install php-dom php-mbstring
+apt install php-dom php-mbstring php-curl php-zip unzip
 
 
 
@@ -47,6 +47,32 @@ server {
 EOF
 
 ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
+
+
+
+
+#Download and install SimpleSAMLphp from github
+sudo apt install nodejs
+
+cd /var
+git clone https://github.com/simplesamlphp/simplesamlphp.git  simplesamlphp
+
+cd /var/simplesamlphp
+cp -r config-templates/* config/
+cp -r metadata-templates/* metadata/
+
+
+# Install composer
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+
+
+#Install the external dependencies with Composer
+
+
+
 
 
 
