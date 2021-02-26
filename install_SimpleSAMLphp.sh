@@ -1,58 +1,22 @@
 #Ubuntu 20
 
-
 DOMAIN_NAME="sp.hideez.com"
 
 # install nginx
-apt install nginx
+apt install -y nginx
 
 # install  PHP
-sudo apt install php-fpm
+apt install -y php-fpm
 
 # install  PHP extensions:
 # for view inslalled ext.
 # php -m | head
 # or phpinfo();
-apt install php-dom php-mbstring php-curl php-zip unzip
-
-
-
-
-
-mkdir /var/www/$DOMAIN_NAME
-
-
-cat > /etc/nginx/sites-available/$DOMAIN_NAME << EOF
-server {
-    listen 80;
-    server_name $DOMAIN_NAME www.$DOMAIN_NAME;
-    root /var/www/$DOMAIN_NAME;
-
-    index index.html index.htm index.php;
-
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-
-    location ~ \.php\$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-     }
-
-    location ~ /\.ht {
-        deny all;
-    }
-
-}
-EOF
-
-ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
-
-
+apt install -y php-dom php-mbstring php-curl php-zip unzip
 
 
 #Download and install SimpleSAMLphp from github
-sudo apt install nodejs npm
+sudo apt install -y nodejs npm
 
 cd /var
 git clone https://github.com/simplesamlphp/simplesamlphp.git  simplesamlphp
@@ -75,85 +39,65 @@ npm install
 npm run build
 
 
+chown -R www-data.www-data /var/simplesamlphp/
 
 
-#Add PHP 7.3 Remi repository
-yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm 
-yum -y install epel-release yum-utils
+ #Configuring Nginx
 
-#Disable repo for PHP 5.4
-yum-config-manager --disable remi-php54
-yum-config-manager --enable remi-php73
+#create self sing. certificates
+mkdir -p  /etc/pki/tls/certs
+mkdir -p /etc/pki/tls/private
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/private/sp.key -out /etc/pki/tls/certs/sp.crt  -subj "/CN=$DOMAIN_NAME"
 
-yum -y install php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
 
-#enable and restart  php-fpm.service
-systemctl enable  php-fpm
-systemctl restart php-fpm
+#mkdir /var/www/$DOMAIN_NAME
 
-# install phpMyAdmin
+cat > /etc/nginx/sites-available/$DOMAIN_NAME << EOF
 
-yum -y  install epel-release
-yum -y install phpmyadmin
-
-cat > /etc/nginx/conf.d/phpmyadmin.conf << EOF
 server {
-  location /phpMyAdmin {
-         root /usr/share/;
-         index index.php index.html index.htm;
-         location ~ ^/phpMyAdmin/(.+\.php)\$ {
-                 try_files \$uri = 404;
-                 root /usr/share/;
-                 #fastcgi_pass unix:/run/php-fpm/www.sock;
-                 fastcgi_pass 127.0.0.1:9000;
-                 fastcgi_index index.php;
-                 fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-                include /etc/nginx/fastcgi_params;
-         }
-         location ~* ^/phpMyAdmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))\$ {
-                 root /usr/share/;
-         }
-  }
-  location /phpmyadmin {
-      rewrite ^/* /phpMyAdmin last;
-  }
+    listen 80;
+    server_name $DOMAIN_NAME;
+    return     301 https://\$host\$request_uri;
 }
+
+server {
+        listen 443 ssl;
+        server_name $DOMAIN_NAME;
+        root /var/simplesamlphp;
+        index index.html index.htm index.php;
+        
+        ssl_certificate        /etc/pki/tls/certs/sp.crt;
+        ssl_certificate_key    /etc/pki/tls/private/sp.key;
+        ssl_protocols          TLSv1.3 TLSv1.2;
+        ssl_ciphers            EECDH+AESGCM:EDH+AESGCM;
+
+        location ^~ /simplesaml {
+            alias /var/simplesamlphp/www;
+
+            location ~ ^(?<prefix>/simplesaml)(?<phpfile>.+?\.php)(?<pathinfo>/.*)?\$ {
+                include          fastcgi_params;
+                fastcgi_pass  unix:/var/run/php/php-fpm.sock;
+                fastcgi_param SCRIPT_FILENAME \$document_root\$phpfile;
+
+                # Must be prepended with the baseurlpath
+                fastcgi_param SCRIPT_NAME /simplesaml\$phpfile;
+
+                fastcgi_param PATH_INFO \$pathinfo if_not_empty;
+            }
+        }
+    }
+
 EOF
 
-#Open mySQL for all ip
-echo "bind-address = 0.0.0.0" >> /etc/my.cnf 
+
+ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
+
+systemctl reload   nginx.service 
 
 
-read -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "use mysql; UPDATE user SET Host='%' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;"
+# configuration: config.php
 
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
-
-
-if [ $? -eq 0 ]; then
-  echo Good
-else
-  echo no Good
-fi
-
-systemctl restart mysqld
-systemctl reload nginx
-
-#chown nginx:nginx /var/lib/php/session/
-#chown -R nginx:nginx /usr/share/phpMyAdmin/
-chmod 777  /var/lib/php/session/
-
-
-
-
-#nano /etc/php-fpm.d/www.conf 
-#listen.owner = nginx
-#listen.group = nginx
-
-#ALTER USER 'user_name'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; 
-
-
-
+#sed -i  "s/'timezone' => null,/'timezone' => Europe\/Kiev, /"   test.txt
 
 
 
