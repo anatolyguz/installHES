@@ -9,13 +9,20 @@ apt install nginx
 # install  PHP
 sudo apt install php-fpm
 
+# install  PHP extensions:
+# for view inslalled ext.
+# php -m | head
+# or phpinfo();
+apt install php-dom php-mbstring
+
+
+
+
 
 mkdir /var/www/$DOMAIN_NAME
 
 
-
-/etc/nginx/sites-available/$DOMAIN_NAME
-
+cat > /etc/nginx/sites-available/$DOMAIN_NAME << EOF
 server {
     listen 80;
     server_name $DOMAIN_NAME www.$DOMAIN_NAME;
@@ -37,9 +44,9 @@ server {
     }
 
 }
+EOF
 
-
-
+ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
 
 
 
