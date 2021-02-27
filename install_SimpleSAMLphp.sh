@@ -22,7 +22,7 @@ apt install -y php-dom php-mbstring php-curl php-zip unzip
 cd /var/
 wget https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.19.0/simplesamlphp-1.19.0.tar.gz
 tar  xzf simplesamlphp-1.19.0.tar.gz
-mv simplesamlphp-1.19.0 simplesamlphp-1.19.0.tar.gz
+mv simplesamlphp-1.19.0 simplesamlphp
 
 
 #'session.phpsession.cookiename' => null,
