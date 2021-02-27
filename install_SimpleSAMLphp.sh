@@ -25,12 +25,6 @@ tar  xzf simplesamlphp-1.19.0.tar.gz
 mv simplesamlphp-1.19.0 simplesamlphp
 
 
-#'session.phpsession.cookiename' => null,
-#'session.phpsession.savepath' => null,
-#'session.phpsession.httponly' => true,
-
-
-
 #OR
 #     #Download and install SimpleSAMLphp from github
 #     sudo apt install -y nodejs npm
@@ -70,6 +64,16 @@ chown -R www-data.www-data /var/simplesamlphp/
 sed -r -i  "s#'session.cookie.samesite' => \\\SimpleSAML\\\Utils\\\HTTP::canSetSameSiteNone\(\) \? 'None' : null,#'session.cookie.samesite' => null,#"  /var/simplesamlphp/config/config.php
 
 
+# from 
+# 'session.phpsession.cookiename' => 'SimpleSAML',
+# to
+#'session.phpsession.cookiename' => null,
+sed -r -i  "s#'session.phpsession.cookiename' => 'SimpleSAML',#'session.phpsession.cookiename' => null,#>
+
+
+#'session.phpsession.savepath' => null,
+#'session.phpsession.httponly' => true,
+
 
 #sed -i  "s/'timezone' => null,/'timezone' => Europe\/Kiev, /"   test.txt
 
@@ -77,17 +81,13 @@ sed -r -i  "s#'session.cookie.samesite' => \\\SimpleSAML\\\Utils\\\HTTP::canSetS
 
 
  #Configuring Nginx
-
 #create self sing. certificates
-mkdir -p  /etc/pki/tls/certs
-mkdir -p /etc/pki/tls/private
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/private/sp.key -out /etc/pki/tls/certs/sp.crt  -subj "/CN=$DOMAIN_NAME"
+mkdir -p  /etc/nginx/certs/$DOMAIN_NAME
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME/private.key -out /etc/nginx/certs/$DOMAIN_NAME/public.crt  -subj "/CN=$DOMAIN_NAME"
 
 
 #mkdir /var/www/$DOMAIN_NAME
-
 cat > /etc/nginx/sites-available/$DOMAIN_NAME << EOF
-
 server {
     listen 80;
     server_name $DOMAIN_NAME;
@@ -100,8 +100,8 @@ server {
         root /var/simplesamlphp;
         index index.html index.htm index.php;
         
-        ssl_certificate        /etc/pki/tls/certs/sp.crt;
-        ssl_certificate_key    /etc/pki/tls/private/sp.key;
+        ssl_certificate        /etc/nginx/certs/$DOMAIN_NAME/public.crt;
+        ssl_certificate_key    /etc/nginx/certs/$DOMAIN_NAME/private.key;
         ssl_protocols          TLSv1.3 TLSv1.2;
         ssl_ciphers            EECDH+AESGCM:EDH+AESGCM;
 
