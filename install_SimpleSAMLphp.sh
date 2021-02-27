@@ -31,9 +31,6 @@ mv simplesamlphp-1.19.0 simplesamlphp-1.19.0.tar.gz
 
 
 
-
-
-
 #OR
 #     #Download and install SimpleSAMLphp from github
 #     sudo apt install -y nodejs npm
@@ -61,6 +58,22 @@ mv simplesamlphp-1.19.0 simplesamlphp-1.19.0.tar.gz
 
 
 chown -R www-data.www-data /var/simplesamlphp/
+
+
+# configuration: config.php
+
+# change parameters 
+# from 
+# 'session.cookie.samesite' => \SimpleSAML\Utils\HTTP::canSetSameSiteNone() ? 'None' : null,
+# to
+# 'session.cookie.samesite' => null,
+sed -r -i  "s#'session.cookie.samesite' => \\\SimpleSAML\\\Utils\\\HTTP::canSetSameSiteNone\(\) \? 'None' : null,#'session.cookie.samesite' => null,#"  /var/simplesamlphp/config/config.php
+
+
+
+#sed -i  "s/'timezone' => null,/'timezone' => Europe\/Kiev, /"   test.txt
+
+
 
 
  #Configuring Nginx
@@ -114,11 +127,6 @@ EOF
 ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
 
 systemctl reload   nginx.service 
-
-
-# configuration: config.php
-
-#sed -i  "s/'timezone' => null,/'timezone' => Europe\/Kiev, /"   test.txt
 
 
 
