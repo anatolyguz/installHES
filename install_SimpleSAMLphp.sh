@@ -65,7 +65,7 @@ sed -r -i  "s#'session.cookie.samesite' => \\\SimpleSAML\\\Utils\\\HTTP::canSetS
 # 'session.phpsession.cookiename' => 'SimpleSAML',
 # to
 #'session.phpsession.cookiename' => null,
-sed -r -i  "s#'session.phpsession.cookiename' => 'SimpleSAML',#'session.phpsession.cookiename' => null,#>
+sed -r -i  "s#'session.phpsession.cookiename' => 'SimpleSAML',#'session.phpsession.cookiename' => null,#"  /var/simplesamlphp/config/config.php 
 
 
 #'session.phpsession.savepath' => null,
@@ -81,7 +81,9 @@ chown -R www-data.www-data /var/simplesamlphp/
 #Configuring Nginx
 #create self sing. certificates
 mkdir -p  /etc/nginx/certs/$DOMAIN_NAME
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME/private.key -out /etc/nginx/certs/$DOMAIN_NAME/public.crt  -subj "/CN=$DOMAIN_NAME"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout \
+/etc/nginx/certs/$DOMAIN_NAME/private.key \
+-out /etc/nginx/certs/$DOMAIN_NAME/public.crt  -subj "/CN=$DOMAIN_NAME"
 
 
 #mkdir /var/www/$DOMAIN_NAME
