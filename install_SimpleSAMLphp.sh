@@ -51,9 +51,6 @@ mv simplesamlphp-1.19.0 simplesamlphp
 #     npm run build
 
 
-chown -R www-data.www-data /var/simplesamlphp/
-
-
 # configuration: config.php
 
 # change parameters 
@@ -78,9 +75,10 @@ sed -r -i  "s#'session.phpsession.cookiename' => 'SimpleSAML',#'session.phpsessi
 #sed -i  "s/'timezone' => null,/'timezone' => Europe\/Kiev, /"   test.txt
 
 
+chown -R www-data.www-data /var/simplesamlphp/
 
 
- #Configuring Nginx
+#Configuring Nginx
 #create self sing. certificates
 mkdir -p  /etc/nginx/certs/$DOMAIN_NAME
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/$DOMAIN_NAME/private.key -out /etc/nginx/certs/$DOMAIN_NAME/public.crt  -subj "/CN=$DOMAIN_NAME"
