@@ -75,8 +75,6 @@ sed -r -i  "s#'session.phpsession.cookiename' => 'SimpleSAML',#'session.phpsessi
 #sed -i  "s/'timezone' => null,/'timezone' => Europe\/Kiev, /"   test.txt
 
 
-chown -R www-data.www-data /var/simplesamlphp/
-
 
 #Configuring Nginx
 #create self sing. certificates
@@ -126,7 +124,8 @@ EOF
 
 ln -s /etc/nginx/sites-available/$DOMAIN_NAME /etc/nginx/sites-enabled/
 
+
 systemctl reload   nginx.service 
 
 
-
+chown -R www-data.www-data /var/simplesamlphp/
