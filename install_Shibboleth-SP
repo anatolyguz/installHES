@@ -1,0 +1,44 @@
+
+#CentOS 8
+
+dnf -y update
+
+
+#disable selinux
+sed  -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
+#disable firewall
+systemctl stop  firewalld.service 
+systemctl disable  firewalld.service 
+
+
+#install apache and mod_ssl
+dnf -y install httpd
+dnf -y install mod_ssl
+systemctl enable httpd.service 
+
+
+#adding repo from shibboleth
+cat > /etc/yum.repos.d/Shibboleth.repo  << EOF
+[shibboleth]
+name=Shibboleth (CentOS_8)
+# Please report any problems to https://issues.shibboleth.net
+type=rpm-md
+mirrorlist=https://shibboleth.net/cgi-bin/mirrorlist.cgi/CentOS_8
+gpgcheck=1
+gpgkey=https://shibboleth.net/downloads/service-provider/RPMS/repomd.xml.key
+        https://shibboleth.net/downloads/service-provider/RPMS/cantor.repomd.xml.key
+enabled=1
+EOF
+
+
+dnf update
+dnf install shibboleth.x86_64
+systemctl enable shibd.service
+systemctl start shibd.service
+
+
+#reboot
+
+
+
