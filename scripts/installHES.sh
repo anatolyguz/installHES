@@ -160,7 +160,7 @@ fi
 
 cd $DESTINATION/HES.Web/
 mkdir $HES_DIR
-dotnet publish -c $VERSION -v d -o $HES_DIR --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+dotnet publish -c $VERSION -v d -o $HES_DIR --runtime linux-x64 HES.Web.csproj
 if [ $? -eq 0 ]; then
   echo "the application was compiled successfully"
 else
