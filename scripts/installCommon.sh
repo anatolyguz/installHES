@@ -41,7 +41,7 @@ fi
 echo Adding Microsoft Package Repository and Installing .NET Core:
 rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
 
-yum install dotnet-sdk-3.1 -y
+yum install dotnet-sdk-5.0 -y
 
 # Adding MySQL Package Repository and Installing MySQL Server:
 rpm -Uvh https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
@@ -89,7 +89,7 @@ fi
 
 
 # Installing dotnet:
-dnf install dotnet-sdk-3.1 -y
+dnf install dotnet-sdk-5.0 -y
 
 # Installing MySQL Server:
 dnf install mysql-server -y
@@ -131,7 +131,7 @@ ufw allow 443
 wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 dpkg -i packages-microsoft-prod.deb
 apt-get update
-apt install dotnet-sdk-3.1 -y
+apt install dotnet-sdk-5.0 -y
 
 # Installing MySQL Server:
 DEBPKG="mysql-apt-config_0.8.16-1_all.deb"
@@ -163,7 +163,7 @@ apt install git -y
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 dpkg -i packages-microsoft-prod.deb
 apt-get update
-apt install dotnet-sdk-3.1 -y
+apt install dotnet-sdk-5.0 -y
 
 # Installing MySQL Server:
 apt install mysql-server -y
