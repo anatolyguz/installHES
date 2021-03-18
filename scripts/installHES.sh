@@ -204,10 +204,28 @@ sed -i 's/"UserName": "user@example.com"/"UserName": "'$SMTP_USER_NAME'"/' $JSON
 sed -i 's/"Password": "password"/"Password": "'$SMTP_PASSWORD'"/' $JSON
 
 
-# change setting in ServerSettings section
-# Default string is
-# "Url": "https://company.example.com"
-sed -i 's/company.example.com/'$DOMAIN_NAME'/' $JSON
+#Fido2 setting
+# Default strings is
+# "Fido2": {
+#    "ServerDomain": "example.com",
+#    "ServerName": "HES",
+#    "Origin": "https://example.com",
+#    "TimestampDriftTolerance": 300000,
+#    "MDSAccessKey": null
+#  },
+sed -i 's/"ServerDomain": "example.com"/"ServerDomain": "'$DOMAIN_NAME'"/' $JSON
+sed -i 's#"Origin": "https://example.com"#"Origin": "https://'$DOMAIN_NAME'"#' $JSON
+
+
+# ServerSettings setting
+# Default strings is
+#"ServerSettings": {
+#    "Name": "HES",
+#    "Url": "https://example.com"
+#  },
+sed -i 's#"Url": "https://example.com"#"Url": "https://'$DOMAIN_NAME'"#' $JSON
+
+
 
 
 ################################
