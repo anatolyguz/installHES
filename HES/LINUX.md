@@ -346,14 +346,13 @@ Edit the file `/opt/HES/appsettings.Production.json`
 
 Replace the following settings in this file with your own:
 
-* **<user_password>** - Password for the user on MySQL server
+* **`<user_password>`** - Password for the user on MySQL server
 
-* **<smtp_host>** - Host name of your SMTP server (example: `smtp.example.com`)
-* **<smtp_port>** - Port number of your SMTP server (example: `123`)
-* **<email_address>** - Your email adress (example: `user@example.com`)
-* **<email_password>** - Password to access the SMTP server (example: `password`)
-
-* **<you_domain_name>** - you  fully qualified domain name (FQDN) of your HES site (example: `hideez.example.com`)
+* **`<smtp_host>`** - Host name of your SMTP server (example: `smtp.example.com`)
+* **`<smtp_port>`** - Port number of your SMTP server (example: `123`)
+* **`<email_address>`** - Your email adress (example: `user@example.com`)
+* **`<email_password>`** - Password to access the SMTP server (example: `password`)
+* **`<you_domain_name>`** - you  fully qualified domain name (FQDN) of your HES site (example: `hideez.example.com`)
 
 
 Important note: by default, .Net Core uses ports 5000 and 5001. Therefore, if only one domain 

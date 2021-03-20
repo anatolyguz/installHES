@@ -9,17 +9,17 @@
 ## System Preparation
 
 
-1. If the web server is not enabled then use the [official guide](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/?view=aspnetcore-5.0#iis-configuration) to enable IIS.
+### 1. If the web server is not enabled then use the [official guide](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/?view=aspnetcore-5.0#iis-configuration) to enable IIS.
 
-2. Enable WebSockets on IIS according to this [guide](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-5.0#enabling-websockets-on-iis)
+### 2. Enable WebSockets on IIS according to this [guide](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-5.0#enabling-websockets-on-iis)
 
 If the IIS installation requires a restart, restart the system.
 
 You can perform a simple test by opening a web browser and browsing http://localhost You should see a default IIS page.
 
-3. Download and install [Git](https://git-scm.com/download/win)
+### 3. Download and install [Git](https://git-scm.com/download/win)
 
-4. Download and install .NET Core SDK 5.0:
+### 4. Download and install .NET Core SDK 5.0:
 
 - [.NET Core SDK 5.0](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.201-windows-x64-installer) 
 
@@ -29,7 +29,7 @@ You can download the latest versions of this applications. They can be found at 
 
 **[Note]  You MUST have IIS installed before installing Windows Hosting Bundle** 
 
-5. Download and install 
+### 5. Download and install 
 
 - [MySQL](https://dev.mysql.com/downloads/installer/)
 
@@ -44,7 +44,7 @@ During the installation process, you will be prompted to enter a strong password
 
 ### 1. Creating MySQL User and Database for the Hideez Enterprise Server
 
-Tthe following lines create a database db, the user user with the password <user_password>. Сhange <user_password> to a strong password, otherwise you may get a password validator error.
+Tthe following lines create a database db, the user user with the password `<user_password>`. Сhange `<user_password>` to a strong password, otherwise you may get a password validator error.
 
 in MySQL Command Line Client:
 
@@ -101,7 +101,7 @@ Edit the file C:\Hideez\HES\appsettings.Production.json:
 ```
 
 ```json
- {
+  {
    "ConnectionStrings": {
     "DefaultConnection": "server=127.0.0.1;port=3306;database=db;uid=user;pwd=<user_password>"
   },
@@ -114,30 +114,42 @@ Edit the file C:\Hideez\HES\appsettings.Production.json:
     "Password": "<email_password>"
   },
 
+  "Fido2": {
+    "ServerDomain":"<your_domain_name>",
+    "ServerName": "HES",
+    "Origin": "https://<your_domain_name>",
+    "TimestampDriftTolerance": 300000,
+    "MDSAccessKey": null
+  },
+
   "ServerSettings": {
     "Name": "HES",
-    "Url": "<url_to_your_hes_site>"
+    "Url": "https://<your_domain_name>"
   },
   
  ...
 ```
-
-
 Replace the following settings in this file with your own:
+* **`<user_password>`** - Password for the user on MySQL server
 
-* **user_password** - Password for the user on MySQL server
-
-* **smtp_host** - Host name of your SMTP server (example `smtp.example.com`)
-* **smtp_port** - Port number of your SMTP server (example `123`)
-* **email_address** - Your email adress (example `user@example.com`)
-* **email_password** - Password to access the SMTP server (example `password`)
-
-* **url_to_you_hes_site** - URL of your HES site (example `https://hideez.example.com`)
+* **`<smtp_host>`** - Host name of your SMTP server (example: `smtp.example.com`)
+* **`<smtp_port>`** - Port number of your SMTP server (example: `123`)
+* **`<email_address>`** - Your email adress (example: `user@example.com`)
+* **`<email_password>`** - Password to access the SMTP server (example: `password`)
+* **`<you_domain_name>`** - you  fully qualified domain name (FQDN) of your HES site (example: `hideez.example.com`)
 
 
 ### 5. Configuring IIS
 
-Create a Self-Signed Certificate for IIS
+#### 5.1 Create a Self-Signed Certificate for IIS
+
+**Note 1:**
+
+**In production, you should take care of acquiring a certificate from a certificate authority. For a self-signed certificate, the browser will alert you that site has security issues.**
+
+**Note 2:**
+
+**if you create a certificate using IIS, CN will be the same as your server name (in the properties of your server)**
 
 - Start **IIS Manager**. For information about starting IIS Manager, see https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770472(v=ws.10)?redirectedfrom=MSDN
 - Click on the name of the server in the Connections column on the left. Double-click on **Server Certificates**.
@@ -145,10 +157,10 @@ Create a Self-Signed Certificate for IIS
 - Enter any *friendly* name and then click **OK**.
 - You will now have an IIS Self Signed Certificate valid for 1 year listed under Server Certificates. 
 
-**WARNING! The certificate common name (Issued To) is the server name.**
+**WARNING! The certificate common name (CN) (Issued To) is the server name. Name of Certificate is not  CN**
 
 
-Add the Web Site
+#### 5.2 Add the Web Site
 
 - Start **IIS Manager**. For information about starting IIS Manager, see https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770472(v=ws.10)?redirectedfrom=MSDN
 - In the **Connections** pane, right-click the **Sites** node in the tree view, and then click 
