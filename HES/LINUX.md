@@ -621,7 +621,7 @@ Mar 25 10:48:12 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```shell
 $ sudo systemctl stop HES
 $ sudo mv /opt/HES.old /opt/HES
-$ sudo mysqldump -uroot -p<MySQL_root_password> db < ~/db.sql
+$ sudo mysql -uroot -p<MySQL_root_password> db < ~/db.sql
 $ sudo systemctl start HES
 ```
 change `<MySQL_root_password>` with your real password

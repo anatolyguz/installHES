@@ -286,7 +286,7 @@ change <MySQL_root_password> with your real password
 > cd C:\Hideez 
 > rename HES.old HES
 > cd C:\Program Files\MySQL\MySQL Server 8.0\bin
-> mysqldump -u root -p<MySQL_root_password> db < C:\Hideez\bkp\db.sql
+> mysql -u root -p<MySQL_root_password> db < C:\Hideez\bkp\db.sql
 ```
 change <MySQL_root_password> with your real password
 
