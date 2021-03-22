@@ -15,7 +15,7 @@
 
 If the IIS installation requires a restart, restart the system.
 
-You can perform a simple test by opening a web browser and browsing http://localhost You should see a default IIS page.
+You can perform a simple test by opening a web browser and browsing `http://<you_domain_name>` You should see a default IIS page.
 
 ### 3. Download and install [Git](https://git-scm.com/download/win)
 
@@ -32,12 +32,15 @@ You can download the latest versions of this applications. They can be found at 
 ### 5. Download and install 
 
 - [MySQL](https://dev.mysql.com/downloads/installer/)
-
-- [Docs MySQL initial setup](https://dev.mysql.com/doc/refman/8.0/en/mysql-installer.html)
+ 
+ You can read the documentation for installing MySQL at [this](https://dev.mysql.com/doc/refman/8.0/en/mysql-installer.html) address.
 
 When installing MySQL to run our software, you can select the Server only option
 
 During the installation process, you will be prompted to enter a strong password for the root user. Don't forget this password, we'll need it later
+
+If the server configuration step was skipped during the installation, you can do so after installation by clicking Start / My SQL Installer Community and selecting the "Reconfigure" action
+
 
 ## Getting Started (fresh install)
 
@@ -81,9 +84,25 @@ run the following commands (step by step) on the command line:
   > cd C:\Hideez\src\HES.Web
   > dotnet publish -c release -v d -o "C:\Hideez\HES" --runtime win-x64 HES.Web.csproj
 ```
-   [Note] Requires internet connectivity to download NuGet packages
 
- Several warnings may be issued during compilation, this is ok.
+**Note:** Internet connection required to download NuGet packages
+
+After a while (depending on the computer performance), the compilation process will be completed:
+
+```shell
+...
+...
+...
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:37.35
+```
+
+**Note:** Several warnings may be issued during compilation, this is ok.
+
+
+
 ### 4. Configuring the HES
 
 Copy appsettings.json to appsettings.Production.json
@@ -162,31 +181,37 @@ Replace the following settings in this file with your own:
 
 #### 5.2 Add the Web Site
 
+
+
 - Start **IIS Manager**. For information about starting IIS Manager, see https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770472(v=ws.10)?redirectedfrom=MSDN
-- In the **Connections** pane, right-click the **Sites** node in the tree view, and then click 
-
-- (optmal) In **Sites** node 
-turn off "Default Web Site"
-
-**Add Web Site**.
+- In the **Connections** pane, right-click the **Sites** node in the tree view, and then click **Add Web Site**.
 - In the **Add Web Site** dialog box, type a *friendly* name for your Web site in the **Web site name** box. "HES" would be a good choice
-- If you want to select a different application pool than the one listed in the Application Pool box. In the **Select Application Pool** dialog box, select an application pool from the **Application Pool** list, and then click **OK**.
 - In the **Physical path** box, type the *physical path* of the Web site's folder (C:\Hideez\HES), or click the browse button **(...)** to browse the file system to find the folder.
-- Select the protocol for the Web site from the **Type** list.
+- If you want to select a different application pool than the one listed in the Application Pool box. In the **Select Application Pool** dialog box, select an application pool from the **Application Pool** list, and then click **OK**.
+
 - The default value in the **IP address** box is **All Unassigned**. If you must specify a static IP address for the Web site, type the IP *address* in the **IP address** box.
-- Type a port number in the **Port** text box.
+
 - Optionally, type a host header name for the Web site in the **Host Header** box.
 - If you do not have to make any changes to the site, and you want the Web site to be immediately available, select the **Start Web site immediately** check box.
 - Click **OK**.
-- In the **Bindings** pane click "Add" and  Add site Binding with type https for you hostname port 443 and with  you certificate
+- In the **Bindings** pane click "Add" and  Add site Binding with type https for you hostname port 443 and with  you certificate  (In the **SSL cerificate** drop-down menu, select your certificate)
 - Under the server's node, select **Application Pools**.
 - Right-click the site's app pool and select **Basic Settings** from the contextual menu.
 - In the **Edit Application Pool** window, set the **.NET CLR version** to **No Managed Code**.
+- (optmal) In **Sites** node 
+turn off "Default Web Site"
 
-Setup is complete. The server should be accessible in a browser at the address `https://<Server_Name>`
 
-**Warning!
-Remember that if you use a self-signed certificate, you must enter the server name instead of the domain name. Otherwise, the SSL connection will not work**
+Setup is complete. The server should be accessible in a browser at the address 
+`(http://<you_domain_name>`).
+
+
+You must use your domain name to access the HES server (e.g. `http://hideez.example.com`).
+
+
+**Warning! The CN (common name) of your certificate must match your domain.**
+
+**Remember that if you use a self-signed certificate, you must enter the server name instead of the domain name. Otherwise, the SSL connection will not work**
 
 
 ## Updating

@@ -283,7 +283,7 @@ To exit from the MySql console, press Ctrl+D.
   $ cd /opt/src/HES/HES.Web/
   $ sudo dotnet publish -c release -v d -o "/opt/HES" --runtime linux-x64 HES.Web.csproj
 ```
-**[Note]** Internet connection required to download NuGet packages
+**Note:** Internet connection required to download NuGet packages
 
 After a while (depending on the computer performance), the compilation process will be completed:
 
@@ -297,7 +297,7 @@ After a while (depending on the computer performance), the compilation process w
 Time Elapsed 00:00:37.35
 ```
 
-**[Note]** Several warnings may be issued during compilation, this is ok.
+**Note:** Several warnings may be issued during compilation, this is ok.
 
 Then you need to copy Crypto_linux.dll as follows:
 
@@ -457,7 +457,17 @@ Email Address []:.
            +-1705 nginx: worker process
 ```
 
-After performing these steps, the server should already be accessible from the network and respond in the browser to the ip address or its domain name. `(http://<you_domain_name>`)
+Setup is complete. The server should be accessible in a browser at the address 
+`(http://<you_domain_name>`).
+
+
+You must use your domain name to access the HES server (e.g. 'http://hideez.example.com').
+
+
+**Warning! The CN (common name) of your certificate must match your domain.**
+
+**Remember that if you use a self-signed certificate, you must enter the server name instead of the domain name. Otherwise, the SSL connection will not work**
+
 
 ## 4.3 Updating Nginx config
 
