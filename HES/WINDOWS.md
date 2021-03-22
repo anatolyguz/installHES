@@ -176,8 +176,17 @@ Replace the following settings in this file with your own:
 - Enter any *friendly* name and then click **OK**.
 - You will now have an IIS Self Signed Certificate valid for 1 year listed under Server Certificates. 
 
-**WARNING! The certificate common name (CN) (Issued To) is the server name. Name of Certificate is not  CN**
+**WARNING! The certificate common name (CN) (Issued To) is the server name. Name of Certificate is not  CN !**
 
+An alternative way to create a certificate is to use the cmdlet `New-SelfSignedCertificate` in PowerShell, which can be used to specify the required CN:
+
+``` 
+New-SelfSignedCertificate -DnsName <you_domain_name>  -FriendlyName <friendly_name>
+```
+for example:
+``` 
+New-SelfSignedCertificate -DnsName hideez.example.com -FriendlyName HES
+```
 
 #### 5.2 Add the Web Site
 
