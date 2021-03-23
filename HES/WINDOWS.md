@@ -301,6 +301,30 @@ change <MySQL_root_password> with your real password
 
 ## Possible problems and solutions
 
+
+**Problem: When activating data protection, HES requires a data protection password to be entered after each startup**
+
+**Solusion:**
+
+the HES server stores the data protection password in RAM until it restarts. After that, HES will ask for the password again each time. To save the data protection password between HES reboots, it is possible to save this password in the file appsettings.Production.json:
+
+```json
+ ...
+  "DataProtection": {
+    "Password": "<you_data_protection_password>"
+  }, 
+ ...
+```
+
+After editing appsettings.Productin.json, you need to restart HES,  during login, the server will ask for a your old password.
+
+So you need to go to
+"Settings" - "Data Protection" - "Change Password" and set the same password, as saved in the json file, it will no longer ask for it.
+
+
+
+
+
 **Problem:  When activating data protection, the administrator's e-mail often receives messages, such as: "Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:"**
 
 **Solusion:**
