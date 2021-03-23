@@ -297,3 +297,19 @@ change <MySQL_root_password> with your real password
 > rmdir /s HES.old
 > rmdir /s bkp
 ```
+
+
+## Possible problems and solutions
+
+**Problem:  When activating data protection, the administrator's e-mail often receives messages, such as: "Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:"**
+
+**Solusion:**
+Typically, this problem is due to the fact that IIS stops Your HES server, if the application doesn't receive any request in the specified time period (default for 20 minutes)
+
+For disable the time-out period: 
+- Go into the IIS Manager
+- Click on Application Pools (on the left)
+- Right click on your application pool
+- Select `Addvansed Settings`
+- In the `Process Model` section, locate `Idle Time-out (minutes)` and  Change the value from 20 to 0
+- Click "ok"
