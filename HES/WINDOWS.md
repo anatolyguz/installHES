@@ -39,7 +39,9 @@ Alternatively, You can also go to https://dev.mysql.com/downloads/installer and 
 
 When installing MySQL to run our software, you can select the Server only option
 
-During the installation process, you will be prompted to enter a strong password for the root user. Don't forget this password, we'll need it later
+During installation, you may need an additional Microsoft Visual C ++ 2019 Redistributable Package. Agree,  and perform the installation
+
+Also, during the installation process, you will be prompted to enter a strong password for the root user. Don't forget this password, we'll need it later
 
 If the server configuration step was skipped during the installation, you can do so after installation by clicking Start / My SQL Installer Community and selecting the "Reconfigure" action
 
