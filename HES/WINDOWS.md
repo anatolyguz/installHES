@@ -234,9 +234,10 @@ You must use your domain name to access the HES server (e.g. `http://hideez.exam
 
 ### 2. Backing up the HES binaries
 
+- Stop the site using the IIS console
+- rename old binary folder:
+
 ```shell
-  > cd %windir%\system32\inetsrv
-  > appcmd stop site /site.name:HES
   > cd C:\Hideez 
   > rename HES HES.old
 ```
@@ -264,6 +265,7 @@ change <MySQL_root_password> with your real password
 
 ### 5. Restoring the configuration file
 
+
 ```shell
   > cd C:\Hideez
   > copy HES.old\appsettings.Production.json HES\appsettings.Production.json
@@ -273,22 +275,25 @@ change <MySQL_root_password> with your real password
 
 ### 6. Starting the HES
 
-```shell
-  > cd %windir%\system32\inetsrv
-  > appcmd start site /site.name:HES
-```
+Start the site using the IIS console
+
 
 **If something goes wrong, you can restore the HES server using the following commands:**
 
+
+Stop the site using the IIS console, then:
+
 ```shell
-> cd %windir%\system32\inetsrv
-> appcmd stop site /site.name:HES
 > cd C:\Hideez 
 > rename HES.old HES
 > cd C:\Program Files\MySQL\MySQL Server 8.0\bin
 > mysql -u root -p<MySQL_root_password> db < C:\Hideez\bkp\db.sql
 ```
 change <MySQL_root_password> with your real password
+
+And start the site using the IIS console
+
+
 
 **After checking that the update was successful and everything works fine, you can delete copies of the database and server:**
 
@@ -316,12 +321,10 @@ the HES server stores the data protection password in RAM until it restarts. Aft
  ...
 ```
 
-After editing appsettings.Productin.json, you need to restart HES,  during login, the server will ask for a your old password.
+After editing appsettings.Production.json, you need to restart HES,  during login, the server will ask for a your old password.
 
 So you need to go to
 "Settings" - "Data Protection" - "Change Password" and set the same password, as saved in the json file, it will no longer ask for it.
-
-
 
 
 
