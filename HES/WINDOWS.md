@@ -51,9 +51,11 @@ If the server configuration step was skipped during the installation, you can do
 
 ### 1. Creating MySQL User and Database for the Hideez Enterprise Server
 
-Tthe following lines create a database db, the user user with the password `<user_password>`. Сhange `<user_password>` to a strong password, otherwise you may get a password validator error.
 
-in MySQL Command Line Client:
+Start the MySQL Command Line Client (Start/MySQL 8.0 Command Line Client), enter the MySQL root user password.
+
+The following lines create a database db, the user user with the password `<user_password>`. Сhange `<user_password>` to a strong password, otherwise you may get a password validator error.
+
 
 
 ```sql
@@ -73,20 +75,19 @@ in MySQL Command Line Client:
 
 ### 2. Cloning the HES GitHub repository
 
-run the following commands (step by step) on the command line:
+run the following command on the command line:
 
 ```shell
-  > cd C:\
-  > md Hideez
-  > cd Hideez
-  > git clone https://github.com/HideezGroup/HES src
+> git clone https://github.com/HideezGroup/HES  C:\Hideez\src
 ```
+
+this will create a copy of our repository in the `C:\Hideez\src` directory of your computer
 
 ### 3. Building the HES from the sources
 
 ```shell
   > cd C:\Hideez\src\HES.Web
-  > dotnet publish -c release -v d -o "C:\Hideez\HES" --runtime win-x64 HES.Web.csproj
+  > dotnet publish -c release -v d -o C:\Hideez\HES --runtime win-x64 HES.Web.csproj
 ```
 
 **Note:** Internet connection required to download NuGet packages
@@ -177,8 +178,11 @@ Replace the following settings in this file with your own:
 - Start **IIS Manager**. For information about starting IIS Manager, see https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770472(v=ws.10)?redirectedfrom=MSDN
 - Click on the name of the server in the Connections column on the left. Double-click on **Server Certificates**.
 - In the Actions column on the right, click on **Create Self-Signed Certificate...**
-- Enter any *friendly* name and then click **OK**.
-- You will now have an IIS Self Signed Certificate valid for 1 year listed under Server Certificates. 
+- Enter any *friendly* name (for example HES) and then click **OK**.
+- You will now have an IIS Self Signed Certificate valid for 1 year listed under Server Certificates.
+
+you can click on the created certificate and see its properties
+
 
 **WARNING! The certificate common name (CN) (Issued To) is the server name. Name of Certificate is not  CN !**
 
