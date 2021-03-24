@@ -317,34 +317,32 @@ And start the site using the IIS console
 
 **Problem: When activating data protection, HES requires a data protection password to be entered after each startup**
 
-**Solusion:**
+**Solution:**
 
-the HES server stores the data protection password in RAM until it restarts. After that, HES will ask for the password again each time. To save the data protection password between HES reboots, it is possible to save this password in the file appsettings.Production.json:
+The HES server stores the data protection password in RAM until it restarts. After that, HES will ask for the password again each time. To save the data protection password between HES reboots, it is possible to save this password in the file `appsettings.Production.json`:
 
 ```json
  ...
   "DataProtection": {
-    "Password": "<you_data_protection_password>"
+    "Password": "<your_data_protection_password>"
   }, 
  ...
 ```
 
-After editing appsettings.Production.json, you need to restart HES,  during login, the server will ask for a your old password.
+After editing `appsettings.Production.json`, you need to restart HES.
 
-So you need to go to
-"Settings" - "Data Protection" - "Change Password" and set the same password, as saved in the json file, it will no longer ask for it.
-
-
+To change the data protection password login to HES and go to
+"Settings" - "Data Protection" - "Change Password". After this, you need to update the password in the `appsettings.Production.json` also.
 
 **Problem:  When activating data protection, the administrator's e-mail often receives messages, such as: "Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:"**
 
-**Solusion:**
-Typically, this problem is due to the fact that IIS stops Your HES server, if the application doesn't receive any request in the specified time period (default for 20 minutes)
+**Solution:**
+Typically, this problem is due to the fact that IIS stops your HES server if the application doesn't receive any request in the specified time period (default for 20 minutes)
 
-For disable the time-out period: 
+To disable the time-out period: 
 - Go into the IIS Manager
 - Click on Application Pools (on the left)
-- Right click on your application pool
-- Select `Addvansed Settings`
+- Right-click on your application pool
+- Select `Advanced Settings`
 - In the `Process Model` section, locate `Idle Time-out (minutes)` and  Change the value from 20 to 0
-- Click "ok"
+- Click "OK"
