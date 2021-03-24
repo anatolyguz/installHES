@@ -116,6 +116,10 @@ else
 fi
 
 
+# Version HES
+VERSION=$(grep '<Version>.*</Version>' $DESTINATION/HES.Web/HES.Web.csproj | sed   's/.*<Version>\(.*\)<\/Version>.*/\1/')
+
+
 #Creating MySQL User
 DATABASE_USER="user"
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DATABASE_USER'@'127.0.0.1' IDENTIFIED BY '$USER_PASSWORD';"
@@ -291,6 +295,7 @@ SMTP_HOST = $SMTP_HOST
 SMTP_PORT = $SMTP_PORT
 SMTP_USER_NAME = $SMTP_USER_NAME
 SMTP_PASSWORD = $SMTP_PASSWORD
+VERSION = $VERSION
 EOF
 
 cat $FILE_SETTING
