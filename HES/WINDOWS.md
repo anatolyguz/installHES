@@ -315,7 +315,7 @@ And start the site using the IIS console
 ## Possible problems and solutions
 
 
-**Problem: When activating data protection, HES requires a data protection password to be entered after each startup**
+**Problem: When activating the data protection, HES requires the data protection password to be entered after each startup**
 
 **Solution:**
 
