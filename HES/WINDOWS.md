@@ -31,7 +31,9 @@ You can download the latest versions of this applications. They can be found at 
 
 ### 5. Download and install 
 
-- [MySQL](https://dev.mysql.com/downloads/installer/)
+- [MySQL](https://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-community-8.0.23.0.msi)
+
+Alternatively, You can also go to https://dev.mysql.com/downloads/installer and  download the latest versions of this applications 
  
  You can read the documentation for installing MySQL at [this](https://dev.mysql.com/doc/refman/8.0/en/mysql-installer.html) address.
 
