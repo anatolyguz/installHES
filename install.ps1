@@ -5,11 +5,8 @@ Install-WindowsFeature -name Web-WebSockets
 
 
 #Cloning the HES GitHub repository
-cd C:\
-md Hideez
-cd Hideez
-git clone https://github.com/HideezGroup/HES src
-cd src\HES.Web
+git clone https://github.com/HideezGroup/HES C:\Hideez\src
+cd C:\Hideez\src\HES.Web
 
 
 #Install MySQL
