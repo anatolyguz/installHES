@@ -1,3 +1,9 @@
+# install IIS
+Install-WindowsFeature -Name Web-Server  -IncludeManagementTools
+Install-WindowsFeature -name Web-WebSockets
+
+
+
 #Cloning the HES GitHub repository
 cd C:\
 md Hideez
