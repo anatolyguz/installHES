@@ -1,6 +1,6 @@
 This instruction shows how to install the HES server using docker containers on Linux. Examples of commands are given for CentOS 7 and Ubuntu 18.04, other versions of the Linux was not tested.
 
-First of all, you need to decide what URL will be for your future HES server. It can be something like hideez.yurcompany.com. Hereinafter, this name is indicated as <Name_Of_Domain>. You can copy this instruction into any text editor and replace all instances of the <Name_Of_Domain> with your name. After that, you can execute most of the commands just copying them from the editor.
+First of all, you need to decide what URL will be for your future HES server. It can be something like hideez.yurcompany.com. Hereinafter, this name is indicated as <your_domain_name>. You can copy this instruction into any text editor and replace all instances of the <your_domain_name> with your name. After that, you can execute most of the commands just copying them from the editor.
 
 You need to add your domain name to the DNS settings of your hosting provider. 
 
@@ -154,7 +154,7 @@ Open the `/opt/HES/docker-compose.yml` file for editing. In this file you need t
 **MYSQL_ROOT_PASSWORD** - put here the password for 'root' account.
 	  
 # 7. Configure the Nginx 
-Open the `/opt/HES/nginx/nginx.conf` file for editing. Replace all instances of <Name_Of_Domain> with your name.
+Open the `/opt/HES/nginx/nginx.conf` file for editing. Replace all instances of <your_domain_name> with your name.
 
 # 8. Create a SSL Certificate
 Here we providing instruction on how to get a self-signed certificate for SSL encryption. It can be used for test or demo purposes. For the production server, you need to acquire a certificate from a certificate authority. For a self-signed certificate, the browser will alert you that the site has security issues. 
@@ -185,7 +185,7 @@ You can check the status of the docker containers running the command:
 # docker-compose ps
 ```
 
-To make sure that everything is configured correctly, open the URL of your site in a browser (<Name_Of_Domain>). You should see the server authorization page. Log in using the default login 'admin@hideez.com' and default password 'admin'.
+To make sure that everything is configured correctly, open the URL of your site in a browser (`https://<your_domain_name>`). You should see the server authorization page. Log in using the default login 'admin@hideez.com' and default password 'admin'.
 
 In case you cannot log in to the HES, see log files located in '/opt/HES/hes-site/logs' 
 
