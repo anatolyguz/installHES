@@ -1,0 +1,62 @@
+version: '3.6'
+# Create networks
+networks:
+  hes:
+    name: hes
+# Create Sevices
+services:
+  # Create HES images
+  hes:
+    container_name: hes-site
+    restart: always
+    command: ./HES.Web
+    build: .
+    environment: 
+      ASPNETCORE_URLS: "http://0.0.0.0:5000;https://0.0.0.0:5001"
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    networks:
+      - hes
+    depends_on:
+      - hes-db
+    volumes:
+      - ./hes-site/appsettings.Production.json:/opt/HES/appsettings.Production.json
+      - ./hes-site/logs:/opt/HES/logs
+  hes-db:
+    image: mysql
+    container_name: hes-db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      # these variables specify the name of the database and passwords 
+      # (the same database, user and password must be written in the appsettings.Production.json file)
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3306:3306'
+    networks:
+      - hes
+    volumes:
+      #./mysql/data is a real folder on the local machine that will host the MySQL databaseґ
+      # you can change it to a more appropriate one 
+      - ./mysql/data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", 'mysql --database=$$MYSQL_DATABASE --password=$$MYSQL_ROOT_PASSWORD --execute="SELECT count(table_name) > 0 FROM information_schema.tables;" --skip-column-names -B']
+  hes-nginx:
+    image: nginx
+    container_name: hes-nginx
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - hes
+    depends_on:
+      - hes
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/log:/var/log/nginx
