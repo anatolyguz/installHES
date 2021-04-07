@@ -1,4 +1,4 @@
-This instruction shows how to install the HES server using docker containers on Linux. Examples of commands are given for CentOS 7 and Ubuntu 18.04, other versions of the Linux was not tested.
+This instruction shows how to install the HES server using docker containers on Linux. Examples of commands are given for CentOS 7, Ubuntu 20.04 and Ubuntu 18.04, other versions of the Linux was not tested.
 
 First of all, you need to decide what URL will be for your future HES server. It can be something like hideez.yurcompany.com. Hereinafter, this name is indicated as <your_domain_name>. You can copy this instruction into any text editor and replace all instances of the <your_domain_name> with your name. After that, you can execute most of the commands just copying them from the editor.
 
@@ -11,11 +11,12 @@ CentOS 7
 # yum update -y
 # yum install git -y
 ```
-Ubuntu 18.04
+Ubuntu
 ```shell
 # apt update
 # apt upgrade -y
-# apt install apt-transport-https ca-certificates curl software-properties-common -y
+# apt-get install -y  apt-transport-https  ca-certificates curl gnupg lsb-release
+
 ```
 
 # 2. Enable and install Docker CE Repository 
@@ -28,33 +29,37 @@ CentOS 7
 # systemctl start docker
 # systemctl enable docker
 ```
-Ubuntu 18.04  
+Ubuntu 
 ```shell
-# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+#  echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 # apt update
-# apt-cache policy docker-ce
 # apt install docker-ce -y
 ``` 
+
+
 
 To verify installed docker version run the following command:
 ```shell
 # docker --version
-Docker version 19.03.8, build afacb8b
+Docker version 20.10.5, build 55c4c88
 ```
 
 
 # 3. Install Docker Compose
 ```shell
-# curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+# curl -L "https://github.com/docker/compose/releases/download/1.28.6/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
 # chmod +x /usr/local/bin/docker-compose
 ```
-Note: Replace “1.25.4” with docker compose version that you want to install but at this point of time this is the latest and stable version of the docker compos. You can see all releases of docker-compose [here](https://github.com/docker/compose/releases).
+Note: Replace “1.28.6” with docker compose version that you want to install but at this point of time this is the latest and stable version of the docker compos. You can see all releases of docker-compose [here](https://github.com/docker/compose/releases).
 
 Test the installation.
 ```shell
 # docker-compose --version
-docker-compose version 1.25.4, build 1110ad01
+docker-compose version 1.28.6, build 5db8d86f
 ```
 
 # 4. Clone the HES repository
@@ -118,7 +123,9 @@ This file contains configuration and security settings, required to run the HES 
 You need to modify values embraced in "<>". These are grouped into DB Settings, SMTP Server Settings and Data Protection Settings. 
 
 ## 6.1 DB Settings
-**<mysql_server>** - put here "hes-db". This name must be the same as the MySQL container name in the `/opt/HES/docker-compose.yml` which is "hes-db" by default.
+**<mysql_server>** - put here "hes-db". 
+
+**WARNING! This name must be the same as the MySQL container name in the `/opt/HES/docker-compose.yml` which is "hes-db" by default.**
 
 **<mysql_port>** - put here "3306". This is default value.
 
@@ -190,13 +197,103 @@ To make sure that everything is configured correctly, open the URL of your site 
 In case you cannot log in to the HES, see log files located in '/opt/HES/hes-site/logs' 
 
 # 11. How to update HES server
-To update the server from the latest sources, run commands: 
+
+Backup the MySQL Database (Optimal, for possible further recovery)) :
+
+The following command will create a copy of the database (dump) in file db.sql in your home directory (on host) from container with name `hes-db`:
+
+```shell
+# cd /opt/HES/
+# docker exec hes-db /usr/bin/mysqldump -u root --password=password db > ~/db.sql
+```
+
+## Stop containers:
+ 
 ```shell
 # cd /opt/HES/
 # docker-compose down
-# docker rmi hes_hes
+```
+
+
+ Save the image of HES to a tar file (Optimal, for possible further recovery):
+
+```shell
+# cd /opt/HES/
+# docker save -o ~/hes.tar hes_hes
+```
+
+## Remove image of HES:
+
+```shell
+# cd /opt/HES/
+# docker rmi hes_hes --force
+```
+
+To update the server from the latest sources, run commands: 
+```shell
+# cd /opt/HES/
 # docker-compose up --build -d
 ```
+
+and Restart  containers:
+```shell
+# docker-compose down && docker-compose up -d
+```
+
+
+
+## If something goes wrong, you can restore the HES server using the following commands:
+
+Stop containers:
+ 
+```shell
+# cd /opt/HES/
+# docker-compose down
+```
+
+Remove image of HES:
+
+```shell
+# cd /opt/HES/
+# docker rmi hes_hes --force
+```
+
+Start  MySQL container only:
+```shell
+# cd /opt/HES/
+# docker-compose up -d hes-db
+```
+
+Restore the MySQL Database from dump file:
+
+```shell
+# cd /opt/HES/
+# cat ~/db.sql | docker exec -i hes-db /usr/bin/mysql -u root --password=password db
+```
+
+Restore old image of HES from tar file:
+
+```shell
+# docker load -i ~/hes.tar
+```
+
+and Restart  containers:
+```shell
+# docker-compose down && docker-compose up -d
+```
+
+
+## After checking that the update was successful and everything works fine, you can delete copies of the database and server:
+
+```shell
+# rm ~/hes.tar
+# rm ~/db.sql
+```
+
+
+
+
+
 
 # 12. Next Steps
 See the <a href="https://support.hideez.com/hideez-enterprise-server" target="_blank">User Manuals</a> for futher settings. 
