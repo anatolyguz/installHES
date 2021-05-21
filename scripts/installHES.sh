@@ -115,6 +115,8 @@ else
   exit 1
 fi
 
+cd $DESTINATION
+git checkout $TAG
 
 # Version HES
 VERSION=$(grep '<Version>.*</Version>' $DESTINATION/HES.Web/HES.Web.csproj | sed   's/.*<Version>\(.*\)<\/Version>.*/\1/')
