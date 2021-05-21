@@ -119,7 +119,7 @@ cd $DESTINATION
 git checkout $TAG
 
 # Version HES
-VERSION=$(grep '<Version>.*</Version>' $DESTINATION/HES.Web/HES.Web.csproj | sed   's/.*<Version>\(.*\)<\/Version>.*/\1/')
+VERSION_HES=$(grep '<Version>.*</Version>' $DESTINATION/HES.Web/HES.Web.csproj | sed   's/.*<Version>\(.*\)<\/Version>.*/\1/')
 
 
 #Creating MySQL User
@@ -157,11 +157,12 @@ fi
 #Building the Hideez Enterprise Server from the sources
  
 HES_DIR=/opt/HES
+BACKUP_HES_DIR=$HES_DIR-$(date +%Y-%m-%d-%H-%M-%S)
 
 if [ -d $HES_DIR ]; then
     # try stop service
     systemctl stop HES.service
-    mv $HES_DIR $HES_DIR-$(date +%Y-%m-%d-%H-%M-%S)
+    mv $HES_DIR $BACKUP_HES_DIR
 fi
 
 cd $DESTINATION/HES.Web/
@@ -197,6 +198,7 @@ else
 fi
 
 JSON=$HES_DIR/appsettings.Production.json
+BACKUP_JSON=$BACKUP_HES_DIR/appsettings.Production.json
 
 # change setting in  appsettings.json
 # Default string is
@@ -232,9 +234,23 @@ sed -i 's#"Origin": "https://example.com"#"Origin": "https://'$DOMAIN_NAME'"#' $
 sed -i 's#"Url": "https://example.com"#"Url": "https://'$DOMAIN_NAME'"#' $JSON
 
 
-
-
 ################################
+
+# if exist backup of appsettings, then resore it
+if [ -f $BACKUP_JSON ]; then
+    cp $BACKUP_JSON  $JSON
+    if [ $? -eq 0 ]; then
+        echo "appsettings.json to appsettings.Production.json successfully copied"
+    else
+        # ups.... 
+       echo "Error copying backup of appsettings.Production.json"
+       exit 1
+    fi
+fi
+################################
+
+
+
   
 #  Daemonizing Hideez Enterprise Server 
 cp $DESTINATION/HES.Deploy/HES.service   /lib/systemd/system/HES.service
@@ -297,7 +313,7 @@ SMTP_HOST = $SMTP_HOST
 SMTP_PORT = $SMTP_PORT
 SMTP_USER_NAME = $SMTP_USER_NAME
 SMTP_PASSWORD = $SMTP_PASSWORD
-VERSION = $VERSION
+VERSION_HES = $VERSION_HES
 EOF
 
 cat $FILE_SETTING
