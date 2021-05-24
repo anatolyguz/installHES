@@ -15,7 +15,7 @@ REPO="https://github.com/HideezGroup/HES"
 DESTINATION="/opt/src/HES"
 BRANCH="master"
 VERSION="release"
-TAG="HEAD""
+TAG="HEAD"
 #######################################
 # If you want the script to ask no questions, un comment and fill in these variables
 # (USER_PASSWORD must comply with mysql policy!)
