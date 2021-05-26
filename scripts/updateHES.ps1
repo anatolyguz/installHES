@@ -64,26 +64,16 @@ Set-Location "$MYSQL_HOME\bin"
 
 #& .\mysqldump.exe -u user -ppassword  db > C:\db.sql 
 
+ .\mysqldump.exe -u root -p"$MYSQL_ROOT_PASSWORD"  --result-file=C:\db.sql  --databases $DATABASE_NAME
 
-$temfile = New-TemporaryFile
-
-Add-Content -path $temfile @"
-[mysqldump]
-user=root
-password=$MYSQL_ROOT_PASSWORD
-"@
 
 
 
 #.\mysqldump.exe --defaults-file=$temfile.FullName --result-file=C:\db.sql  --databases $DATABASE_NAME
 
 
-write-host "temfile.FullName = $temfile.FullName"
+#write-host "temfile.FullName = $temfile.FullName"
 
 
-#Remove-Item $temfile.FullName
 
-$ppp='mypassword'
-
-
-cmd /c .\mysql.exe -N -s -r -u root -p$ppp -e 'show databases'
+#cmd /c .\mysql.exe -N -s -r -u root -p"$ppp" -e 'show databases'
