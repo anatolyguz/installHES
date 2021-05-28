@@ -24,42 +24,38 @@ write-host "HESSERVICE = $HESSERVICE"
 write-host "DATABASE_NAME = $DATABASE_NAME"
 
 
-cd $DESTINATION
+Set-Location $DESTINATION
+
+git pull 
+git branch -r
 
 git fetch
 git checkout $BRANCH
-
-
-git pull 
-#git pull $BRANCH
+#git pull 
+git pull $BRANCH
 
 git checkout $TAG
 
 
-if ($?) 
-{
- echo "switch to branch $BRANCH"
-} 
-else 
-{
-    # ups.... 
-  echo 'error switchung to branch $BRANCH'
-  exit 1
-}
-
+#if ($?) 
+#{
+# echo "switch to branch $BRANCH"
+#} 
+#else 
+#{
+#    # ups.... 
+#  echo 'error switchung to branch $BRANCH'
+#  exit 1
+#}
 
 
 #for testing  version only
 get-content HES.Web/HES.Web.csproj | select-string "<Version>"
 
-
 # stoping  service
-cd $env:windir\System32\inetsrv
+Set-Location $env:windir\System32\inetsrv
 
-# appcmd stop site /site.name:$HESSERVICE
-
-#$env:windir\System32\inetsrv\appcmd.exe stop site /site.name:$HESSERVICE
-
+.\appcmd.exe  stop site /site.name:$HESSERVICE
 
 #.\appcmd.exe  stop site /site.name:$HESSERVICE
 #if ($?)
@@ -75,39 +71,28 @@ cd $env:windir\System32\inetsrv
 
 #iisreset
 
-
-
-
-
-New-Item -Path $HES_DIR -Name "app_offline.htm" -ItemType "file"
+#New-Item -Path $HES_DIR -Name "app_offline.htm" -ItemType "file"
 
 iisreset /stop
-
-
 
 $BACKUP_HES_DIR = $HES_DIR + "-" + (Get-Date -Format "yyyy-mm-dd-HH-mm-ss") + ".Old"
 
 
-write-host "BACKUP_HES_DIR = $BACKUP_HES_DIR"
+#echo "BACKUP_HES_DIR = $BACKUP_HES_DIR"
 
-Rename-Item -Path $HES_DIR -NewName $BACKUP_HES_DIR
+Rename-Item  -force -Path $HES_DIR -NewName $BACKUP_HES_DIR
 
 if ($?)
 {
     echo "Create of backup HES dir"
 }
-
 else
 {
    echo 'Error Create of backup HES dir!'
    exit 1
 }
 
-
-
-Remove-Item -Path $BACKUP_HES_DIR\app_offline.htm
-
-
+#Remove-Item -Path $BACKUP_HES_DIR\app_offline.htm
 
 
 $MYSQL_HOME='C:\Program Files\MySQL\MySQL Server 8.0'
@@ -117,14 +102,13 @@ Set-Location "$MYSQL_HOME\bin"
 
 #& .\mysqldump.exe -u user -ppassword  db > C:\db.sql 
 
-# .\mysqldump.exe -u root -p"$MYSQL_ROOT_PASSWORD"  --result-file=C:\db.sql  --databases "$DATABASE_NAME"
+#
 
 
+# create temp file with password fo root
 
 $tmpfie = New-TemporaryFile
-echo $tmpfie.FullName
-
-
+#echo $tmpfie.FullName
 
 Add-Content -path $tmpfie.FullName @"
 [client]
@@ -135,19 +119,10 @@ user = root
 host = localhost
 "@
 
+.\mysqldump.exe  --defaults-extra-file=$tmpfie -u root --result-file=$BACKUP_HES_DIR\$DATABASE_NAME.sql  "$DATABASE_NAME"
 
-
-
-#  .\mysqldump.exe  --defaults-extra-file=c:\123.txt -u root --result-file=$BACKUP_HES_DIR\$DATABASE_NAME.sql  "$DATABASE_NAME"
-
-
-
-echo   .\mysqldump.exe  --defaults-extra-file="$tmpfie".FullName -u root --result-file=$BACKUP_HES_DIR\$DATABASE_NAME.sql  "$DATABASE_NAME"
-  .\mysqldump.exe  --defaults-extra-file=$tmpfie -u root --result-file=$BACKUP_HES_DIR\$DATABASE_NAME.sql  "$DATABASE_NAME"
-
-
-
-
+#  altenative is  (but error code <> 0)
+#  .\mysqldump.exe -u root -p"$MYSQL_ROOT_PASSWORD"  --result-file="$BACKUP_HES_DIR"\"$DATABASE_NAME".sql  --databases "$DATABASE_NAME"
 
 if ($?)
 {
@@ -160,20 +135,36 @@ else
    exit 1
 }
 
-
-
-
 Remove-Item $tmpfie.FullName
 
 
-#.\mysqldump.exe --defaults-file=$temfile.FullName --result-file=C:\db.sql  --databases $DATABASE_NAME
-
-
-#cmd /c .\mysql.exe -N -s -r -u root -p"$ppp" -e 'show databases'
-
-
-
-cd $DESTINATION/HES.Web/
-
+#Building application
+Set-Location $DESTINATION/HES.Web/
 dotnet publish -c $VERSION -v d -o $HES_DIR --runtime win-x64 HES.Web.csproj
 
+if ($?)
+{
+    echo "the application was compiled successfully"
+}
+
+else
+{
+    # ups.... 
+    echo "application compilation error"
+    exit 1
+}
+
+
+# copying an old json file 
+$JSON=$HES_DIR+"\appsettings.Production.json"
+$BACKUP_JSON=$BACKUP_HES_DIR+"\appsettings.Production.json"
+Copy-Item -Path $BACKUP_JSON -Destination $JSON
+
+
+# startiing  service
+
+iisreset /start
+Set-Location $env:windir\System32\inetsrv 
+.\appcmd.exe  start site /site.name:$HESSERVICE
+
+#that's all ..
