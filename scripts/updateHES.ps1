@@ -1,19 +1,49 @@
 
 Param (
 
-    [Parameter(Mandatory=$true)]  $MYSQL_ROOT_PASSWORD,
     $REPO="https://github.com/HideezGroup/HES",
     $DESTINATION="C:\Hideez\src",
     $BRANCH="master",
     $TAG="HEAD",
     $VERSION="release",
     $HES_DIR="C:\Hideez\HES",
-    $HESSERVICE="HES",
-    $DATABASE_NAME="db"
+    $HESSERVICE="HES"
+
 )
 
 
-write-host "MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD" 
+#for create backup of database, parsing json file
+
+$JSON_FILE=$HES_DIR+"\appsettings.Production.json"
+$JSON=Get-Content $JSON_FILE | ConvertFrom-Json
+$CONNECTIONSTRING=$JSON.ConnectionStrings.DefaultConnection
+
+$DATABASE_USER = ''
+$DATABASE_PASSWORD = ''
+$DATABASE_NAME = ''
+
+$CONNECTIONSTRING  -split ';' | ForEach-Object -Process {
+    $key, $value = $_ -split '='
+    if ($key -eq 'database') 
+    {
+        $DATABASE_NAME = $value
+    }
+
+
+    if ($key -eq 'uid') 
+    {
+        $DATABASE_USER = $value
+    }
+ 
+    if ($key -eq 'pwd') 
+    {
+        $DATABASE_PASSWORD = $value
+    }
+ 
+}
+
+
+
 write-host "REPO = $REPO" 
 write-host "DESTINATION = $DESTINATION"
 write-host "BRANCH = $BRANCH"
@@ -21,16 +51,20 @@ write-host "TAG = $TAG"
 write-host "VERSION = $VERSION"
 write-host "HES_DIR = $HES_DIR"
 write-host "HESSERVICE = $HESSERVICE"
+
+write-host "DATABASE_USER = $DATABASE_USER"
+write-host "DATABASE_PASSWORD = $DATABASE_PASSWORD"
 write-host "DATABASE_NAME = $DATABASE_NAME"
 
 
 Set-Location $DESTINATION
 
-git pull 
 git branch -r
 
 git fetch
 git checkout $BRANCH
+
+
 #git pull 
 git pull $BRANCH
 
@@ -57,6 +91,7 @@ Set-Location $env:windir\System32\inetsrv
 
 .\appcmd.exe  stop site /site.name:$HESSERVICE
 
+
 #.\appcmd.exe  stop site /site.name:$HESSERVICE
 #if ($?)
 #{
@@ -71,11 +106,13 @@ Set-Location $env:windir\System32\inetsrv
 
 #iisreset
 
-#New-Item -Path $HES_DIR -Name "app_offline.htm" -ItemType "file"
+
+
+New-Item -Path $HES_DIR -Name "app_offline.htm" -ItemType "file"
 
 iisreset /stop
 
-$BACKUP_HES_DIR = $HES_DIR + "-" + (Get-Date -Format "yyyy-mm-dd-HH-mm-ss") + ".Old"
+$BACKUP_HES_DIR = $HES_DIR + "-" + (Get-Date -Format "yyyy-MM-dd-HH-mm-ss") + ".Old"
 
 
 #echo "BACKUP_HES_DIR = $BACKUP_HES_DIR"
@@ -86,40 +123,41 @@ if ($?)
 {
     echo "Create of backup HES dir"
 }
+
 else
 {
    echo 'Error Create of backup HES dir!'
    exit 1
 }
 
-#Remove-Item -Path $BACKUP_HES_DIR\app_offline.htm
+
+Remove-Item -Path $BACKUP_HES_DIR\app_offline.htm
 
 
 $MYSQL_HOME='C:\Program Files\MySQL\MySQL Server 8.0'
 Set-Location "$MYSQL_HOME\bin"
 
-#& .\mysqldump.exe -u root -p$MYSQL_ROOT_PASSWORD  db > C:\db.sql 
 
-#& .\mysqldump.exe -u user -ppassword  db > C:\db.sql 
-
-#
-
-
-# create temp file with password fo root
+# create temp file with password 
 
 $tmpfie = New-TemporaryFile
 #echo $tmpfie.FullName
 
+
 Add-Content -path $tmpfie.FullName @"
 [client]
-password = "$MYSQL_ROOT_PASSWORD"
+password = "$DATABASE_PASSWORD"
 
 [mysqldump]
-user = root
-host = localhost
+user = "$DATABASE_USER"
+host = 127.0.0.1
+password = "$DATABASE_PASSWORD"
 "@
 
-.\mysqldump.exe  --defaults-extra-file=$tmpfie -u root --result-file=$BACKUP_HES_DIR\$DATABASE_NAME.sql  "$DATABASE_NAME"
+
+
+.\mysqldump.exe  --defaults-extra-file=$tmpfie --result-file=$BACKUP_HES_DIR\$DATABASE_NAME.sql  --no-tablespaces  "$DATABASE_NAME"
+
 
 #  altenative is  (but error code <> 0)
 #  .\mysqldump.exe -u root -p"$MYSQL_ROOT_PASSWORD"  --result-file="$BACKUP_HES_DIR"\"$DATABASE_NAME".sql  --databases "$DATABASE_NAME"
@@ -135,11 +173,12 @@ else
    exit 1
 }
 
+
 Remove-Item $tmpfie.FullName
 
 
-#Building application
 Set-Location $DESTINATION/HES.Web/
+
 dotnet publish -c $VERSION -v d -o $HES_DIR --runtime win-x64 HES.Web.csproj
 
 if ($?)
@@ -158,13 +197,16 @@ else
 # copying an old json file 
 $JSON=$HES_DIR+"\appsettings.Production.json"
 $BACKUP_JSON=$BACKUP_HES_DIR+"\appsettings.Production.json"
+
 Copy-Item -Path $BACKUP_JSON -Destination $JSON
 
 
 # startiing  service
 
 iisreset /start
+
 Set-Location $env:windir\System32\inetsrv 
+
 .\appcmd.exe  start site /site.name:$HESSERVICE
 
 #that's all ..
