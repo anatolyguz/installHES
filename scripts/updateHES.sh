@@ -1,14 +1,12 @@
 #/bin/bash
 USAGE=`cat << EOF
 usage: 
-update_HES.sh --p password [otpions]   
- --p password                  password of mysql root  (required parameter!) 
-otpions is:
-[--r <REPO>]  [--dst <DESTINATION>] [--db <DATABASE_NAME>]  [--b  <BRANCH>]  [--b  <TAG>]  [--v  <VERSION>] [ --hesdir  <HES_DIR>]  [--hesserver <HES-SERVICE>]
+update_HES.sh [otpions]   
+ otpions is:
+[--r <REPO>]  [--dst <DESTINATION>] [--b  <BRANCH>]  [--t  <TAG>]  [--v  <VERSION>] [ --hesdir  <HES_DIR>] [--hesserver <HES-SERVICE>]
 where:
  --r <REPO>                    url HES repo/ Default https://gitub.com/HideezGroup/HES  
  --dst <DESTINATION>           destinations of local HES source directory. Default  /opt/src/HES
- --db <DATABASE_NAME>                   name of database. Default db
  --b  <BRANCH>                 name of Branch. Default master
  --t  <TAG>                    tag of repo. Default current last commit
  --v  <VERSION>                version of build release or debug Default realese
@@ -17,7 +15,7 @@ where:
 EOF
 `
 
-MYSQL_ROOT_PASSWORD=""
+
 REPO="https://github.com/HideezGroup/HES"
 DESTINATION="/opt/src/HES"
 BRANCH="master"
@@ -25,7 +23,7 @@ TAG="HEAD"
 VERSION="release"
 HES_DIR="/opt/HES"
 HESSERVICE="HES.service"
-DATABASE_NAME="db"
+
 
 while [ -n "$1" ]
 
@@ -41,9 +39,6 @@ do
 
         case "$1" in
 
-                --p)
-                        MYSQL_ROOT_PASSWORD=$param
-                        shift ;;
                 --r) 
                         REPO=$param
                         shift ;;
@@ -56,10 +51,6 @@ do
                 --t) 
                         TAG=$param
                         shift ;;
-
-                --t) 
-                        TAG=$param
-                        shift ;;
                 --v)
                         VERSION=$param
                         shift ;;
@@ -68,9 +59,6 @@ do
                         shift ;;
                 --hesservice)
                         HESSERVICE=$param
-                        shift ;;
-                --dbname)
-                        DATABASE_NAME=$param
                         shift ;;
 
                 --) shift
@@ -82,12 +70,6 @@ do
         shift
 done
 
-if [ -z "$MYSQL_ROOT_PASSWORD" ] 
-then
-    echo "ERROR! no password!"
-    echo  "$USAGE"
-    exit 1
-fi
 
 echo "MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD"
 echo "REPO = $REPO"
@@ -96,13 +78,28 @@ echo "BRANCH = $BRANCH"
 echo "TAG = $TAG"
 echo "VERSION = $VERSION"
 echo "HES_DIR = $HES_DIR"
-echo "DATABASE_NAME = $DATABASE_NAME"
 echo "HESSERVICE = $HESSERVICE"
 
 
+#################################################
+
+#parsing json for create dump of database
+
+JSON_FILE=$HES_DIR/appsettings.Production.json
+
+# name of database between "database="  and  ";uid"
+DATABASE_NAME=$(sed -n 's:.*database=\(.*\);uid.*:\1:pgI' $JSON_FILE)
+# name of user between "uid="  and  ";"
+DATABASE_USER=$(sed -n 's:.*uid=\(.*\);.*:\1:pgI' $JSON_FILE)
+# password  of user between "pwd="  and  '"'
+DATABASE_PASSWORD=$(sed -n 's:.*pwd=\(.*\)".*:\1:pgI' $JSON_FILE)
+
+echo "DATABASE_NAME = $DATABASE_NAME"
+echo "DATABASE_USER = $DATABASE_USER"
+echo "DATABASE_PASSWORD = $DATABASE_PASSWORD"
+
 
 #################################################
-#go to the required branch and tag
 
 cd $DESTINATION
 
@@ -162,8 +159,7 @@ else
 fi
 
 # Create dump of database
-mysqldump  -uroot -p$MYSQL_ROOT_PASSWORD  $DATABASE_NAME > ~/$DATABASE_NAME-$(date +%Y-%m-%d-%H-%M-%S).sql
-
+mysqldump  -u$DATABASE_USER  -p$DATABASE_PASSWORD  $DATABASE_NAME > $BACKUP_HES_DIR/$DATABASE_NAME.sql
 
 ################################
  
@@ -186,10 +182,9 @@ cp $DESTINATION/HES.Web/Crypto_linux.dll $HES_DIR/Crypto.dll
 
 
 # copying an old json file 
-JSON=$HES_DIR/appsettings.Production.json
-BACKUP_JSON=$BACKUP_HES_DIR/appsettings.Production.json
+BACKUP_JSON_FILE=$BACKUP_HES_DIR/appsettings.Production.json
 
-cp $BACKUP_JSON  $JSON
+cp $BACKUP_JSON_FILE  $JSON_FILE
 if [ $? -eq 0 ]; then
         echo "backup appsettings.Production.json to appsettings.Production.json successfully copied"
 else
