@@ -98,6 +98,8 @@ echo "DATABASE_NAME = $DATABASE_NAME"
 echo "DATABASE_USER = $DATABASE_USER"
 echo "DATABASE_PASSWORD = $DATABASE_PASSWORD"
 
+#   alternative with grep:
+#  DATABASE_NAME=$(grep -o -P '(?<=database=).*(?=;uid)' $JSON_FILE)
 
 #################################################
 
