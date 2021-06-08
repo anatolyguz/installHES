@@ -235,18 +235,44 @@ sed -i 's#"Origin": "https://example.com"#"Origin": "https://'$DOMAIN_NAME'"#' $
 sed -i 's#"Url": "https://example.com"#"Url": "https://'$DOMAIN_NAME'"#' $JSON
 
 
+# Saml2 setting
+#"Saml2": {
+#   "Issuer": "https://example.com",
+#   "SingleSignOnDestination": "https://example.com/Saml/Login",
+#   "SingleLogoutDestination": "https://example.com/Saml/Logout",
+#   "SignatureAlgorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+#   "SigningCertificateFile": "pathToPfx",
+#   "SigningCertificatePassword": "",
+#   "CertificateValidationMode": "None",
+#   "RevocationMode": "NoCheck"
+#  },
+
+PFX_PASSWORD="1234"
+
+sed -i 's#"Issuer": "https://example.com"#"Issuer": "https://'$DOMAIN_NAME'"#' $JSON
+sed -i 's#"SingleSignOnDestination": "https://example.com/Saml/Login"#"SingleSignOnDestination": "https://'$DOMAIN_NAME'/Saml/Login"#' $JSON
+sed -i 's#"SingleLogoutDestination": "https://example.com/Saml/Logout"#"SingleLogoutDestination": "https://'$DOMAIN_NAME'/Saml/Logout"#' $JSON
+sed -i 's#"SigningCertificateFile": "pathToPfx"#"SigningCertificateFile": "saml.pfx"#' $JSON
+sed -i 's#"SigningCertificatePassword": ""#"SigningCertificatePassword": "'$PFX_PASSWORD'"#' $JSON
+
+
+# Saml2Sp setting
+#"Saml2Sp": {
+#  "RelyingParties": [
+#    {
+#      "Metadata": "https://example.com/saml/sp/metadata"
+#    }
+#  ]
+#},
+sed -i 's#"Metadata": "https://example.com/saml/sp/metadata"#"Metadata": "https://'$DOMAIN_NAME'/saml/sp/metadata"#' $JSON
+
+
 ################################
 #creating certificate for SAML
-PFX_PASSWORD="1234"
 openssl req -newkey rsa:3072 -new -x509 -days 3652 -nodes -out $HES_DIR/saml.crt -keyout $HES_DIR/saml.pem  -subj "/CN=$DOMAIN_NAME"
-
 openssl pkcs12 -inkey $HES_DIR/saml.pem -in $HES_DIR/saml.crt -export -out $HES_DIR/saml.pfx -passout pass:$PFX_PASSWORD
 
-
 ################################
-
-
-
 
 
 # if exist backup of appsettings, then resore it
@@ -261,7 +287,6 @@ if [ -f $BACKUP_JSON ]; then
     fi
 fi
 ################################
-
 
 
   
