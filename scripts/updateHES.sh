@@ -71,7 +71,6 @@ do
 done
 
 
-echo "MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD"
 echo "REPO = $REPO"
 echo "DESTINATION = $DESTINATION"
 echo "BRANCH = $BRANCH"
@@ -127,6 +126,9 @@ else
   exit 1
 fi
 
+
+git pull
+
 #for testing  version only
 cat HES.Web/HES.Web.csproj | grep "<Versio\n>"
 
@@ -161,8 +163,7 @@ else
 fi
 
 # Create dump of database
-mysqldump  -u$DATABASE_USER  -p$DATABASE_PASSWORD  $DATABASE_NAME > $BACKUP_HES_DIR/$DATABASE_NAME.sql
-
+mysqldump  -u$DATABASE_USER  -p$DATABASE_PASSWORD -h 127.0.0.1 --no-tablespaces  $DATABASE_NAME > $BACKUP_HES_DIR/$DATABASE_NAME.sql
 ################################
  
 #Building the Hideez Enterprise Server from the sources
