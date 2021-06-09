@@ -186,7 +186,6 @@ cp $DESTINATION/HES.Web/Crypto_linux.dll $HES_DIR/Crypto.dll
 
 # copying an old json file 
 BACKUP_JSON_FILE=$BACKUP_HES_DIR/appsettings.Production.json
-
 cp $BACKUP_JSON_FILE  $JSON_FILE
 if [ $? -eq 0 ]; then
         echo "backup appsettings.Production.json to appsettings.Production.json successfully copied"
@@ -194,6 +193,21 @@ else
         # ups.... 
         echo "Error copying backup of appsettings.Production.json"
         exit 1
+fi
+
+
+PFX_FILE=$HES_DIR/saml.pfx
+BACKUP_PFX_FILE=$BACKUP_HES_DIR/saml.pfx
+#if exist backup of pfx file, then restore it
+if [ -f $BACKUP_PFX_FILE ]; then
+    cp $BACKUP_PFX_FILE  $PFX_FILE
+    if [ $? -eq 0 ]; then
+        echo "old saml.pfx  successfully copied"
+    else
+        # ups.... 
+       echo "Error copying backup of saml.pfx"
+       exit 1
+    fi
 fi
 
 
