@@ -92,10 +92,17 @@ DATABASE_NAME=$(sed -n 's:.*database=\(.*\);uid.*:\1:pgI' $JSON_FILE)
 DATABASE_USER=$(sed -n 's:.*uid=\(.*\);.*:\1:pgI' $JSON_FILE)
 # password  of user between "pwd="  and  '"'
 DATABASE_PASSWORD=$(sed -n 's:.*pwd=\(.*\)".*:\1:pgI' $JSON_FILE)
+# name of pfx-file between ""SigningCertificateFile":"  and  ','
+PFX_FILE=$(grep -o -P '(?<="SigningCertificateFile":).*(?=,)' $JSON_FILE)
+#  deleting quote's
+PFX_FILE=$(echo $PFX_FILE | tr -d \")
+
+
 
 echo "DATABASE_NAME = $DATABASE_NAME"
 echo "DATABASE_USER = $DATABASE_USER"
 echo "DATABASE_PASSWORD = $DATABASE_PASSWORD"
+echo "PFX_FILE = $PFX_FILE"
 
 #   alternative with grep:
 #  DATABASE_NAME=$(grep -o -P '(?<=database=).*(?=;uid)' $JSON_FILE)
@@ -196,19 +203,37 @@ else
 fi
 
 
-PFX_FILE=$HES_DIR/saml.pfx
-BACKUP_PFX_FILE=$BACKUP_HES_DIR/saml.pfx
+# copying an old pfx file 
+PFX_FILE_FULLMANE=$HES_DIR/$PFX_FILE
+BACKUP_PFX_FILE_FULLMANE=$BACKUP_HES_DIR/$PFX_FILE
 #if exist backup of pfx file, then restore it
-if [ -f $BACKUP_PFX_FILE ]; then
-    cp $BACKUP_PFX_FILE  $PFX_FILE
+if [ -f $BACKUP_PFX_FILE_FULLMANE ]; then
+    cp $BACKUP_PFX_FILE_FULLMANE $PFX_FILE_FULLMANE
     if [ $? -eq 0 ]; then
-        echo "old saml.pfx  successfully copied"
+        echo "old pfx-file  successfully copied"
     else
         # ups.... 
-       echo "Error copying backup of saml.pfx"
+       echo "Error copying backup of pfx-file"
        exit 1
     fi
 fi
+
+
+# copying an old update.sh file 
+UPDATE_FILE=$HES_DIR/update.sh
+BACKUP_UPDATE_FILE=$BACKUP_HES_DIR/update.sh
+#if exist backup of pfx file, then restore it
+if [ -f $BACKUP_UPDATE_FILE ]; then
+    cp $BACKUP_UPDATE_FILE $UPDATE_FILE
+    if [ $? -eq 0 ]; then
+        echo "old update script file successfully copied"
+    else
+        # ups.... 
+       echo "Error copying backup update script file"
+       exit 1
+    fi
+fi
+
 
 
 # startiing  service
