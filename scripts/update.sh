@@ -171,7 +171,15 @@ fi
 
 # Create dump of database
 mysqldump  -u$DATABASE_USER  -p$DATABASE_PASSWORD -h 127.0.0.1 --no-tablespaces  $DATABASE_NAME > $BACKUP_HES_DIR/$DATABASE_NAME.sql
+if [ $? -eq 0 ]; then
+  echo "database dump completed successfully"
+else
+  # ups.... 
+  echo "the database dump was performed with an error"
+  exit 1
+fi
 ################################
+ 
  
 #Building the Hideez Enterprise Server from the sources
 
@@ -204,11 +212,11 @@ fi
 
 
 # copying an old pfx file 
-PFX_FILE_FULLMANE=$HES_DIR/$PFX_FILE
-BACKUP_PFX_FILE_FULLMANE=$BACKUP_HES_DIR/$PFX_FILE
+PFX_FILE_FULLNAME=$HES_DIR/$PFX_FILE
+BACKUP_PFX_FILE_FULLNAME=$BACKUP_HES_DIR/$PFX_FILE
 #if exist backup of pfx file, then restore it
-if [ -f $BACKUP_PFX_FILE_FULLMANE ]; then
-    cp $BACKUP_PFX_FILE_FULLMANE $PFX_FILE_FULLMANE
+if [ -f $BACKUP_PFX_FILE_FULLNAME ]; then
+    cp $BACKUP_PFX_FILE_FULLNAME $PFX_FILE_FULLNAME
     if [ $? -eq 0 ]; then
         echo "old pfx-file  successfully copied"
     else
